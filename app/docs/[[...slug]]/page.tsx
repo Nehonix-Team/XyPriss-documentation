@@ -71,13 +71,14 @@ function renderDoc(doc: any, slugPath: string) {
       }
 
       // 1. Remove .md or .mdx
-      let cleanHref = href.replace(/\.mdx?$/, "");
+      let target = href.replace(/\.mdx?$/, "");
 
-      // 2. Remove relative symbols like ../ or ./
-      cleanHref = cleanHref.replace(/^(\.\.?\/)+/, "");
+      // 2. Remove relative symbols like ../ or ./ and normalize leading slashes
+      target = target.replace(/^(\.\.?\/)+/, "");
+      target = target.replace(/^\/+/, "");
 
-      // 3. Ensure it starts with /docs/ and is flat
-      cleanHref = `/docs/${cleanHref.replace(/^docs\//, "")}`;
+      // 3. Ensure it starts with /docs/ exactly once
+      const cleanHref = `/docs/${target.replace(/^docs\//, "")}`;
 
       return `[${text}](${cleanHref})`;
     },
