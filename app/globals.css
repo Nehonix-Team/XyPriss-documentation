@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+@import "./documentation-modern.scss";
 @plugin "@tailwindcss/typography";
 
 :root {
@@ -42,35 +43,16 @@
 }
 
 .dark {
-  /* Premium Dark Theme */
-  --background: 224 71% 4%;
-  --foreground: 213 31% 91%;
-
-  --card: 224 71% 6%;
-  --card-foreground: 213 31% 91%;
-
-  --popover: 224 71% 6%;
-  --popover-foreground: 213 31% 91%;
-
-  /* Primary: Soft Blue for dark mode */
+  /* Bun-style Deep Black Theme */
+  --background: 240 10% 2%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 4%;
+  --card-foreground: 0 0% 98%;
   --primary: 217 91% 65%;
-  --primary-foreground: 224 71% 4%;
-
-  --secondary: 222 47% 11%;
-  --secondary-foreground: 213 31% 91%;
-
-  --muted: 223 47% 11%;
-  --muted-foreground: 215 20% 65%;
-
-  /* Accent: Bright Cyan for contrast */
-  --accent: 173 80% 50%;
-  --accent-foreground: 224 71% 4%;
-
-  --destructive: 0 63% 31%;
-  --destructive-foreground: 213 31% 91%;
-
-  --border: 216 34% 17%;
-  --input: 216 34% 17%;
+  --primary-foreground: 222 47% 11%;
+  --muted: 240 5% 10%;
+  --muted-foreground: 240 5% 65%;
+  --border: 240 5% 12%;
   --ring: 217 91% 65%;
 }
 

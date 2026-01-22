@@ -1,0 +1,158 @@
+/* Professional Documentation Styles - Bun/Next.js Inspiration */
+
+.documentation-article {
+  --doc-bg-code: #050505;
+  --doc-border: rgba(255, 255, 255, 0.08);
+  --doc-text-muted: #666;
+
+  /* macOS-style Code Blocks */
+  pre {
+    position: relative;
+    margin: 2.5rem 0 !important;
+    padding: 3.5rem 1.5rem 1.75rem 1.5rem !important;
+    background-color: var(--doc-bg-code) !important;
+    border: 1px solid var(--doc-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7) !important;
+    overflow-x: auto;
+    line-height: 1.8 !important;
+
+    /* macOS Dots */
+    &::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background-color: #ff5f56;
+      box-shadow:
+        20px 0 0 #ffbd2e,
+        40px 0 0 #27c93f;
+      opacity: 0.9;
+    }
+
+    /* Code label / Language */
+    &::after {
+      content: "Code";
+      position: absolute;
+      top: 16px;
+      right: 22px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    code {
+      background-color: transparent !important;
+      padding: 0 !important;
+      border: none !important;
+      font-size: 0.85rem !important;
+      color: #fafafa !important;
+      font-family: var(--font-mono) !important;
+      text-shadow: none !important;
+    }
+  }
+
+  /* Modern Minimalist Tables (Bun style) */
+  table {
+    width: 100%;
+    margin: 2.5rem 0;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--doc-border);
+  }
+
+  thead {
+    border-bottom: 2px solid var(--doc-border);
+    background: rgba(255, 255, 255, 0.02);
+
+    th {
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      font-weight: 800;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--doc-text-muted);
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    td {
+      padding: 1.25rem 1.5rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+    }
+  }
+
+  /* Professional Link Styling */
+  a:not(.pager-link) {
+    color: #3b82f6 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #60a5fa !important;
+      border-bottom-color: #60a5fa;
+      background: rgba(59, 130, 246, 0.08);
+      border-radius: 4px;
+    }
+  }
+
+  /* Inline Code visibility */
+  p > code,
+  li > code {
+    background: #141414 !important;
+    color: #60a5fa !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 7px !important;
+    font-size: 0.85em !important;
+    font-weight: 700 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* Headings & Paragraphs */
+  h2 {
+    font-size: 1.85rem !important;
+    font-weight: 900 !important;
+    margin-top: 4.5rem !important;
+    margin-bottom: 1.5rem !important;
+    color: #fff !important;
+  }
+
+  h3 {
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
+    margin-top: 3rem !important;
+    margin-bottom: 1rem !important;
+    color: #fff !important;
+  }
+
+  p,
+  li {
+    font-size: 1rem !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    line-height: 1.85 !important;
+    font-weight: 450 !important;
+  }
+}

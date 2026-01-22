@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./animations.scss";
+import "./documentation-modern.scss";
 import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
