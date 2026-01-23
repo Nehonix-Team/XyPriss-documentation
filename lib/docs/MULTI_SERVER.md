@@ -6,10 +6,10 @@ Run multiple server instances with different configurations from a single setup.
 
 Multi-Server mode allows you to:
 
--   Run multiple HTTP servers on different ports
--   Apply different configurations to each server
--   Route requests to specific servers based on path patterns
--   Isolate services for better security and performance
+- Run multiple HTTP servers on different ports
+- Apply different configurations to each server
+- Route requests to specific servers based on path patterns
+- Isolate services for better security and performance
 
 ## Basic Multi-Server Setup
 
@@ -17,29 +17,29 @@ Multi-Server mode allows you to:
 import { createServer } from "xypriss";
 
 const app = createServer({
-    multiServer: {
-        enabled: true,
-        servers: [
-            {
-                id: "api-server",
-                port: 3001,
-                routePrefix: "/api",
-                allowedRoutes: ["/api/*"],
-            },
-            {
-                id: "admin-server",
-                port: 3002,
-                routePrefix: "/admin",
-                allowedRoutes: ["/admin/*"],
-                security: { level: "maximum" },
-            },
-        ],
-    },
+  multiServer: {
+    enabled: true,
+    servers: [
+      {
+        id: "api-server",
+        port: 3001,
+        routePrefix: "/api",
+        allowedRoutes: ["/api/*"],
+      },
+      {
+        id: "admin-server",
+        port: 3002,
+        routePrefix: "/admin",
+        allowedRoutes: ["/admin/*"],
+        security: { level: "maximum" },
+      },
+    ],
+  },
 });
 
 // Routes are automatically distributed to appropriate servers
-app.get("/api/users", (req, res) => res.json({ service: "api" }));
-app.get("/admin/dashboard", (req, res) => res.json({ service: "admin" }));
+app.get("/api/users", (req, res) => res.xJson({ service: "api" }));
+app.get("/admin/dashboard", (req, res) => res.xJson({ service: "admin" }));
 
 // Start all servers with a simple API
 await app.startAllServers();
@@ -51,46 +51,46 @@ Each server in the `servers` array can have:
 
 ```typescript
 interface MultiServerConfig {
-    id: string; // Unique identifier
-    port: number; // Port number
-    host?: string; // Host (default: localhost)
-    routePrefix?: string; // Route prefix for this server
-    allowedRoutes?: string[]; // Route patterns to include
+  id: string; // Unique identifier
+  port: number; // Port number
+  host?: string; // Host (default: localhost)
+  routePrefix?: string; // Route prefix for this server
+  allowedRoutes?: string[]; // Route patterns to include
 
-    // Server-specific overrides
-    server?: {
-        autoPortSwitch?: boolean;
-        trustProxy?: boolean;
-    };
+  // Server-specific overrides
+  server?: {
+    autoPortSwitch?: boolean;
+    trustProxy?: boolean;
+  };
 
-    security?: {
-        level?: "basic" | "enhanced" | "maximum";
-        cors?: object;
-        rateLimit?: object;
-    };
+  security?: {
+    level?: "basic" | "enhanced" | "maximum";
+    cors?: object;
+    rateLimit?: object;
+  };
 
-    cache?: {
-        strategy?: "memory" | "redis";
-        maxSize?: number;
-    };
+  cache?: {
+    strategy?: "memory" | "redis";
+    maxSize?: number;
+  };
 
-    performance?: {
-        clustering?: boolean;
-    };
+  performance?: {
+    clustering?: boolean;
+  };
 
-    fileUpload?: {
-        enabled?: boolean;
-        maxFileSize?: number;
-    };
+  fileUpload?: {
+    enabled?: boolean;
+    maxFileSize?: number;
+  };
 
-    responseControl?: {
-        enabled?: boolean;
-        statusCode?: number;
-        content?: string | object;
-        contentType?: string;
-        headers?: Record<string, string>;
-        handler?: (req: Request, res: Response) => void | Promise<void>;
-    };
+  responseControl?: {
+    enabled?: boolean;
+    statusCode?: number;
+    content?: string | object;
+    contentType?: string;
+    headers?: Record<string, string>;
+    handler?: (req: Request, res: Response) => void | Promise<void>;
+  };
 }
 ```
 
@@ -100,31 +100,31 @@ interface MultiServerConfig {
 
 ```typescript
 const app = createServer({
-    multiServer: {
-        enabled: true,
-        servers: [
-            {
-                id: "api-v1",
-                port: 3001,
-                routePrefix: "/api/v1",
-                allowedRoutes: ["/api/v1/*"],
-            },
-            {
-                id: "api-v2",
-                port: 3002,
-                routePrefix: "/api/v2",
-                allowedRoutes: ["/api/v2/*"],
-            },
-        ],
-    },
+  multiServer: {
+    enabled: true,
+    servers: [
+      {
+        id: "api-v1",
+        port: 3001,
+        routePrefix: "/api/v1",
+        allowedRoutes: ["/api/v1/*"],
+      },
+      {
+        id: "api-v2",
+        port: 3002,
+        routePrefix: "/api/v2",
+        allowedRoutes: ["/api/v2/*"],
+      },
+    ],
+  },
 });
 
 app.get("/api/v1/users", (req, res) => {
-    res.json({ version: "v1", users: [] });
+  res.xJson({ version: "v1", users: [] });
 });
 
 app.get("/api/v2/users", (req, res) => {
-    res.json({ version: "v2", users: [], metadata: {} });
+  res.xJson({ version: "v2", users: [], metadata: {} });
 });
 ```
 
@@ -132,28 +132,28 @@ app.get("/api/v2/users", (req, res) => {
 
 ```typescript
 const app = createServer({
-    multiServer: {
-        enabled: true,
-        servers: [
-            {
-                id: "auth-service",
-                port: 3001,
-                allowedRoutes: ["/auth/*"],
-                security: { level: "maximum" },
-            },
-            {
-                id: "user-service",
-                port: 3002,
-                allowedRoutes: ["/users/*"],
-            },
-            {
-                id: "payment-service",
-                port: 3003,
-                allowedRoutes: ["/payments/*"],
-                security: { level: "maximum" },
-            },
-        ],
-    },
+  multiServer: {
+    enabled: true,
+    servers: [
+      {
+        id: "auth-service",
+        port: 3001,
+        allowedRoutes: ["/auth/*"],
+        security: { level: "maximum" },
+      },
+      {
+        id: "user-service",
+        port: 3002,
+        allowedRoutes: ["/users/*"],
+      },
+      {
+        id: "payment-service",
+        port: 3003,
+        allowedRoutes: ["/payments/*"],
+        security: { level: "maximum" },
+      },
+    ],
+  },
 });
 ```
 
@@ -161,26 +161,26 @@ const app = createServer({
 
 ```typescript
 const app = createServer({
-    multiServer: {
-        enabled: true,
-        servers: [
-            {
-                id: "public",
-                port: 3000,
-                allowedRoutes: ["/", "/api/*", "/public/*"],
-                security: { level: "enhanced" },
-            },
-            {
-                id: "admin",
-                port: 3001,
-                allowedRoutes: ["/admin/*"],
-                security: {
-                    level: "maximum",
-                    rateLimit: { max: 50, windowMs: 15 * 60 * 1000 },
-                },
-            },
-        ],
-    },
+  multiServer: {
+    enabled: true,
+    servers: [
+      {
+        id: "public",
+        port: 3000,
+        allowedRoutes: ["/", "/api/*", "/public/*"],
+        security: { level: "enhanced" },
+      },
+      {
+        id: "admin",
+        port: 3001,
+        allowedRoutes: ["/admin/*"],
+        security: {
+          level: "maximum",
+          rateLimit: { max: 50, windowMs: 15 * 60 * 1000 },
+        },
+      },
+    ],
+  },
 });
 ```
 
@@ -205,7 +205,7 @@ console.log("All servers stopped");
 ```typescript
 const servers = app.getServerInfo();
 servers.forEach((server) => {
-    console.log(`${server.id}: http://${server.host}:${server.port}`);
+  console.log(`${server.id}: http://${server.host}:${server.port}`);
 });
 ```
 
@@ -219,11 +219,11 @@ Routes are automatically distributed based on:
 
 ```typescript
 {
-    allowedRoutes: [
-        "/api/*", // Matches /api/users, /api/posts
-        "/api/v1/**", // Matches /api/v1/users/123/posts
-        "/exact", // Exact match only
-    ];
+  allowedRoutes: [
+    "/api/*", // Matches /api/users, /api/posts
+    "/api/v1/**", // Matches /api/v1/users/123/posts
+    "/exact", // Exact match only
+  ];
 }
 ```
 
@@ -233,19 +233,19 @@ Apply middleware to specific servers:
 
 ```typescript
 const app = createServer({
-    multiServer: {
-        enabled: true,
-        servers: [
-            { id: "api", port: 3001, routePrefix: "/api" },
-            { id: "admin", port: 3002, routePrefix: "/admin" },
-        ],
-    },
+  multiServer: {
+    enabled: true,
+    servers: [
+      { id: "api", port: 3001, routePrefix: "/api" },
+      { id: "admin", port: 3002, routePrefix: "/admin" },
+    ],
+  },
 });
 
 // This middleware only runs on the admin server
 app.use("/admin", (req, res, next) => {
-    console.log("Admin server middleware");
-    next();
+  console.log("Admin server middleware");
+  next();
 });
 ```
 
@@ -255,63 +255,63 @@ Configure custom responses for when routes don't match on each server individual
 
 ```typescript
 const app = createServer({
-    multiServer: {
-        enabled: true,
-        servers: [
-            {
-                id: "public-server",
-                port: 3000,
-                routePrefix: "/public",
-                responseControl: {
-                    enabled: true,
-                    statusCode: 404,
-                    content: "Custom 404: Public resource not found",
-                    contentType: "text/plain",
-                    headers: { "X-Server": "public" },
-                },
-            },
-            {
-                id: "api-server",
-                port: 3001,
-                routePrefix: "/api",
-                responseControl: {
-                    enabled: true,
-                    statusCode: 404,
-                    content: {
-                        error: "API endpoint not found",
-                        path: "/api/test",
-                    },
-                    contentType: "application/json",
-                    headers: { "X-Server": "api" },
-                },
-            },
-            {
-                id: "admin-server",
-                port: 3002,
-                routePrefix: "/admin",
-                responseControl: {
-                    enabled: true,
-                    statusCode: 403,
-                    content: "Access denied to admin area",
-                    contentType: "text/plain",
-                    headers: { "X-Server": "admin" },
-                    handler: (req, res) => {
-                        // Custom handler function
-                        res.status(403).json({
-                            error: "Forbidden",
-                            message: "Admin access required",
-                            path: req.path,
-                        });
-                    },
-                },
-            },
-        ],
-    },
+  multiServer: {
+    enabled: true,
+    servers: [
+      {
+        id: "public-server",
+        port: 3000,
+        routePrefix: "/public",
+        responseControl: {
+          enabled: true,
+          statusCode: 404,
+          content: "Custom 404: Public resource not found",
+          contentType: "text/plain",
+          headers: { "X-Server": "public" },
+        },
+      },
+      {
+        id: "api-server",
+        port: 3001,
+        routePrefix: "/api",
+        responseControl: {
+          enabled: true,
+          statusCode: 404,
+          content: {
+            error: "API endpoint not found",
+            path: "/api/test",
+          },
+          contentType: "application/json",
+          headers: { "X-Server": "api" },
+        },
+      },
+      {
+        id: "admin-server",
+        port: 3002,
+        routePrefix: "/admin",
+        responseControl: {
+          enabled: true,
+          statusCode: 403,
+          content: "Access denied to admin area",
+          contentType: "text/plain",
+          headers: { "X-Server": "admin" },
+          handler: (req, res) => {
+            // Custom handler function
+            res.status(403).json({
+              error: "Forbidden",
+              message: "Admin access required",
+              path: req.path,
+            });
+          },
+        },
+      },
+    ],
+  },
 });
 
 // Register routes
 app.get("/public/home", (req, res) => res.send("Welcome to public area"));
-app.get("/api/users", (req, res) => res.json({ users: [] }));
+app.get("/api/users", (req, res) => res.xJson({ users: [] }));
 app.get("/admin/dashboard", (req, res) => res.send("Admin Dashboard"));
 
 await app.startAllServers();
@@ -321,12 +321,12 @@ await app.startAllServers();
 
 Each server can have its own response control configuration:
 
--   **`enabled`**: Enable/disable custom response control (default: `false`)
--   **`statusCode`**: HTTP status code to send (default: `404`)
--   **`content`**: Response content (string or object)
--   **`contentType`**: Content-Type header (default: `"text/plain"`)
--   **`headers`**: Custom headers to set
--   **`handler`**: Custom response handler function
+- **`enabled`**: Enable/disable custom response control (default: `false`)
+- **`statusCode`**: HTTP status code to send (default: `404`)
+- **`content`**: Response content (string or object)
+- **`contentType`**: Content-Type header (default: `"text/plain"`)
+- **`headers`**: Custom headers to set
+- **`handler`**: Custom response handler function
 
 ### Using Custom Handler Function
 
@@ -463,17 +463,16 @@ Check logs for port conflicts or configuration errors:
 
 ```typescript
 const app = createServer({
-    logging: {
-        enabled: true,
-        level: "debug",
-    },
-    multiServer: {
-        /* ... */
-    },
+  logging: {
+    enabled: true,
+    level: "debug",
+  },
+  multiServer: {
+    /* ... */
+  },
 });
 ```
 
 ---
 
 [← Back to Main Documentation](../README.md)
-

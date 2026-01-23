@@ -26,19 +26,19 @@ Two specialized middleware components allow you to control access based on the r
 ### Quick Start
 
 ```typescript
-import { createServer } from 'xypriss';
+import { createServer } from "xypriss";
 
 const server = createServer({
   security: {
-    browserOnly: true  // Enable globally
-  }
+    browserOnly: true, // Enable globally
+  },
 });
 
 // This endpoint only accepts browser requests
-server.get('/api/user/profile', (req, res) => {
-  res.json({
-    message: 'Profile data for browser users only',
-    userAgent: req.headers['user-agent']
+server.get("/api/user/profile", (req, res) => {
+  res.xJson({
+    message: "Profile data for browser users only",
+    userAgent: req.headers["user-agent"],
   });
 });
 
@@ -82,26 +82,22 @@ const server = createServer({
   security: {
     browserOnly: {
       enabled: true,
-      message: 'This endpoint requires a web browser',
+      message: "This endpoint requires a web browser",
       statusCode: 403,
       allowedUserAgents: [
-        /CustomBrowser\/\d+\.\d+/  // Allow custom browser
+        /CustomBrowser\/\d+\.\d+/, // Allow custom browser
       ],
       blockedUserAgents: [
-        /Bot\/\d+\.\d+/,           // Block bots
-        /Crawler\/\d+\.\d+/        // Block crawlers
+        /Bot\/\d+\.\d+/, // Block bots
+        /Crawler\/\d+\.\d+/, // Block crawlers
       ],
-      requireHeaders: [
-        'accept',
-        'accept-language',
-        'cache-control'
-      ],
+      requireHeaders: ["accept", "accept-language", "cache-control"],
       customValidator: (req) => {
         // Custom validation logic
-        return req.headers['x-custom-header'] === 'expected-value';
-      }
-    }
-  }
+        return req.headers["x-custom-header"] === "expected-value";
+      },
+    },
+  },
 });
 ```
 
@@ -119,14 +115,14 @@ const server = createServer({
 ```typescript
 const server = createServer({
   security: {
-    terminalOnly: true  // Enable globally
-  }
+    terminalOnly: true, // Enable globally
+  },
 });
 
 // This endpoint only accepts terminal requests (cURL, scripts, etc.)
-server.post('/api/admin/reset-database', (req, res) => {
+server.post("/api/admin/reset-database", (req, res) => {
   // Dangerous operation - only allow from terminal
-  res.json({ message: 'Database reset complete' });
+  res.xJson({ message: "Database reset complete" });
 });
 ```
 
@@ -167,30 +163,26 @@ const server = createServer({
   security: {
     terminalOnly: {
       enabled: true,
-      message: 'This endpoint is for terminal access only',
+      message: "This endpoint is for terminal access only",
       statusCode: 403,
       allowedUserAgents: [
-        /curl\/\d+\.\d+/,          // Allow cURL
-        /HTTPie\/\d+\.\d+/,        // Allow HTTPie
+        /curl\/\d+\.\d+/, // Allow cURL
+        /HTTPie\/\d+\.\d+/, // Allow HTTPie
         /PostmanRuntime\/\d+\.\d+/, // Allow Postman
-        /MyCLITool\/\d+\.\d+/     // Allow custom CLI tool
+        /MyCLITool\/\d+\.\d+/, // Allow custom CLI tool
       ],
       blockedUserAgents: [
-        /Mozilla\/\d+\.\d+/,       // Block browsers
-        /Chrome\/\d+\.\d+/,        // Block Chrome
-        /Safari\/\d+\.\d+/         // Block Safari
+        /Mozilla\/\d+\.\d+/, // Block browsers
+        /Chrome\/\d+\.\d+/, // Block Chrome
+        /Safari\/\d+\.\d+/, // Block Safari
       ],
-      blockBrowserHeaders: [
-        'referer',
-        'sec-fetch-mode',
-        'sec-fetch-site'
-      ],
+      blockBrowserHeaders: ["referer", "sec-fetch-mode", "sec-fetch-site"],
       customValidator: (req) => {
         // Custom validation - check for API key
-        return req.headers['x-api-key'] === process.env.API_KEY;
-      }
-    }
-  }
+        return req.headers["x-api-key"] === process.env.API_KEY;
+      },
+    },
+  },
 });
 ```
 
@@ -201,6 +193,7 @@ const server = createServer({
 The BrowserOnly middleware identifies browsers by:
 
 1. **User Agent Analysis**
+
    ```typescript
    // Common browser patterns
    const browserPatterns = [
@@ -208,26 +201,27 @@ The BrowserOnly middleware identifies browsers by:
      /Chrome\/\d+\.\d+/,
      /Safari\/\d+\.\d+/,
      /Firefox\/\d+\.\d+/,
-     /Edge\/\d+\.\d+/
+     /Edge\/\d+\.\d+/,
    ];
    ```
 
 2. **Browser-Specific Headers**
+
    ```typescript
    // Headers that browsers typically send
    const browserHeaders = [
-     'accept',
-     'accept-language',
-     'accept-encoding',
-     'cache-control',
-     'pragma',
-     'sec-fetch-mode',
-     'sec-fetch-site',
-     'sec-fetch-user',
-     'sec-fetch-dest',
-     'sec-ch-ua',
-     'sec-ch-ua-mobile',
-     'sec-ch-ua-platform'
+     "accept",
+     "accept-language",
+     "accept-encoding",
+     "cache-control",
+     "pragma",
+     "sec-fetch-mode",
+     "sec-fetch-site",
+     "sec-fetch-user",
+     "sec-fetch-dest",
+     "sec-ch-ua",
+     "sec-ch-ua-mobile",
+     "sec-ch-ua-platform",
    ];
    ```
 
@@ -242,6 +236,7 @@ The BrowserOnly middleware identifies browsers by:
 The TerminalOnly middleware identifies terminal clients by:
 
 1. **User Agent Analysis**
+
    ```typescript
    // Common terminal tool patterns
    const terminalPatterns = [
@@ -251,7 +246,7 @@ The TerminalOnly middleware identifies terminal clients by:
      /PostmanRuntime\/\d+\.\d+/,
      /python-requests\/\d+\.\d+/,
      /axios\/\d+\.\d+/,
-     /node-fetch\/\d+\.\d+/
+     /node-fetch\/\d+\.\d+/,
    ];
    ```
 
@@ -272,27 +267,27 @@ Apply access control to specific routes:
 ```typescript
 const server = createServer({
   security: {
-    browserOnly: false,   // Disabled globally
-    terminalOnly: false   // Disabled globally
-  }
+    browserOnly: false, // Disabled globally
+    terminalOnly: false, // Disabled globally
+  },
 });
 
 // Browser-only route
-server.get('/app/dashboard', (req, res) => {
+server.get("/app/dashboard", (req, res) => {
   // Only accessible from browsers
-  res.json({ dashboard: 'data' });
+  res.xJson({ dashboard: "data" });
 });
 
 // Terminal-only route
-server.post('/api/admin/backup', (req, res) => {
+server.post("/api/admin/backup", (req, res) => {
   // Only accessible from terminals
-  res.json({ backup: 'started' });
+  res.xJson({ backup: "started" });
 });
 
 // Mixed access route
-server.get('/api/public', (req, res) => {
+server.get("/api/public", (req, res) => {
   // Accessible from both browsers and terminals
-  res.json({ public: 'data' });
+  res.xJson({ public: "data" });
 });
 ```
 
@@ -306,22 +301,22 @@ const server = createServer({
     // Browser endpoints require session validation
     browserOnly: {
       enabled: true,
-      requireHeaders: ['cookie', 'authorization']
+      requireHeaders: ["cookie", "authorization"],
     },
 
     // API endpoints require signature authentication
     terminalOnly: {
       enabled: true,
       customValidator: (req) => {
-        return req.headers['x-api-signature'] !== undefined;
-      }
+        return req.headers["x-api-signature"] !== undefined;
+      },
     },
 
     // Request signature for additional security
     requestSignature: {
-      secret: 'api-secret-key'
-    }
-  }
+      secret: "api-secret-key",
+    },
+  },
 });
 ```
 
@@ -332,18 +327,18 @@ const server = createServer({
   security: {
     cors: {
       origin: [
-        "https://myapp.com",     // Allow browser access
-        /^localhost:\d+$/        // Allow development
+        "https://myapp.com", // Allow browser access
+        /^localhost:\d+$/, // Allow development
       ],
-      credentials: true
+      credentials: true,
     },
 
     // Additional browser validation
     browserOnly: {
       enabled: true,
-      requireHeaders: ['sec-fetch-site']
-    }
-  }
+      requireHeaders: ["sec-fetch-site"],
+    },
+  },
 });
 ```
 
@@ -359,26 +354,26 @@ const server = createServer({
       enabled: true,
       customValidator: (req) => {
         // Check for session cookie
-        return req.headers.cookie?.includes('session_id');
-      }
-    }
-  }
+        return req.headers.cookie?.includes("session_id");
+      },
+    },
+  },
 });
 
 // Web app routes
-server.get('/app/*', (req, res) => {
-  res.sendFile('index.html'); // Serve SPA
+server.get("/app/*", (req, res) => {
+  res.sendFile("index.html"); // Serve SPA
 });
 
-server.get('/api/user/profile', (req, res) => {
+server.get("/api/user/profile", (req, res) => {
   // Browser-only API
-  res.json({ profile: getUserProfile(req) });
+  res.xJson({ profile: getUserProfile(req) });
 });
 
 // Public API routes (override browser-only)
-server.get('/api/public/stats', (req, res) => {
+server.get("/api/public/stats", (req, res) => {
   // Allow both browser and terminal access
-  res.json({ stats: getPublicStats() });
+  res.xJson({ stats: getPublicStats() });
 });
 ```
 
@@ -390,24 +385,21 @@ const server = createServer({
     // CLI tool routes - terminal only
     terminalOnly: {
       enabled: true,
-      allowedUserAgents: [
-        /my-cli-tool\/\d+\.\d+/,
-        /curl\/\d+\.\d+/
-      ]
-    }
-  }
+      allowedUserAgents: [/my-cli-tool\/\d+\.\d+/, /curl\/\d+\.\d+/],
+    },
+  },
 });
 
 // CLI-only endpoints
-server.post('/cli/deploy', (req, res) => {
+server.post("/cli/deploy", (req, res) => {
   // Only accessible from CLI tool
   const result = deployApplication(req.body);
-  res.json({ deployment: result });
+  res.xJson({ deployment: result });
 });
 
-server.get('/cli/status', (req, res) => {
+server.get("/cli/status", (req, res) => {
   // Check deployment status
-  res.json({ status: getDeploymentStatus() });
+  res.xJson({ status: getDeploymentStatus() });
 });
 ```
 
@@ -420,35 +412,35 @@ const server = createServer({
       // Admin panel - browser only with additional checks
       enabled: true,
       customValidator: (req) => {
-        const cookies = parseCookies(req.headers.cookie || '');
-        return cookies.admin_session && cookies.authenticated === 'true';
-      }
+        const cookies = parseCookies(req.headers.cookie || "");
+        return cookies.admin_session && cookies.authenticated === "true";
+      },
     },
 
     terminalOnly: {
       // Admin CLI - terminal only
       enabled: true,
       customValidator: (req) => {
-        return req.headers['x-admin-token'] === process.env.ADMIN_TOKEN;
-      }
-    }
-  }
+        return req.headers["x-admin-token"] === process.env.ADMIN_TOKEN;
+      },
+    },
+  },
 });
 
 // Admin web interface
-server.get('/admin/*', (req, res) => {
-  res.sendFile('admin.html');
+server.get("/admin/*", (req, res) => {
+  res.sendFile("admin.html");
 });
 
 // Admin API (browser)
-server.get('/admin/api/users', (req, res) => {
-  res.json({ users: getAllUsers() });
+server.get("/admin/api/users", (req, res) => {
+  res.xJson({ users: getAllUsers() });
 });
 
 // Admin CLI commands (terminal)
-server.post('/admin/cli/reset-passwords', (req, res) => {
+server.post("/admin/cli/reset-passwords", (req, res) => {
   resetAllPasswords();
-  res.json({ message: 'All passwords reset' });
+  res.xJson({ message: "All passwords reset" });
 });
 ```
 
@@ -463,13 +455,13 @@ const server = createServer({
     browserOnly: {
       enabled: true,
       // Use multiple validation methods
-      requireHeaders: ['sec-fetch-site', 'sec-fetch-mode'],
+      requireHeaders: ["sec-fetch-site", "sec-fetch-mode"],
       customValidator: (req) => {
         // Check for browser-specific behavior
         return hasBrowserCharacteristics(req);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 ```
 
@@ -483,13 +475,13 @@ const server = createServer({
       enabled: true,
       // Combine multiple checks
       allowedUserAgents: [/curl\/\d+\.\d+/],
-      blockBrowserHeaders: ['sec-fetch-mode'],
+      blockBrowserHeaders: ["sec-fetch-mode"],
       customValidator: (req) => {
         // Additional validation
-        return req.headers['x-cli-version'] !== undefined;
-      }
-    }
-  }
+        return req.headers["x-cli-version"] !== undefined;
+      },
+    },
+  },
 });
 ```
 
@@ -503,11 +495,11 @@ const server = createServer({
       enabled: true,
       allowMissingHeaders: true, // Be more permissive
       blockedUserAgents: [
-        /Bot\/\d+\.\d+/,     // Only block obvious bots
-        /Crawler\/\d+\.\d+/
-      ]
-    }
-  }
+        /Bot\/\d+\.\d+/, // Only block obvious bots
+        /Crawler\/\d+\.\d+/,
+      ],
+    },
+  },
 });
 ```
 
@@ -523,6 +515,7 @@ const server = createServer({
 ### Common Issues
 
 1. **"Access denied" for legitimate browsers**
+
    ```typescript
    // Check your validation logic
    browserOnly: {
@@ -533,6 +526,7 @@ const server = createServer({
    ```
 
 2. **CLI tools blocked unexpectedly**
+
    ```typescript
    // Add your CLI tool to allowed list
    terminalOnly: {
@@ -565,21 +559,22 @@ Enable detailed logging:
 ```typescript
 const server = createServer({
   logging: {
-    level: 'debug',
+    level: "debug",
     components: {
-      security: true
-    }
+      security: true,
+    },
   },
   security: {
     browserOnly: {
       enabled: true,
-      debug: true  // Enable debug logging
-    }
-  }
+      debug: true, // Enable debug logging
+    },
+  },
 });
 ```
 
 This will log:
+
 ```
 [BROWSER_CHECK] User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 [BROWSER_CHECK] Headers present: accept, accept-language, sec-fetch-mode
@@ -592,10 +587,10 @@ This will log:
 
 ```typescript
 // Old approach
-server.use('/api/web', (req, res, next) => {
-  const ua = req.headers['user-agent'] || '';
-  if (!ua.includes('Mozilla')) {
-    return res.status(403).json({ error: 'Browser required' });
+server.use("/api/web", (req, res, next) => {
+  const ua = req.headers["user-agent"] || "";
+  if (!ua.includes("Mozilla")) {
+    return res.status(403).json({ error: "Browser required" });
   }
   next();
 });
@@ -603,8 +598,8 @@ server.use('/api/web', (req, res, next) => {
 // New approach
 const server = createServer({
   security: {
-    browserOnly: true
-  }
+    browserOnly: true,
+  },
 });
 ```
 
@@ -612,10 +607,10 @@ const server = createServer({
 
 ```typescript
 // Old approach (less reliable)
-server.use('/admin', (req, res, next) => {
+server.use("/admin", (req, res, next) => {
   const clientIP = req.ip;
   if (!adminIPs.includes(clientIP)) {
-    return res.status(403).json({ error: 'Access denied' });
+    return res.status(403).json({ error: "Access denied" });
   }
   next();
 });
@@ -629,15 +624,16 @@ const server = createServer({
         // Combine IP check with browser validation
         const clientIP = req.ip;
         return adminIPs.includes(clientIP) && isBrowser(req);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 ```
 
 ## Browser Compatibility
 
 ### Supported Browsers
+
 - ✅ Chrome 77+ (sends `sec-fetch-*` headers)
 - ✅ Firefox 68+ (sends `sec-fetch-*` headers)
 - ✅ Safari 12.1+ (sends `sec-fetch-*` headers)
@@ -653,12 +649,12 @@ const server = createServer({
       enabled: true,
       requireHeaders: [], // Don't require modern headers
       customValidator: (req) => {
-        const ua = req.headers['user-agent'] || '';
+        const ua = req.headers["user-agent"] || "";
         // Fallback to user agent checking
         return /Mozilla|Chrome|Safari|Firefox|Edge/.test(ua);
-      }
-    }
-  }
+      },
+    },
+  },
 });
 ```
 
@@ -668,20 +664,20 @@ const server = createServer({
 
 ```typescript
 // Frontend routes - browser only
-server.get('/app/*', (req, res) => {
-  res.sendFile('index.html');
+server.get("/app/*", (req, res) => {
+  res.sendFile("index.html");
 });
 
 // API routes - mixed access
-server.get('/api/public', (req, res) => {
+server.get("/api/public", (req, res) => {
   // Allow both browsers and terminals
-  res.json({ data: 'public' });
+  res.xJson({ data: "public" });
 });
 
 // Admin routes - browser only with session validation
-server.get('/admin/*', (req, res) => {
+server.get("/admin/*", (req, res) => {
   // Additional session validation
-  res.sendFile('admin.html');
+  res.sendFile("admin.html");
 });
 ```
 
@@ -690,17 +686,17 @@ server.get('/admin/*', (req, res) => {
 ```typescript
 // Service A (web app) - browser only
 const webApp = createServer({
-  security: { browserOnly: true }
+  security: { browserOnly: true },
 });
 
 // Service B (API) - terminal only (server-to-server)
 const apiService = createServer({
-  security: { terminalOnly: true }
+  security: { terminalOnly: true },
 });
 
 // Service C (CLI) - terminal only
 const cliService = createServer({
-  security: { terminalOnly: true }
+  security: { terminalOnly: true },
 });
 ```
 

@@ -8,18 +8,18 @@ The XJson API is an advanced JSON response handler designed to solve serializati
 
 When making requests to XyPriss applications, developers often encounter serialization errors, especially with:
 
--   **BigInt values** that can't be directly serialized by `JSON.stringify()`
--   **Circular references** in object structures
--   **Very large data sets** that cause memory issues
--   **Complex nested objects** with mixed data types
+- **BigInt values** that can't be directly serialized by `JSON.stringify()`
+- **Circular references** in object structures
+- **Very large data sets** that cause memory issues
+- **Complex nested objects** with mixed data types
 
 The traditional `.json()` method fails with errors like:
 
 ```json
 {
-    "error": "Serialization failed",
-    "message": "Unable to serialize response object",
-    "originalError": "JSON Parse error: Unexpected identifier \"Serialization\""
+  "error": "Serialization failed",
+  "message": "Unable to serialize response object",
+  "originalError": "JSON Parse error: Unexpected identifier \"Serialization\""
 }
 ```
 
@@ -38,33 +38,33 @@ The XJson API provides a robust alternative that:
 ### Basic Usage
 
 ```typescript
-import { createServer } from "@xypriss/core";
+import { createServer } from "xypriss";
 
 const app = createServer({});
 
 // Use the new XJson endpoint
 app.get("/api/data", (req, res) => {
-    const data = {
-        success: true,
-        file: {
-            id: "cmj17uh7f00002ef4otv5rqlj",
-            size: 18n, // BigInt value
-            filename: "document.pdf",
-            metadata: {
-                // Complex nested structure
-                author: "John Doe",
-                tags: ["important", "urgent"],
-            },
-        },
-    };
+  const data = {
+    success: true,
+    file: {
+      id: "cmj17uh7f00002ef4otv5rqlj",
+      size: 18n, // BigInt value
+      filename: "document.pdf",
+      metadata: {
+        // Complex nested structure
+        author: "John Doe",
+        tags: ["important", "urgent"],
+      },
+    },
+  };
 
-    // Use res.xJson() instead of res.json()
-    res.xJson(data);
+  // Use res.xJson() instead of res.xJson()
+  res.xJson(data);
 });
 
 // Traditional JSON endpoint (still works for simple data)
 app.get("/api/simple", (req, res) => {
-    res.json({ message: "Hello World" });
+  res.xJson({ message: "Hello World" });
 });
 
 app.start();
@@ -94,8 +94,8 @@ The main method for sending XJson responses.
 
 **Parameters:**
 
--   `data` (any): The data to serialize and send
--   `options` (XJsonOptions, optional): Configuration options
+- `data` (any): The data to serialize and send
+- `options` (XJsonOptions, optional): Configuration options
 
 **Returns:** void
 
@@ -103,35 +103,35 @@ The main method for sending XJson responses.
 
 ```typescript
 interface XJsonOptions {
-    /**
-     * Maximum depth for object serialization
-     * @default 20
-     */
-    maxDepth?: number;
+  /**
+   * Maximum depth for object serialization
+   * @default 20
+   */
+  maxDepth?: number;
 
-    /**
-     * Maximum string length before truncation
-     * @default 10000
-     */
-    truncateStrings?: number;
+  /**
+   * Maximum string length before truncation
+   * @default 10000
+   */
+  truncateStrings?: number;
 
-    /**
-     * Include non-enumerable properties
-     * @default false
-     */
-    includeNonEnumerable?: boolean;
+  /**
+   * Include non-enumerable properties
+   * @default false
+   */
+  includeNonEnumerable?: boolean;
 
-    /**
-     * Enable streaming for very large responses
-     * @default true
-     */
-    enableStreaming?: boolean;
+  /**
+   * Enable streaming for very large responses
+   * @default true
+   */
+  enableStreaming?: boolean;
 
-    /**
-     * Chunk size for streaming responses (in bytes)
-     * @default 1024 * 64 (64KB)
-     */
-    chunkSize?: number;
+  /**
+   * Chunk size for streaming responses (in bytes)
+   * @default 1024 * 64 (64KB)
+   */
+  chunkSize?: number;
 }
 ```
 
@@ -140,31 +140,31 @@ interface XJsonOptions {
 ### Custom Configuration
 
 ```typescript
-import { XJsonResponseHandler } from "@xypriss/core";
+import { XJsonResponseHandler } from "xypriss";
 
 // Create a custom XJson handler with specific options
 const customHandler = new XJsonResponseHandler({
-    maxDepth: 50, // Allow deeper nesting
-    truncateStrings: 50000, // Allow longer strings
-    enableStreaming: true, // Enable streaming for large data
-    chunkSize: 1024 * 128, // 128KB chunks
+  maxDepth: 50, // Allow deeper nesting
+  truncateStrings: 50000, // Allow longer strings
+  enableStreaming: true, // Enable streaming for large data
+  chunkSize: 1024 * 128, // 128KB chunks
 });
 
 // Use in middleware
 app.use(
-    XJsonResponseHandler.createMiddleware({
-        maxDepth: 30,
-        truncateStrings: 20000,
-    })
+  XJsonResponseHandler.createMiddleware({
+    maxDepth: 30,
+    truncateStrings: 20000,
+  }),
 );
 
 // Use directly in routes
 app.get("/large-data", (req, res) => {
-    const largeData = generateLargeDataset();
-    res.xJson(largeData, {
-        maxDepth: 40,
-        enableStreaming: true,
-    });
+  const largeData = generateLargeDataset();
+  res.xJson(largeData, {
+    maxDepth: 40,
+    enableStreaming: true,
+  });
 });
 ```
 
@@ -172,40 +172,40 @@ app.get("/large-data", (req, res) => {
 
 ```typescript
 app.get("/complex-data", (req, res) => {
-    const complexData = {
-        // Circular reference handling
-        user: {
-            id: 1,
-            name: "Alice",
-            // This would normally cause serialization errors
-            // bestFriend: null // (circular reference)
+  const complexData = {
+    // Circular reference handling
+    user: {
+      id: 1,
+      name: "Alice",
+      // This would normally cause serialization errors
+      // bestFriend: null // (circular reference)
+    },
+
+    // BigInt values
+    bigNumber: 12345678901234567890n,
+
+    // Mixed data types
+    metadata: {
+      timestamp: new Date(),
+      regex: /test/gi,
+      bigIntArray: [1n, 2n, 3n],
+      buffer: Buffer.from("test data"),
+    },
+
+    // Large nested objects
+    deep: {
+      level1: {
+        level2: {
+          level3: {
+            data: "This is deeply nested",
+          },
         },
+      },
+    },
+  };
 
-        // BigInt values
-        bigNumber: 12345678901234567890n,
-
-        // Mixed data types
-        metadata: {
-            timestamp: new Date(),
-            regex: /test/gi,
-            bigIntArray: [1n, 2n, 3n],
-            buffer: Buffer.from("test data"),
-        },
-
-        // Large nested objects
-        deep: {
-            level1: {
-                level2: {
-                    level3: {
-                        data: "This is deeply nested",
-                    },
-                },
-            },
-        },
-    };
-
-    // XJson handles all of this automatically
-    res.xJson(complexData);
+  // XJson handles all of this automatically
+  res.xJson(complexData);
 });
 ```
 
@@ -213,20 +213,20 @@ app.get("/complex-data", (req, res) => {
 
 ```typescript
 app.get("/stream-data", (req, res) => {
-    const largeData = {
-        type: "large_dataset",
-        items: Array.from({ length: 10000 }, (_, i) => ({
-            id: i,
-            data: `Item ${i}`,
-            bigValue: BigInt(i) * 1000000n,
-        })),
-    };
+  const largeData = {
+    type: "large_dataset",
+    items: Array.from({ length: 10000 }, (_, i) => ({
+      id: i,
+      data: `Item ${i}`,
+      bigValue: BigInt(i) * 1000000n,
+    })),
+  };
 
-    // This will automatically stream the response
-    res.xJson(largeData, {
-        enableStreaming: true,
-        chunkSize: 1024 * 64, // 64KB chunks
-    });
+  // This will automatically stream the response
+  res.xJson(largeData, {
+    enableStreaming: true,
+    chunkSize: 1024 * 64, // 64KB chunks
+  });
 });
 ```
 
@@ -247,32 +247,32 @@ Content-Length: [calculated size]
 
 ### Memory Efficiency
 
--   **Streaming enabled by default** for responses larger than 64KB
--   **Chunk-based processing** prevents memory overflow
--   **Lazy serialization** only processes data when needed
+- **Streaming enabled by default** for responses larger than 64KB
+- **Chunk-based processing** prevents memory overflow
+- **Lazy serialization** only processes data when needed
 
 ### Speed Optimization
 
--   **Fast path** for simple data that can be serialized normally
--   **Safe path fallback** only when standard serialization fails
--   **Minimal overhead** for compatible data types
+- **Fast path** for simple data that can be serialized normally
+- **Safe path fallback** only when standard serialization fails
+- **Minimal overhead** for compatible data types
 
 ### When to Use XJson vs Regular JSON
 
 **Use XJson (`res.xJson()`) when:**
 
--   Dealing with BigInt values
--   Handling large datasets (>64KB)
--   Complex nested objects
--   Potential circular references
--   Mixed data types (Dates, Buffers, RegExp, etc.)
+- Dealing with BigInt values
+- Handling large datasets (>64KB)
+- Complex nested objects
+- Potential circular references
+- Mixed data types (Dates, Buffers, RegExp, etc.)
 
-**Use Regular JSON (`res.json()`) when:**
+**Use Regular JSON (`res.xJson()`) when:**
 
--   Simple data structures
--   Performance is critical
--   Data is known to be serialization-safe
--   Backward compatibility is required
+- Simple data structures
+- Performance is critical
+- Data is known to be serialization-safe
+- Backward compatibility is required
 
 ## Error Handling
 
@@ -294,30 +294,6 @@ app.get("/error-test", (req, res) => {
 });
 ```
 
-## Integration with Middleware
-
-XJson integrates seamlessly with XyPriss middleware:
-
-```typescript
-import { createServer } from "@xypriss/core";
-import { securityMiddleware } from "@xypriss/security";
-
-const app = createServer({});
-
-// Security middleware works with XJson
-app.use(
-    securityMiddleware({
-        enabled: true,
-        level: "enhanced",
-    })
-);
-
-// Cache middleware
-app.get("/cached-data", cacheMiddleware(), (req, res) => {
-    const data = getExpensiveData();
-    res.xJson(data); // Cached properly
-});
-```
 
 ## Migration Guide
 
@@ -327,8 +303,8 @@ app.get("/cached-data", cacheMiddleware(), (req, res) => {
 
 ```typescript
 app.get("/data", (req, res) => {
-    const data = { value: 123n }; // BigInt
-    res.json(data); // ❌ Fails
+  const data = { value: 123n }; // BigInt
+  res.xJson(data); // ❌ Fails
 });
 ```
 
@@ -336,8 +312,8 @@ app.get("/data", (req, res) => {
 
 ```typescript
 app.get("/data", (req, res) => {
-    const data = { value: 123n }; // BigInt
-    res.xJson(data); // ✅ Works perfectly
+  const data = { value: 123n }; // BigInt
+  res.xJson(data); // ✅ Works perfectly
 });
 ```
 
@@ -348,60 +324,52 @@ You can migrate endpoints one by one:
 ```typescript
 // Keep existing endpoints
 app.get("/simple", (req, res) => {
-    res.json({ message: "Still works" });
+  res.xJson({ message: "Still works" });
 });
 
 // Migrate problematic endpoints
 app.get("/complex", (req, res) => {
-    res.xJson(getComplexData());
+  res.xJson(getComplexData());
 });
 ```
 
 ## Best Practices
 
 1. **Use XJson for known problematic data**
-
-    - BigInt values
-    - Complex object graphs
-    - Large datasets
+   - BigInt values
+   - Complex object graphs
+   - Large datasets
 
 2. **Configure streaming for very large responses**
 
-    ```typescript
-    res.xJson(largeData, {
-        enableStreaming: true,
-        chunkSize: 1024 * 256, // 256KB chunks
-    });
-    ```
+   ```typescript
+   res.xJson(largeData, {
+     enableStreaming: true,
+     chunkSize: 1024 * 256, // 256KB chunks
+   });
+   ```
 
 3. **Set appropriate depth limits**
 
-    ```typescript
-    res.xJson(data, {
-        maxDepth: 10, // Prevent excessive nesting
-    });
-    ```
+   ```typescript
+   res.xJson(data, {
+     maxDepth: 10, // Prevent excessive nesting
+   });
+   ```
 
 4. **Monitor performance**
-    - XJson adds minimal overhead for simple data
-    - Significant benefits for complex serialization scenarios
+   - XJson adds minimal overhead for simple data
+   - Significant benefits for complex serialization scenarios
 
 ## Troubleshooting
 
 ### Common Issues
 
-**Issue:** "Cannot find module" error
-**Solution:** Ensure you're importing from the correct package:
-
-```typescript
-import { XJsonResponseHandler } from "@xypriss/core";
-```
-
 **Issue:** Streaming not working for large data
 **Solution:** Check if `enableStreaming` is set to `true` and data size exceeds chunk size
 
 **Issue:** Performance degradation
-**Solution:** Use regular `res.json()` for simple, compatible data types
+**Solution:** Use regular `res.xJson()` for simple, compatible data types
 
 ### Debug Mode
 
@@ -409,10 +377,10 @@ Enable debug logging to see serialization details:
 
 ```typescript
 const app = createServer({
-    env: "development",
-    logging: {
-        level: "debug",
-    },
+  env: "development",
+  logging: {
+    level: "debug",
+  },
 });
 ```
 
@@ -420,23 +388,23 @@ const app = createServer({
 
 See the `/examples` directory for complete working examples:
 
--   Basic XJson usage
--   Large dataset streaming
--   Complex data structures
--   Middleware integration
--   Error handling
+- Basic XJson usage
+- Large dataset streaming
+- Complex data structures
+- Middleware integration
+- Error handling
 
 ## API Comparison
 
-| Feature                    | Regular JSON | XJson                  |
-| -------------------------- | ------------ | ---------------------- |
-| BigInt support             | ❌           | ✅                     |
-| Circular references        | ❌           | ✅                     |
-| Streaming                  | ❌           | ✅                     |
-| Large data handling        | ❌           | ✅                     |
-| Mixed data types           | ❌           | ✅                     |
+| Feature                    | Regular JSON | XJson                 |
+| -------------------------- | ------------ | --------------------- |
+| BigInt support             | ❌           | ✅                    |
+| Circular references        | ❌           | ✅                    |
+| Streaming                  | ❌           | ✅                    |
+| Large data handling        | ❌           | ✅                    |
+| Mixed data types           | ❌           | ✅                    |
 | Performance (simple data)  | ✅           | ⚡️ (minimal overhead) |
-| Performance (complex data) | ❌           | ✅                     |
+| Performance (complex data) | ❌           | ✅                    |
 
 ## Conclusion
 

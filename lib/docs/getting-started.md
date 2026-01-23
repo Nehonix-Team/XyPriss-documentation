@@ -58,7 +58,7 @@ const server = createServer({
 
 // 2. Define a route
 server.get("/", (req, res) => {
-  res.json({
+  res.xJson({
     message: "Hello from XyPriss!",
     timestamp: new Date().toISOString(),
     core: "XHSC (Rust)",
@@ -117,7 +117,7 @@ const server = createServer({
 
 server.get("/api/data", (req, res) => {
   // This response will be cached automatically
-  res.json({
+  res.xJson({
     data: "This will be cached",
     timestamp: new Date().toISOString(),
   });
@@ -213,7 +213,7 @@ server.post("/api/secure", async (req, res) => {
       entropy: "maximum",
     });
 
-    res.json({
+    res.xJson({
       success: true,
       token,
       itemCount: secureData.length,
@@ -266,7 +266,7 @@ server.use((req, res, next) => {
 
 server.get("/", (req, res) => {
   const duration = Date.now() - req.startTime;
-  res.json({
+  res.xJson({
     message: "Hello World",
     processingTime: `${duration}ms`,
   });
@@ -340,7 +340,7 @@ Create `xypriss.config.json`:
     "__description__": "A starter XyPriss server for building secure web applications",
     "__name__": "my-app",
     "__port__": 4567,
-    "__version__": "1.0.0" 
+    "__version__": "1.0.0"
   }
 }
 ```
@@ -364,7 +364,7 @@ describe("XyPriss App", () => {
     });
 
     server.get("/test", (req, res) => {
-      res.json({ message: "test" });
+      res.xJson({ message: "test" });
     });
   });
 
@@ -385,14 +385,14 @@ const server = createServer();
 // Get performance metrics
 server.get("/metrics", (req, res) => {
   const metrics = server.getMetrics();
-  res.json(metrics);
+  res.xJson(metrics);
 });
 
 // Access cache statistics
 server.get("/cache-stats", (req, res) => {
   const cache = server.getCache();
   const stats = cache.getStats();
-  res.json(stats);
+  res.xJson(stats);
 });
 ``` -->
 
@@ -432,7 +432,7 @@ server.get("/api/users/:id", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(result.rows[0]);
+    res.xJson(result.rows[0]);
   } catch (error) {
     res.status(500).json({ error: "Database error" });
   }
@@ -449,7 +449,7 @@ const server = createServer({
 
 // Health check endpoint
 server.get("/health", (req, res) => {
-  res.json({
+  res.xJson({
     status: "healthy",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
@@ -462,7 +462,7 @@ server.get("/ready", async (req, res) => {
   const isReady = await checkDependencies();
 
   if (isReady) {
-    res.json({ status: "ready" });
+    res.xJson({ status: "ready" });
   } else {
     res.status(503).json({ status: "not ready" });
   }

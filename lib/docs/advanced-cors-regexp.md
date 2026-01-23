@@ -19,35 +19,35 @@ The advanced CORS system allows you to define origin patterns using:
 ## Quick Start
 
 ```typescript
-import { createServer } from 'xypriss';
+import { createServer } from "xypriss";
 
 const server = createServer({
   security: {
     cors: {
       origin: [
         // RegExp patterns (powerful and flexible)
-        /^localhost:\d+$/,           // localhost:3000, localhost:8080, etc.
-        /^127\.0\.0\.1:\d+$/,        // 127.0.0.1:3000, etc.
-        /^::1:\d+$/,                 // IPv6 localhost
-        /\.test\.com$/,              // *.test.com
+        /^localhost:\d+$/, // localhost:3000, localhost:8080, etc.
+        /^127\.0\.0\.1:\d+$/, // 127.0.0.1:3000, etc.
+        /^::1:\d+$/, // IPv6 localhost
+        /\.test\.com$/, // *.test.com
 
         // String patterns (backward compatibility)
-        "localhost:*",               // Wildcard pattern
-        "*.dev.example.com",         // Subdomain wildcard
+        "localhost:*", // Wildcard pattern
+        "*.dev.example.com", // Subdomain wildcard
 
         // Exact matches
         "https://production.com",
-        "https://staging.example.com"
+        "https://staging.example.com",
       ],
       credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization']
-    }
-  }
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    },
+  },
 });
 
-server.get('/api/data', (req, res) => {
-  res.json({ message: 'CORS configured successfully!' });
+server.get("/api/data", (req, res) => {
+  res.xJson({ message: "CORS configured successfully!" });
 });
 
 server.start();
@@ -71,8 +71,8 @@ origin: [
   /^https?:\/\/192\.168\.1\.\d+:\d+$/,
 
   // Match development environments
-  /^https?:\/\/.*\.(dev|staging|test)\.company\.com$/
-]
+  /^https?:\/\/.*\.(dev|staging|test)\.company\.com$/,
+];
 ```
 
 ### Wildcard String Patterns
@@ -81,11 +81,11 @@ Traditional wildcard patterns for simple matching:
 
 ```typescript
 origin: [
-  "localhost:*",           // Any port on localhost
-  "*.example.com",         // Any subdomain
-  "api.*.service.com",     // Complex wildcards
-  "192.168.1.*:3000"       // IP ranges with ports
-]
+  "localhost:*", // Any port on localhost
+  "*.example.com", // Any subdomain
+  "api.*.service.com", // Complex wildcards
+  "192.168.1.*:3000", // IP ranges with ports
+];
 ```
 
 ### Exact Match Patterns
@@ -96,8 +96,8 @@ For production environments where you want explicit control:
 origin: [
   "https://myapp.com",
   "https://api.myapp.com",
-  "https://admin.myapp.com"
-]
+  "https://admin.myapp.com",
+];
 ```
 
 ### Mixed Pattern Arrays
@@ -115,8 +115,8 @@ origin: [
 
   // Exact matches for production
   "https://production.company.com",
-  "https://api.production.company.com"
-]
+  "https://api.production.company.com",
+];
 ```
 
 ## Configuration Options
@@ -159,7 +159,7 @@ const server = createServer({
         /^localhost:\d+$/,
         /^127\.0\.0\.1:\d+$/,
         /^0\.0\.0\.0:\d+$/,
-        /^::1:\d+$/,  // IPv6
+        /^::1:\d+$/, // IPv6
 
         // Development domains
         /\.dev\.company\.com$/,
@@ -168,36 +168,34 @@ const server = createServer({
         // Local testing tools
         /^https?:\/\/localhost:\d+$/,
         "http://localhost:3000",
-        "http://localhost:8080"
+        "http://localhost:8080",
       ],
-      credentials: true
-    }
-  }
+      credentials: true,
+    },
+  },
 });
 ```
 
 ### Multi-Environment Configuration
 
 ```typescript
-const corsOrigins = process.env.NODE_ENV === 'production'
-  ? [
-      "https://myapp.com",
-      "https://api.myapp.com"
-    ]
-  : [
-      /^localhost:\d+$/,
-      /^127\.0\.0\.1:\d+$/,
-      /\.dev\.myapp\.com$/,
-      "https://staging.myapp.com"
-    ];
+const corsOrigins =
+  process.env.NODE_ENV === "production"
+    ? ["https://myapp.com", "https://api.myapp.com"]
+    : [
+        /^localhost:\d+$/,
+        /^127\.0\.0\.1:\d+$/,
+        /\.dev\.myapp\.com$/,
+        "https://staging.myapp.com",
+      ];
 
 const server = createServer({
   security: {
     cors: {
       origin: corsOrigins,
-      credentials: true
-    }
-  }
+      credentials: true,
+    },
+  },
 });
 ```
 
@@ -220,23 +218,23 @@ const server = createServer({
 
         // IP ranges for internal services
         /^https?:\/\/10\.0\.\d+\.\d+:\d+$/,
-        /^https?:\/\/192\.168\.\d+\.\d+:\d+$/
+        /^https?:\/\/192\.168\.\d+\.\d+:\d+$/,
       ],
       credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       allowedHeaders: [
-        'Content-Type',
-        'Authorization',
-        'X-API-Key',
-        'X-Request-ID'
+        "Content-Type",
+        "Authorization",
+        "X-API-Key",
+        "X-Request-ID",
       ],
       exposedHeaders: [
-        'X-RateLimit-Limit',
-        'X-RateLimit-Remaining',
-        'X-RateLimit-Reset'
-      ]
-    }
-  }
+        "X-RateLimit-Limit",
+        "X-RateLimit-Remaining",
+        "X-RateLimit-Reset",
+      ],
+    },
+  },
 });
 ```
 
@@ -256,15 +254,15 @@ const server = createServer({
         /^com\.company\.myapp:\/\//,
 
         // Capacitor/Cordova origins
-        /^http:\/\/localhost:\d+$/,  // iOS simulator
+        /^http:\/\/localhost:\d+$/, // iOS simulator
         /^https?:\/\/192\.168\.1\.\d+:\d+$/, // Android emulator
-        /^https?:\/\/10\.0\.2\.2:\d+$/ // Android emulator alternative
+        /^https?:\/\/10\.0\.2\.2:\d+$/, // Android emulator alternative
       ],
       credentials: false, // Usually false for mobile apps
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      allowedHeaders: ['Content-Type', 'Authorization']
-    }
-  }
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    },
+  },
 });
 ```
 
@@ -278,32 +276,32 @@ const server = createServer({
     cors: {
       // Default CORS for all routes
       origin: "https://myapp.com",
-      credentials: true
+      credentials: true,
     },
     routeConfig: {
       cors: {
         // Stricter CORS for admin routes
-        includeRoutes: ['/admin/*'],
+        includeRoutes: ["/admin/*"],
         config: {
           origin: [
             "https://admin.myapp.com",
-            /^localhost:\d+$/  // Allow localhost for development
+            /^localhost:\d+$/, // Allow localhost for development
           ],
-          credentials: true
-        }
-      }
-    }
-  }
+          credentials: true,
+        },
+      },
+    },
+  },
 });
 
 // Public API with relaxed CORS
-server.get('/api/public', (req, res) => {
-  res.json({ message: 'Public API' });
+server.get("/api/public", (req, res) => {
+  res.xJson({ message: "Public API" });
 });
 
 // Admin API with strict CORS
-server.get('/admin/users', (req, res) => {
-  res.json({ users: [] });
+server.get("/admin/users", (req, res) => {
+  res.xJson({ users: [] });
 });
 ```
 
@@ -314,15 +312,15 @@ server.get('/admin/users', (req, res) => {
 ```typescript
 // ✅ Safe: Specific patterns
 origin: [
-  /^https?:\/\/localhost:\d+$/,      // Specific to localhost
-  /^https?:\/\/.*\.trusted\.com$/    // Specific domain
-]
+  /^https?:\/\/localhost:\d+$/, // Specific to localhost
+  /^https?:\/\/.*\.trusted\.com$/, // Specific domain
+];
 
 // ❌ Dangerous: Overly permissive
 origin: [
-  /.*/,                              // Matches everything!
-  /^https?:\/\/.*$/                  // Any HTTPS site
-]
+  /.*/, // Matches everything!
+  /^https?:\/\/.*$/, // Any HTTPS site
+];
 ```
 
 ### 2. Credential Handling
@@ -349,16 +347,12 @@ cors: {
 ```typescript
 // ✅ Restrictive headers
 cors: {
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-API-Key'
-  ]
+  allowedHeaders: ["Content-Type", "Authorization", "X-API-Key"];
 }
 
 // ❌ Permissive headers (security risk)
 cors: {
-  allowedHeaders: ['*']     // Allows any headers
+  allowedHeaders: ["*"]; // Allows any headers
 }
 ```
 
@@ -371,9 +365,9 @@ RegExp patterns are pre-compiled for optimal performance:
 ```typescript
 // Patterns are compiled once at startup
 const patterns = [
-  /^localhost:\d+$/,        // Compiled RegExp
-  "*.example.com",          // Converted to RegExp internally
-  "exact.com"              // Exact string match
+  /^localhost:\d+$/, // Compiled RegExp
+  "*.example.com", // Converted to RegExp internally
+  "exact.com", // Exact string match
 ];
 ```
 
@@ -385,7 +379,7 @@ The validation stops at the first matching pattern:
 // Fast: Checks patterns in order until match found
 for (const pattern of patterns) {
   if (matches(pattern, origin)) {
-    return true;  // Exit early on first match
+    return true; // Exit early on first match
   }
 }
 ```
@@ -395,15 +389,17 @@ for (const pattern of patterns) {
 ### Common Issues
 
 1. **"Origin not allowed" errors**
+
    ```typescript
    // Check your pattern syntax
    origin: [
-     /^https?:\/\/localhost:\d+$/,  // Missing ^ or $ anchors
-     "localhost:*"                  // Correct wildcard syntax
-   ]
+     /^https?:\/\/localhost:\d+$/, // Missing ^ or $ anchors
+     "localhost:*", // Correct wildcard syntax
+   ];
    ```
 
 2. **RegExp not matching**
+
    ```typescript
    // Debug with console.log
    const server = createServer({
@@ -411,12 +407,12 @@ for (const pattern of patterns) {
        cors: {
          origin: [
            (origin) => {
-             console.log('Checking origin:', origin);
+             console.log("Checking origin:", origin);
              return /^localhost:\d+$/.test(origin);
-           }
-         ]
-       }
-     }
+           },
+         ],
+       },
+     },
    });
    ```
 
@@ -436,23 +432,21 @@ Enable detailed CORS logging:
 ```typescript
 const server = createServer({
   logging: {
-    level: 'debug',
+    level: "debug",
     components: {
-      security: true
-    }
+      security: true,
+    },
   },
   security: {
     cors: {
-      origin: [
-        /^localhost:\d+$/,
-        "*.example.com"
-      ]
-    }
-  }
+      origin: [/^localhost:\d+$/, "*.example.com"],
+    },
+  },
 });
 ```
 
 This will log:
+
 ```
 [CORS] Checking origin: http://localhost:3000
 [CORS] Pattern /^localhost:\d+$/ matched
@@ -465,28 +459,30 @@ This will log:
 
 ```typescript
 // Express cors
-const cors = require('cors');
-app.use(cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = ['http://localhost:3000', 'https://example.com'];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
+const cors = require("cors");
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      const allowedOrigins = ["http://localhost:3000", "https://example.com"];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  }),
+);
 
 // XyPriss equivalent
 const server = createServer({
   security: {
     cors: {
       origin: [
-        /^localhost:\d+$/,      // More flexible than exact matches
-        "https://example.com"
-      ]
-    }
-  }
+        /^localhost:\d+$/, // More flexible than exact matches
+        "https://example.com",
+      ],
+    },
+  },
 });
 ```
 
@@ -495,21 +491,22 @@ const server = createServer({
 ```typescript
 // Old approach
 cors: {
-  origin: ['http://localhost:3000', 'http://localhost:8080', '*.example.com']
+  origin: ["http://localhost:3000", "http://localhost:8080", "*.example.com"];
 }
 
 // New approach with RegExp
 cors: {
   origin: [
-    /^localhost:\d+$/,        // Cleaner than listing every port
-    /\.example\.com$/         // More precise than wildcards
-  ]
+    /^localhost:\d+$/, // Cleaner than listing every port
+    /\.example\.com$/, // More precise than wildcards
+  ];
 }
 ```
 
 ## Browser Compatibility
 
 ### Modern Browsers (✅ Full Support)
+
 - Chrome 98+
 - Firefox 97+
 - Safari 15.2+
@@ -522,12 +519,13 @@ cors: {
 const server = createServer({
   security: {
     cors: {
-      origin: process.env.NODE_ENV === 'production'
-        ? "https://myapp.com"    // Exact match for older browsers
-        : /^localhost:\d+$/,     // RegExp for modern browsers
-      credentials: true
-    }
-  }
+      origin:
+        process.env.NODE_ENV === "production"
+          ? "https://myapp.com" // Exact match for older browsers
+          : /^localhost:\d+$/, // RegExp for modern browsers
+      credentials: true,
+    },
+  },
 });
 ```
 
@@ -537,24 +535,26 @@ const server = createServer({
 
 ```typescript
 // Frontend (React/Vue/Angular)
-const API_BASE = process.env.NODE_ENV === 'production'
-  ? 'https://api.myapp.com'
-  : 'http://localhost:3001';
+const API_BASE =
+  process.env.NODE_ENV === "production"
+    ? "https://api.myapp.com"
+    : "http://localhost:3001";
 
 fetch(`${API_BASE}/api/data`, {
-  credentials: 'include'  // Required for CORS with credentials
+  credentials: "include", // Required for CORS with credentials
 });
 
 // Backend
 const server = createServer({
   security: {
     cors: {
-      origin: process.env.NODE_ENV === 'production'
-        ? "https://myapp.com"
-        : /^localhost:\d+$/,
-      credentials: true
-    }
-  }
+      origin:
+        process.env.NODE_ENV === "production"
+          ? "https://myapp.com"
+          : /^localhost:\d+$/,
+      credentials: true,
+    },
+  },
 });
 ```
 
@@ -565,13 +565,10 @@ const server = createServer({
 const gateway = createServer({
   security: {
     cors: {
-      origin: [
-        "https://webapp.com",
-        /^https?:\/\/.*\.internal\.company\.com$/
-      ],
-      credentials: true
-    }
-  }
+      origin: ["https://webapp.com", /^https?:\/\/.*\.internal\.company\.com$/],
+      credentials: true,
+    },
+  },
 });
 
 // Individual services (trust API Gateway)
@@ -579,9 +576,9 @@ const userService = createServer({
   security: {
     cors: {
       origin: "https://api-gateway.company.com",
-      credentials: true
-    }
-  }
+      credentials: true,
+    },
+  },
 });
 ```
 
@@ -601,11 +598,11 @@ const server = createServer({
         "https://www.paypal.com",
 
         // Webhook endpoints (if needed)
-        /^https?:\/\/.*\.webhook\.service\.com$/
+        /^https?:\/\/.*\.webhook\.service\.com$/,
       ],
-      credentials: false  // Usually false for third-party
-    }
-  }
+      credentials: false, // Usually false for third-party
+    },
+  },
 });
 ```
 

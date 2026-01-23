@@ -10,15 +10,15 @@ import { createServer } from "xypriss";
 const app = createServer();
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to XyPriss" });
+  res.xJson({ message: "Welcome to XyPriss" });
 });
 
 app.post("/users", (req, res) => {
-    res.json({ message: "User created", data: req.body });
+  res.xJson({ message: "User created", data: req.body });
 });
 
 app.put("/users/:id", (req, res) => {
-    res.json({ message: "User updated", id: req.params.id });
+  res.xJson({ message: "User updated", id: req.params.id });
 });
 ```
 
@@ -28,26 +28,26 @@ Extract dynamic segments from URLs:
 
 ```typescript
 app.get("/users/:id", (req, res) => {
-    res.json({ userId: req.params.id });
+  res.xJson({ userId: req.params.id });
 });
 
 app.get("/users/:userId/posts/:postId", (req, res) => {
-    res.json({ userId: req.params.userId, postId: req.params.postId });
+  res.xJson({ userId: req.params.userId, postId: req.params.postId });
 });
 ```
 
 ## Wildcard Routes
 
--   **Single Wildcard (`*`)**: Matches one path segment.
--   **Multi-segment Wildcard (`**`)\*\*: Matches multiple path segments.
+- **Single Wildcard (`*`)**: Matches one path segment.
+- **Multi-segment Wildcard (`**`)\*\*: Matches multiple path segments.
 
 ```typescript
 app.get("/files/*", (req, res) => {
-    res.json({ filename: req.params["*"] }); // e.g., "document.pdf"
+  res.xJson({ filename: req.params["*"] }); // e.g., "document.pdf"
 });
 
 app.get("/api/**", (req, res) => {
-    res.json({ path: req.params["**"] }); // e.g., "v1/users/123"
+  res.xJson({ path: req.params["**"] }); // e.g., "v1/users/123"
 });
 ```
 
@@ -62,11 +62,11 @@ const app = createServer();
 const userRouter = Router();
 
 userRouter.get("/", (req, res) => {
-    res.json({ message: "List users" });
+  res.xJson({ message: "List users" });
 });
 
 userRouter.get("/:id", (req, res) => {
-    res.json({ message: "Get user", id: req.params.id });
+  res.xJson({ message: "Get user", id: req.params.id });
 });
 
 app.use("/api/users", userRouter);
@@ -79,22 +79,22 @@ Apply middleware globally, per route, or per router:
 ```typescript
 // Global middleware
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
+  console.log(`${req.method} ${req.path}`);
+  next();
 });
 
 // Route-specific middleware
 app.get(
-    "/protected",
-    (req, res, next) => {
-        if (!req.headers.authorization) {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
-        next();
-    },
-    (req, res) => {
-        res.json({ message: "Protected resource" });
+  "/protected",
+  (req, res, next) => {
+    if (!req.headers.authorization) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
+    next();
+  },
+  (req, res) => {
+    res.xJson({ message: "Protected resource" });
+  },
 );
 ```
 
@@ -115,7 +115,7 @@ app.use("/api", apiRouter);
 
 ```typescript
 app.get("/admin/*", authMiddleware, adminMiddleware, (req, res) => {
-    res.json({ admin: true });
+  res.xJson({ admin: true });
 });
 ```
 
@@ -123,11 +123,11 @@ app.get("/admin/*", authMiddleware, adminMiddleware, (req, res) => {
 
 ```typescript
 app.get("/error-test", async (req, res) => {
-    try {
-        throw new Error("Test error");
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+    throw new Error("Test error");
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 ```
 
@@ -142,4 +142,3 @@ app.get("/error-test", async (req, res) => {
 ---
 
 [← Back to Main Documentation](../README.md)
-

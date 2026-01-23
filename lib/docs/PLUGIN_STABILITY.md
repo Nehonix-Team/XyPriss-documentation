@@ -23,8 +23,8 @@ If a plugin hook throws a synchronous or asynchronous error:
 
 In the `onRequest` hook, if an error occurs:
 
--   If the response has not been sent yet, the system calls `next(error)` to trigger the standard error handling flow.
--   If the response has already been sent, the error is simply logged to avoid "write after end" issues.
+- If the response has not been sent yet, the system calls `next(error)` to trigger the standard error handling flow.
+- If the response has already been sent, the error is simply logged to avoid "write after end" issues.
 
 ## Logic Error Detection
 
@@ -43,7 +43,7 @@ If a plugin sends a response but still calls `next()`, XyPriss logs a critical e
 
 ### "Write After End" Prevention
 
-The enhanced response object (`res.send`, `res.json`, `res.end`) includes built-in checks to prevent attempts to write data after the response has been finalized.
+The enhanced response object (`res.send`, `res.xJson`, `res.end`) includes built-in checks to prevent attempts to write data after the response has been finalized.
 
 **Action:**
 Instead of allowing the Node.js core to throw a fatal error, XyPriss intercepts these calls, logs a descriptive error message with the request path and method, and gracefully ignores the invalid write attempt.
@@ -63,4 +63,3 @@ This provides developers with clear visibility into why a specific route handler
 1.  **Stop the Chain**: If your plugin sends a response in `onRequest`, do **not** call `next()`.
 2.  **Async Safety**: Always use `try...catch` blocks inside your hooks if you perform complex operations, although XyPriss will catch unhandled errors as a last resort.
 3.  **Check State**: If you are unsure if a previous plugin has already sent a response, check `res.writableEnded` before attempting to send data.
-

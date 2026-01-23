@@ -103,7 +103,7 @@ const app = createServer({
 });
 
 app.get("/", (req, res) => {
-  res.json({ message: "Hello from XyPriss" });
+  res.xJson({ message: "Hello from XyPriss" });
 });
 
 app.start();`}

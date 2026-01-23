@@ -11,7 +11,7 @@ import { createServer } from "xypriss";
 import { FileUploadAPI } from "xypriss";
 
 const app = createServer({
-    /* ... */
+  /* ... */
 });
 
 // ❌ This might fail with "cannot access app before initialization"
@@ -28,7 +28,7 @@ import { createServer, Configs } from "xypriss";
 import { FileUploadAPI } from "xypriss";
 
 const app = createServer({
-    /* ... */
+  /* ... */
 });
 
 // ✅ Pass the Configs class - it accesses config internally
@@ -39,10 +39,10 @@ await upload.initialize(Configs);
 
 **Why pass the Configs class?**
 
--   ✅ Single source of truth - no config conflicts
--   ✅ Modular - update config once, changes everywhere
--   ✅ Easy to debug - all config in one place
--   ✅ Type-safe - enforced by TypeScript
+- ✅ Single source of truth - no config conflicts
+- ✅ Modular - update config once, changes everywhere
+- ✅ Easy to debug - all config in one place
+- ✅ Type-safe - enforced by TypeScript
 
 ## Installation
 
@@ -60,8 +60,8 @@ Set the entire configuration. This is automatically called by `createServer()`.
 
 ```typescript
 Configs.set({
-    server: { port: 3000 },
-    fileUpload: { enabled: true },
+  server: { port: 3000 },
+  fileUpload: { enabled: true },
 });
 ```
 
@@ -90,8 +90,8 @@ Update a specific configuration section.
 
 ```typescript
 Configs.update("fileUpload", {
-    enabled: true,
-    maxFileSize: 20 * 1024 * 1024,
+  enabled: true,
+  maxFileSize: 20 * 1024 * 1024,
 });
 ```
 
@@ -101,13 +101,13 @@ Merge configuration with existing config (deep merge for nested objects).
 
 ```typescript
 Configs.merge({
-    fileUpload: {
-        maxFileSize: 15 * 1024 * 1024,
-        // Other properties are preserved
-    },
-    performance: {
-        optimizationEnabled: true,
-    },
+  fileUpload: {
+    maxFileSize: 15 * 1024 * 1024,
+    // Other properties are preserved
+  },
+  performance: {
+    optimizationEnabled: true,
+  },
 });
 ```
 
@@ -117,7 +117,7 @@ Check if a specific configuration section exists.
 
 ```typescript
 if (Configs.has("fileUpload")) {
-    console.log("File upload is configured");
+  console.log("File upload is configured");
 }
 ```
 
@@ -127,7 +127,7 @@ Check if configuration has been initialized.
 
 ```typescript
 if (Configs.isInitialized()) {
-    console.log("Configs are ready to use");
+  console.log("Configs are ready to use");
 }
 ```
 
@@ -137,8 +137,8 @@ Get configuration with a default value if not set.
 
 ```typescript
 const monitoringConfig = Configs.getOrDefault("monitoring", {
-    enabled: true,
-    healthChecks: true,
+  enabled: true,
+  healthChecks: true,
 });
 ```
 
@@ -190,23 +190,23 @@ import { Configs } from "xypriss";
 import { FileUploadAPI, Upload } from "xypriss";
 
 class FileService {
-    private upload: FileUploadAPI;
+  private upload: FileUploadAPI;
 
-    constructor() {
-        this.upload = new FileUploadAPI(); // or use the Upload class directly "this.upload = Upload"
+  constructor() {
+    this.upload = new FileUploadAPI(); // or use the Upload class directly "this.upload = Upload"
+  }
+
+  async initialize() {
+    // Pass Configs class - it accesses config internally
+    // Single source of truth - no config conflicts
+    await this.upload.initialize(Configs);
+
+    // Access config when needed for validation
+    const config = Configs.get("fileUpload");
+    if (!config?.enabled) {
+      throw new Error("File upload is not enabled");
     }
-
-    async initialize() {
-        // Pass Configs class - it accesses config internally
-        // Single source of truth - no config conflicts
-        await this.upload.initialize(Configs);
-
-        // Access config when needed for validation
-        const config = Configs.get("fileUpload");
-        if (!config?.enabled) {
-            throw new Error("File upload is not enabled");
-        }
-    }
+  }
 }
 ```
 
@@ -216,16 +216,16 @@ class FileService {
 import { Configs } from "xypriss";
 
 function setupMiddleware(app: any) {
-    const securityConfig = Configs.get("security");
-    const performanceConfig = Configs.get("performance");
+  const securityConfig = Configs.get("security");
+  const performanceConfig = Configs.get("performance");
 
-    if (securityConfig?.enabled) {
-        app.middleware().security(securityConfig);
-    }
+  if (securityConfig?.enabled) {
+    app.middleware().security(securityConfig);
+  }
 
-    if (performanceConfig?.optimizationEnabled) {
-        // Enable optimizations
-    }
+  if (performanceConfig?.optimizationEnabled) {
+    // Enable optimizations
+  }
 }
 ```
 
@@ -237,16 +237,16 @@ import { Configs } from "xypriss";
 const env = process.env.NODE_ENV || "development";
 
 if (env === "production") {
-    Configs.merge({
-        security: {
-            enabled: true,
-            level: "maximum",
-        },
-        performance: {
-            optimizationEnabled: true,
-            aggressiveCaching: true,
-        },
-    });
+  Configs.merge({
+    security: {
+      enabled: true,
+      level: "maximum",
+    },
+    performance: {
+      optimizationEnabled: true,
+      aggressiveCaching: true,
+    },
+  });
 }
 ```
 
@@ -256,14 +256,14 @@ if (env === "production") {
 import { Configs } from "xypriss";
 
 function updateMaxFileSize(newSize: number) {
-    const currentConfig = Configs.get("fileUpload");
+  const currentConfig = Configs.get("fileUpload");
 
-    if (currentConfig) {
-        Configs.update("fileUpload", {
-            ...currentConfig,
-            maxFileSize: newSize,
-        });
-    }
+  if (currentConfig) {
+    Configs.update("fileUpload", {
+      ...currentConfig,
+      maxFileSize: newSize,
+    });
+  }
 }
 ```
 
@@ -273,13 +273,13 @@ function updateMaxFileSize(newSize: number) {
 import { Configs } from "xypriss";
 
 function validateConfigs() {
-    const required = ["server", "security"] as const;
+  const required = ["server", "security"] as const;
 
-    for (const key of required) {
-        if (!Configs.has(key)) {
-            throw new Error(`Missing required configuration: ${key}`);
-        }
+  for (const key of required) {
+    if (!Configs.has(key)) {
+      throw new Error(`Missing required configuration: ${key}`);
     }
+  }
 }
 ```
 
@@ -289,19 +289,19 @@ function validateConfigs() {
 import { createServer, Configs } from "xypriss";
 
 const app = createServer({
-    /* ... */
+  /* ... */
 });
 
 app.get("/config/status", (req, res) => {
-    res.json({
-        initialized: Configs.isInitialized(),
-        fileUploadEnabled: Configs.get("fileUpload")?.enabled ?? false,
-        securityLevel: Configs.get("security")?.level ?? "none",
-    });
+  res.xJson({
+    initialized: Configs.isInitialized(),
+    fileUploadEnabled: Configs.get("fileUpload")?.enabled ?? false,
+    securityLevel: Configs.get("security")?.level ?? "none",
+  });
 });
 
 app.get("/config/all", (req, res) => {
-    res.json(Configs.getAll());
+  res.xJson(Configs.getAll());
 });
 ```
 
@@ -309,18 +309,18 @@ app.get("/config/all", (req, res) => {
 
 The `Configs` API supports all `ServerOptions` keys:
 
--   `env` - Environment mode
--   `cache` - Cache configuration
--   `performance` - Performance optimization settings
--   `monitoring` - Monitoring configuration
--   `server` - Server settings (port, host, etc.)
--   `multiServer` - Multi-server configuration
--   `requestManagement` - Request management settings
--   `fileUpload` - File upload configuration
--   `security` - Security settings
--   `cluster` - Cluster configuration
--   `logging` - Logging configuration
--   `middleware` - Middleware configuration
+- `env` - Environment mode
+- `cache` - Cache configuration
+- `performance` - Performance optimization settings
+- `monitoring` - Monitoring configuration
+- `server` - Server settings (port, host, etc.)
+- `multiServer` - Multi-server configuration
+- `requestManagement` - Request management settings
+- `fileUpload` - File upload configuration
+- `security` - Security settings
+- `cluster` - Cluster configuration
+- `logging` - Logging configuration
+- `middleware` - Middleware configuration
 
 ## TypeScript Support
 
@@ -372,10 +372,10 @@ import { createServer, Configs } from "xypriss";
 import { FileUploadAPI } from "xypriss";
 
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024,
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024,
+  },
 });
 
 // ✅ Single source of truth - pass Configs class
@@ -411,4 +411,3 @@ Configs.update("fileUpload", { maxFileSize: 10 * 1024 * 1024 });
 ## License
 
 NOSL- Part of the XyPriss framework
-

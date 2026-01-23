@@ -44,8 +44,6 @@ npm start
 
 ## 🛠️ Features
 
-
-
 - **Type Safety**: Full TypeScript support with strict type checking
 - **High Performance**: Built on XyPriss framework with optimized performance
 - **Hot Reload**: Development server with automatic reloading and TypeScript compilation
@@ -104,7 +102,7 @@ Edit `src/routes/index.ts`:
 ```typescript
 // Add new routes with type safety
 router.get("/api/new-endpoint", (req: Request, res: Response) => {
-  res.json({ message: "New endpoint" });
+  res.xJson({ message: "New endpoint" });
 });
 ```
 
@@ -140,8 +138,8 @@ router.post(
   (req: Request, res: Response) => {
     // Request is validated and typed
     const userData = req.body; // Fully typed
-    res.json({ success: true, user: userData });
-  }
+    res.xJson({ success: true, user: userData });
+  },
 );
 ```
 

@@ -55,7 +55,7 @@ const server = createServer({
 });
 
 server.get("/", (req, res) => {
-  res.json({ message: "Server running" });
+  res.xJson({ message: "Server running" });
 });
 
 server.start(() => {
@@ -72,7 +72,7 @@ const app = createServer();
 const userRouter = Router();
 
 userRouter.get("/:id", (req, res) => {
-  res.json({ userId: req.params.id });
+  res.xJson({ userId: req.params.id });
 });
 
 app.use("/api/users", userRouter);
@@ -95,7 +95,7 @@ const upload = new FileUploadAPI();
 await upload.initialize(app.configs?.fileUpload);
 
 app.post("/upload", upload.single("file"), (req, res) => {
-  res.json({ success: true, file: req.file });
+  res.xJson({ success: true, file: req.file });
 });
 
 app.start();
@@ -137,11 +137,11 @@ const app = createServer({
 });
 
 app.get("/api/users", (req, res) => {
-  res.json({ users: [] });
+  res.xJson({ users: [] });
 });
 
 app.post("/api/users", (req, res) => {
-  res.json({ created: true });
+  res.xJson({ created: true });
 });
 
 app.start();

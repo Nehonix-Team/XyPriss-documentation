@@ -41,7 +41,8 @@ The **[XHSC Core](/docs/XHSC_CORE)** is the engine room.
 
 ## Quick Look
 
-Here is a glimpse of a production-ready XyPriss server configuration:
+Here is a glimpse of a production-ready XyPriss server configuration.  
+In a `server.ts` file, you can write
 
 ```typescript
 import { createServer } from "xypriss";

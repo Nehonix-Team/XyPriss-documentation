@@ -6,12 +6,12 @@ XyPriss provides comprehensive file upload support with automatic error handling
 
 ## Key Features
 
--   ✅ **Automatic Error Handling**: File upload errors are automatically converted to user-friendly JSON responses
--   ✅ **Class-Based API**: Modern `FileUploadAPI` class for better organization
--   ✅ **Legacy Compatibility**: Function-based API still available for backward compatibility
--   ✅ **Multipart Support**: Fixed multipart/form-data handling (no more "Unexpected end of form" errors)
--   ✅ **Flexible Configuration**: Extensive configuration options for security and performance
--   ✅ **Type Safety**: Full TypeScript support with proper type definitions
+- ✅ **Automatic Error Handling**: File upload errors are automatically converted to user-friendly JSON responses
+- ✅ **Class-Based API**: Modern `FileUploadAPI` class for better organization
+- ✅ **Legacy Compatibility**: Function-based API still available for backward compatibility
+- ✅ **Multipart Support**: Fixed multipart/form-data handling (no more "Unexpected end of form" errors)
+- ✅ **Flexible Configuration**: Extensive configuration options for security and performance
+- ✅ **Type Safety**: Full TypeScript support with proper type definitions
 
 ## Bug Fix: Multipart Form-Data Support
 
@@ -32,11 +32,11 @@ import { createServer } from "xypriss";
 import { FileUploadAPI, Configs } from "xypriss";
 
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        storage: "memory",
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    storage: "memory",
+  },
 });
 
 // Create file upload instance
@@ -44,8 +44,8 @@ const fileUpload = new FileUploadAPI();
 await fileUpload.initialize(Configs.get("fileUpload"));
 
 app.post("/upload", fileUpload.single("file"), (req, res) => {
-    console.log(req.file); // File object available
-    res.json({ success: true });
+  console.log(req.file); // File object available
+  res.xJson({ success: true });
 });
 ```
 
@@ -56,16 +56,16 @@ import { createServer } from "xypriss";
 import { uploadSingle } from "xypriss";
 
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        storage: "memory",
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    storage: "memory",
+  },
 });
 
 app.post("/upload", uploadSingle("file"), (req, res) => {
-    console.log(req.file); // File object available
-    res.json({ success: true });
+  console.log(req.file); // File object available
+  res.xJson({ success: true });
 });
 ```
 
@@ -79,14 +79,14 @@ XyPriss automatically handles file upload errors and converts them to user-frien
 
 ```json
 {
-    "success": false,
-    "error": "File too large",
-    "message": "File size exceeds the maximum limit of 1.00MB",
-    "details": {
-        "maxSize": 1048576,
-        "maxSizeMB": "1.00",
-        "fileSize": "unknown"
-    }
+  "success": false,
+  "error": "File too large",
+  "message": "File size exceeds the maximum limit of 1.00MB",
+  "details": {
+    "maxSize": 1048576,
+    "maxSizeMB": "1.00",
+    "fileSize": "unknown"
+  }
 }
 ```
 
@@ -94,9 +94,9 @@ XyPriss automatically handles file upload errors and converts them to user-frien
 
 ```json
 {
-    "success": false,
-    "error": "File type not allowed",
-    "message": "File type 'application/exe' not allowed. Allowed types: image/jpeg, image/png"
+  "success": false,
+  "error": "File type not allowed",
+  "message": "File type 'application/exe' not allowed. Allowed types: image/jpeg, image/png"
 }
 ```
 
@@ -104,9 +104,9 @@ XyPriss automatically handles file upload errors and converts them to user-frien
 
 ```json
 {
-    "success": false,
-    "error": "Configuration Error",
-    "message": "File upload not enabled. Set fileUpload.enabled to true in server options."
+  "success": false,
+  "error": "Configuration Error",
+  "message": "File upload not enabled. Set fileUpload.enabled to true in server options."
 }
 ```
 
@@ -173,9 +173,9 @@ XyPriss automatically handles file upload errors and converts them to user-frien
 
 ```typescript
 app.post("/upload", app.uploadSingle("fieldname"), (req, res) => {
-    // req.file contains the uploaded file
-    const file = req.file;
-    console.log(file.originalname, file.size, file.mimetype);
+  // req.file contains the uploaded file
+  const file = req.file;
+  console.log(file.originalname, file.size, file.mimetype);
 });
 ```
 
@@ -183,8 +183,8 @@ app.post("/upload", app.uploadSingle("fieldname"), (req, res) => {
 
 ```typescript
 app.post("/upload", app.uploadArray("files", 5), (req, res) => {
-    // req.files contains array of uploaded files
-    console.log(`Uploaded ${req.files.length} files`);
+  // req.files contains array of uploaded files
+  console.log(`Uploaded ${req.files.length} files`);
 });
 ```
 
@@ -192,15 +192,15 @@ app.post("/upload", app.uploadArray("files", 5), (req, res) => {
 
 ```typescript
 app.post(
-    "/upload",
-    app.uploadFields([
-        { name: "avatar", maxCount: 1 },
-        { name: "documents", maxCount: 3 },
-    ]),
-    (req, res) => {
-        // req.files contains files organized by field name
-        console.log(req.files);
-    }
+  "/upload",
+  app.uploadFields([
+    { name: "avatar", maxCount: 1 },
+    { name: "documents", maxCount: 3 },
+  ]),
+  (req, res) => {
+    // req.files contains files organized by field name
+    console.log(req.files);
+  },
 );
 ```
 
@@ -208,8 +208,8 @@ app.post(
 
 ```typescript
 app.post("/upload", app.uploadAny(), (req, res) => {
-    // req.files contains all uploaded files
-    console.log(req.files);
+  // req.files contains all uploaded files
+  console.log(req.files);
 });
 ```
 
@@ -221,18 +221,18 @@ For advanced use cases, you can still use multer directly:
 import multer from "multer";
 
 const manualUpload = multer({
-    storage: multer.diskStorage({
-        destination: "./uploads",
-        filename: (req, file, cb) => {
-            cb(null, Date.now() + "-" + file.originalname);
-        },
-    }),
-    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  storage: multer.diskStorage({
+    destination: "./uploads",
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + "-" + file.originalname);
+    },
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
 app.post("/upload-manual", manualUpload.single("file"), (req, res) => {
-    // Traditional multer usage
-    console.log(req.file);
+  // Traditional multer usage
+  console.log(req.file);
 });
 ```
 
@@ -279,15 +279,15 @@ const fileUpload = new FileUploadAPI();
 await fileUpload.initialize({ enabled: true, maxFileSize: 1024 * 1024 });
 
 app.post("/upload", fileUpload.single("file"), (req, res) => {
-    // Errors are automatically handled - this code only runs on success
-    res.json({
-        success: true,
-        file: {
-            name: req.file.originalname,
-            size: req.file.size,
-            type: req.file.mimetype,
-        },
-    });
+  // Errors are automatically handled - this code only runs on success
+  res.xJson({
+    success: true,
+    file: {
+      name: req.file.originalname,
+      size: req.file.size,
+      type: req.file.mimetype,
+    },
+  });
 });
 ```
 
@@ -299,29 +299,29 @@ For the legacy functional API, you can still handle errors manually:
 import { uploadSingle } from "xypriss";
 
 app.post(
-    "/upload",
-    (req, res, next) => {
-        const uploadMiddleware = uploadSingle("file");
+  "/upload",
+  (req, res, next) => {
+    const uploadMiddleware = uploadSingle("file");
 
-        uploadMiddleware(req, res, (err) => {
-            if (err) {
-                // Manual error handling
-                if (err.code === "LIMIT_FILE_SIZE") {
-                    return res.status(400).json({
-                        error: "File too large",
-                        message: `Maximum size: ${err.field || "1MB"}`,
-                    });
-                }
-                return res.status(400).json({ error: err.message });
-            }
+    uploadMiddleware(req, res, (err) => {
+      if (err) {
+        // Manual error handling
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(400).json({
+            error: "File too large",
+            message: `Maximum size: ${err.field || "1MB"}`,
+          });
+        }
+        return res.status(400).json({ error: err.message });
+      }
 
-            // Success - continue to handler
-            next();
-        });
-    },
-    (req, res) => {
-        res.json({ success: true, file: req.file });
-    }
+      // Success - continue to handler
+      next();
+    });
+  },
+  (req, res) => {
+    res.xJson({ success: true, file: req.file });
+  },
 );
 ```
 
@@ -329,17 +329,17 @@ app.post(
 
 ```typescript
 const fileUploadConfig = {
-    enabled: true,
-    fileFilter: (req, file, cb) => {
-        // Custom validation logic
-        if (file.originalname.includes("virus")) {
-            return cb(new Error("Suspicious filename detected"), false);
-        }
-        if (!["image/jpeg", "image/png"].includes(file.mimetype)) {
-            return cb(new Error("Only JPEG and PNG files allowed"), false);
-        }
-        cb(null, true);
-    },
+  enabled: true,
+  fileFilter: (req, file, cb) => {
+    // Custom validation logic
+    if (file.originalname.includes("virus")) {
+      return cb(new Error("Suspicious filename detected"), false);
+    }
+    if (!["image/jpeg", "image/png"].includes(file.mimetype)) {
+      return cb(new Error("Only JPEG and PNG files allowed"), false);
+    }
+    cb(null, true);
+  },
 };
 ```
 
@@ -357,21 +357,21 @@ const fileUploadConfig = {
 
 ```typescript
 const secureConfig = {
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 2 * 1024 * 1024, // 2MB
-        maxFiles: 1,
-        storage: "memory", // Safer than disk
-        allowedMimeTypes: ["image/jpeg", "image/png"],
-        allowedExtensions: [".jpg", ".jpeg", ".png"],
-        fileFilter: (req, file, cb) => {
-            // Additional security checks
-            if (file.originalname.includes("..")) {
-                return cb(new Error("Invalid filename"), false);
-            }
-            cb(null, true);
-        },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 2 * 1024 * 1024, // 2MB
+    maxFiles: 1,
+    storage: "memory", // Safer than disk
+    allowedMimeTypes: ["image/jpeg", "image/png"],
+    allowedExtensions: [".jpg", ".jpeg", ".png"],
+    fileFilter: (req, file, cb) => {
+      // Additional security checks
+      if (file.originalname.includes("..")) {
+        return cb(new Error("Invalid filename"), false);
+      }
+      cb(null, true);
     },
+  },
 };
 ```
 
@@ -384,14 +384,14 @@ import { FileUploadAPI } from "xypriss";
 
 const fileUpload = new FileUploadAPI();
 await fileUpload.initialize({
-    enabled: true,
-    maxFileSize: 5 * 1024 * 1024,
-    storage: "memory",
+  enabled: true,
+  maxFileSize: 5 * 1024 * 1024,
+  storage: "memory",
 });
 
 // Automatic error handling
 app.post("/upload", fileUpload.single("file"), (req, res) => {
-    res.json({ success: true, file: req.file });
+  res.xJson({ success: true, file: req.file });
 });
 ```
 
@@ -402,7 +402,7 @@ import { uploadSingle } from "xypriss";
 
 // Automatic error handling
 app.post("/upload", uploadSingle("file"), (req, res) => {
-    res.json({ success: true, file: req.file });
+  res.xJson({ success: true, file: req.file });
 });
 ```
 
@@ -412,24 +412,24 @@ app.post("/upload", uploadSingle("file"), (req, res) => {
 import multer from "multer";
 
 const upload = multer({
-    dest: "uploads/",
-    limits: { fileSize: 5 * 1024 * 1024 },
+  dest: "uploads/",
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 // Manual error handling required
 app.post(
-    "/upload",
-    (req, res, next) => {
-        upload.single("file")(req, res, (err) => {
-            if (err) {
-                return res.status(400).json({ error: err.message });
-            }
-            next();
-        });
-    },
-    (req, res) => {
-        res.json({ success: true, file: req.file });
-    }
+  "/upload",
+  (req, res, next) => {
+    upload.single("file")(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      next();
+    });
+  },
+  (req, res) => {
+    res.xJson({ success: true, file: req.file });
+  },
 );
 ```
 
@@ -444,11 +444,11 @@ import multer from "multer";
 const upload = multer({ dest: "uploads/" });
 
 app.post("/upload", upload.single("file"), (req, res) => {
-    // Manual error handling
-    if (!req.file) {
-        return res.status(400).json({ error: "Upload failed" });
-    }
-    res.json({ success: true });
+  // Manual error handling
+  if (!req.file) {
+    return res.status(400).json({ error: "Upload failed" });
+  }
+  res.xJson({ success: true });
 });
 ```
 
@@ -459,14 +459,14 @@ import { FileUploadAPI } from "xypriss";
 
 const fileUpload = new FileUploadAPI();
 await fileUpload.initialize({
-    enabled: true,
-    storage: "disk",
-    destination: "uploads/",
+  enabled: true,
+  storage: "disk",
+  destination: "uploads/",
 });
 
 app.post("/upload", fileUpload.single("file"), (req, res) => {
-    // Automatic error handling - only success code here
-    res.json({ success: true, file: req.file });
+  // Automatic error handling - only success code here
+  res.xJson({ success: true, file: req.file });
 });
 ```
 
@@ -476,8 +476,8 @@ app.post("/upload", fileUpload.single("file"), (req, res) => {
 import { uploadSingle } from "xypriss";
 
 app.post("/upload", uploadSingle("file"), (req, res) => {
-    // Automatic error handling - only success code here
-    res.json({ success: true, file: req.file });
+  // Automatic error handling - only success code here
+  res.xJson({ success: true, file: req.file });
 });
 ```
 
@@ -489,8 +489,8 @@ import multer from "multer";
 const upload = multer({ dest: "uploads/" });
 
 app.post("/upload", upload.single("file"), (req, res) => {
-    // Still need manual error handling
-    res.json({ success: true, file: req.file });
+  // Still need manual error handling
+  res.xJson({ success: true, file: req.file });
 });
 ```
 
@@ -508,23 +508,23 @@ app.post("/upload", upload.single("file"), (req, res) => {
 
 **"File too large" error:**
 
--   Check `maxFileSize` configuration
--   Ensure client is not sending files larger than the limit
+- Check `maxFileSize` configuration
+- Ensure client is not sending files larger than the limit
 
 **"Unexpected end of form" error:**
 
--   This was the original bug - ensure you're using XyPriss with file upload support
--   Check that `multipart/form-data` content type is being used
+- This was the original bug - ensure you're using XyPriss with file upload support
+- Check that `multipart/form-data` content type is being used
 
 **Files not uploading:**
 
--   Verify `fileUpload.enabled` is `true`
--   Check that the correct field name is used in `uploadSingle()`
+- Verify `fileUpload.enabled` is `true`
+- Check that the correct field name is used in `uploadSingle()`
 
 **Type errors:**
 
--   Ensure you're using the correct field names
--   Check that multer types are properly imported
+- Ensure you're using the correct field names
+- Check that multer types are properly imported
 
 ### Debug Mode
 
@@ -532,11 +532,11 @@ Enable debug logging to troubleshoot issues:
 
 ```typescript
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        debug: true, // Enable debug logging
-        // ... other options
-    },
+  fileUpload: {
+    enabled: true,
+    debug: true, // Enable debug logging
+    // ... other options
+  },
 });
 ```
 
@@ -546,26 +546,26 @@ const app = createServer({
 
 ```typescript
 interface FileUploadConfig {
-    enabled?: boolean;
-    maxFileSize?: number;
-    maxFiles?: number;
-    allowedMimeTypes?: string[];
-    allowedExtensions?: string[];
-    destination?: string;
-    filename?: (req: any, file: any, callback: Function) => void;
-    limits?: {
-        fieldNameSize?: number;
-        fieldSize?: number;
-        fields?: number;
-        fileSize?: number;
-        files?: number;
-        headerPairs?: number;
-    };
-    fileFilter?: (req: any, file: any, callback: Function) => void;
-    storage?: "memory" | "disk" | "custom";
-    preservePath?: boolean;
-    createParentPath?: boolean;
-    multerOptions?: any;
+  enabled?: boolean;
+  maxFileSize?: number;
+  maxFiles?: number;
+  allowedMimeTypes?: string[];
+  allowedExtensions?: string[];
+  destination?: string;
+  filename?: (req: any, file: any, callback: Function) => void;
+  limits?: {
+    fieldNameSize?: number;
+    fieldSize?: number;
+    fields?: number;
+    fileSize?: number;
+    files?: number;
+    headerPairs?: number;
+  };
+  fileFilter?: (req: any, file: any, callback: Function) => void;
+  storage?: "memory" | "disk" | "custom";
+  preservePath?: boolean;
+  createParentPath?: boolean;
+  multerOptions?: any;
 }
 ```
 
@@ -573,10 +573,10 @@ interface FileUploadConfig {
 
 ```typescript
 interface UltraFastApp {
-    uploadSingle(fieldname: string): RequestHandler;
-    uploadArray(fieldname: string, maxCount?: number): RequestHandler;
-    uploadFields(fields: any[]): RequestHandler;
-    uploadAny(): RequestHandler;
+  uploadSingle(fieldname: string): RequestHandler;
+  uploadArray(fieldname: string, maxCount?: number): RequestHandler;
+  uploadFields(fields: any[]): RequestHandler;
+  uploadAny(): RequestHandler;
 }
 ```
 
@@ -586,31 +586,31 @@ interface UltraFastApp {
 
 ```typescript
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
-        allowedExtensions: [".jpg", ".jpeg", ".png", ".webp"],
-        storage: "disk",
-        destination: "./uploads/images",
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    allowedMimeTypes: ["image/jpeg", "image/png", "image/webp"],
+    allowedExtensions: [".jpg", ".jpeg", ".png", ".webp"],
+    storage: "disk",
+    destination: "./uploads/images",
+  },
 });
 
 app.post("/upload-image", app.uploadSingle("image"), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "No image uploaded" });
-    }
+  if (!req.file) {
+    return res.status(400).json({ error: "No image uploaded" });
+  }
 
-    // Process the uploaded image
-    const imagePath = req.file.path;
-    // ... image processing logic ...
+  // Process the uploaded image
+  const imagePath = req.file.path;
+  // ... image processing logic ...
 
-    res.json({
-        success: true,
-        filename: req.file.filename,
-        size: req.file.size,
-        type: req.file.mimetype,
-    });
+  res.xJson({
+    success: true,
+    filename: req.file.filename,
+    size: req.file.size,
+    type: req.file.mimetype,
+  });
 });
 ```
 
@@ -618,30 +618,30 @@ app.post("/upload-image", app.uploadSingle("image"), (req, res) => {
 
 ```typescript
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 10 * 1024 * 1024, // 10MB per file
-        maxFiles: 5,
-        storage: "memory",
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 10 * 1024 * 1024, // 10MB per file
+    maxFiles: 5,
+    storage: "memory",
+  },
 });
 
 app.post("/upload-documents", app.uploadArray("documents", 5), (req, res) => {
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: "No documents uploaded" });
-    }
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: "No documents uploaded" });
+  }
 
-    const uploadedFiles = req.files.map((file) => ({
-        name: file.originalname,
-        size: file.size,
-        type: file.mimetype,
-    }));
+  const uploadedFiles = req.files.map((file) => ({
+    name: file.originalname,
+    size: file.size,
+    type: file.mimetype,
+  }));
 
-    res.json({
-        success: true,
-        count: req.files.length,
-        files: uploadedFiles,
-    });
+  res.xJson({
+    success: true,
+    count: req.files.length,
+    files: uploadedFiles,
+  });
 });
 ```
 
@@ -649,26 +649,22 @@ app.post("/upload-documents", app.uploadArray("documents", 5), (req, res) => {
 
 ```typescript
 app.post(
-    "/submit-form",
-    app.uploadFields([
-        { name: "avatar", maxCount: 1 },
-        { name: "resume", maxCount: 1 },
-    ]),
-    (req, res) => {
-        const formData = req.body; // Other form fields
-        const avatar = req.files.avatar?.[0];
-        const resume = req.files.resume?.[0];
+  "/submit-form",
+  app.uploadFields([
+    { name: "avatar", maxCount: 1 },
+    { name: "resume", maxCount: 1 },
+  ]),
+  (req, res) => {
+    const formData = req.body; // Other form fields
+    const avatar = req.files.avatar?.[0];
+    const resume = req.files.resume?.[0];
 
-        // Process form data and files
-        res.json({
-            formData,
-            avatar: avatar
-                ? { name: avatar.originalname, size: avatar.size }
-                : null,
-            resume: resume
-                ? { name: resume.originalname, size: resume.size }
-                : null,
-        });
-    }
+    // Process form data and files
+    res.xJson({
+      formData,
+      avatar: avatar ? { name: avatar.originalname, size: avatar.size } : null,
+      resume: resume ? { name: resume.originalname, size: resume.size } : null,
+    });
+  },
 );
 ```

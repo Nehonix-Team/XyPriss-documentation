@@ -8,9 +8,9 @@ Complete reference for all XyPriss configuration options.
 import { createServer } from "xypriss";
 
 const server = createServer({
-    env: "production",
-    server: { port: 3000 },
-    security: { enabled: true },
+  env: "production",
+  server: { port: 3000 },
+  security: { enabled: true },
 });
 ```
 
@@ -18,15 +18,15 @@ const server = createServer({
 
 ```typescript
 interface ServerOptions {
-    env?: "development" | "production" | "test";
-    server?: ServerConfig;
-    security?: SecurityConfig;
-    cache?: CacheConfig;
-    cluster?: ClusterConfig;
-    fileUpload?: FileUploadConfig;
-    multiServer?: MultiServerConfig;
-    performance?: PerformanceConfig;
-    logging?: LoggingConfig;
+  env?: "development" | "production" | "test";
+  server?: ServerConfig;
+  security?: SecurityConfig;
+  cache?: CacheConfig;
+  cluster?: ClusterConfig;
+  fileUpload?: FileUploadConfig;
+  multiServer?: MultiServerConfig;
+  performance?: PerformanceConfig;
+  logging?: LoggingConfig;
 }
 ```
 
@@ -52,16 +52,16 @@ server: {
 
 ```typescript
 const server = createServer({
-    server: {
-        port: 8080,
-        host: "0.0.0.0",
-        trustProxy: true,
-        autoPortSwitch: {
-            enabled: true,
-            portRange: [8080, 8090],
-            strategy: "increment",
-        },
+  server: {
+    port: 8080,
+    host: "0.0.0.0",
+    trustProxy: true,
+    autoPortSwitch: {
+      enabled: true,
+      portRange: [8080, 8090],
+      strategy: "increment",
     },
+  },
 });
 ```
 
@@ -107,19 +107,19 @@ security: {
 
 ```typescript
 const server = createServer({
-    security: {
-        enabled: true,
-        level: "enhanced",
-        csrf: { enabled: true },
-        cors: {
-            origin: ["localhost:*", "*.myapp.com"],
-            credentials: true,
-        },
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 100,
-        },
+  security: {
+    enabled: true,
+    level: "enhanced",
+    csrf: { enabled: true },
+    cors: {
+      origin: ["localhost:*", "*.myapp.com"],
+      credentials: true,
     },
+    rateLimit: {
+      windowMs: 15 * 60 * 1000,
+      max: 100,
+    },
+  },
 });
 ```
 
@@ -149,16 +149,16 @@ cache: {
 
 ```typescript
 const server = createServer({
-    cache: {
-        strategy: "redis",
-        maxSize: 100 * 1024 * 1024, // 100MB
-        ttl: 3600, // 1 hour
-        redis: {
-            host: "localhost",
-            port: 6379,
-            password: "secret",
-        },
+  cache: {
+    strategy: "redis",
+    maxSize: 100 * 1024 * 1024, // 100MB
+    ttl: 3600, // 1 hour
+    redis: {
+      host: "localhost",
+      port: 6379,
+      password: "secret",
     },
+  },
 });
 ```
 
@@ -177,12 +177,12 @@ cluster: {
 
 ```typescript
 const server = createServer({
-    cluster: {
-        enabled: true,
-        workers: "auto",
-        restartOnCrash: true,
-        maxRestarts: 5,
-    },
+  cluster: {
+    enabled: true,
+    workers: "auto",
+    restartOnCrash: true,
+    maxRestarts: 5,
+  },
 });
 ```
 
@@ -215,14 +215,14 @@ fileUpload: {
 
 ```typescript
 const server = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        storage: "disk",
-        destination: "./uploads",
-        allowedMimeTypes: ["image/jpeg", "image/png", "application/pdf"],
-        allowedExtensions: [".jpg", ".png", ".pdf"],
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    storage: "disk",
+    destination: "./uploads",
+    allowedMimeTypes: ["image/jpeg", "image/png", "application/pdf"],
+    allowedExtensions: [".jpg", ".png", ".pdf"],
+  },
 });
 ```
 
@@ -248,14 +248,14 @@ performance: {
 
 ```typescript
 const server = createServer({
-    performance: {
-        clustering: true,
-        compression: {
-            enabled: true,
-            level: 6,
-            threshold: 1024,
-        },
+  performance: {
+    clustering: true,
+    compression: {
+      enabled: true,
+      level: 6,
+      threshold: 1024,
     },
+  },
 });
 ```
 
@@ -344,14 +344,14 @@ logging: {
 
 ```typescript
 const server = createServer({
-    logging: {
-        enabled: true,
-        level: "info",
-        components: {
-            server: true,
-            security: true,
-        },
+  logging: {
+    enabled: true,
+    level: "info",
+    components: {
+      server: true,
+      security: true,
     },
+  },
 });
 ```
 
@@ -361,15 +361,15 @@ See [Multi-Server Guide](./MULTI_SERVER.md) for detailed configuration.
 
 ```typescript
 multiServer: {
-    enabled: boolean;
-    servers: Array<{
-        id: string;
-        port: number;
-        host?: string;
-        routePrefix?: string;
-        allowedRoutes?: string[];
-        // ... server-specific overrides
-    }>;
+  enabled: boolean;
+  servers: Array<{
+    id: string;
+    port: number;
+    host?: string;
+    routePrefix?: string;
+    allowedRoutes?: string[];
+    // ... server-specific overrides
+  }>;
 }
 ```
 
@@ -379,18 +379,18 @@ multiServer: {
 
 ```typescript
 const server = createServer({
-    env: process.env.NODE_ENV as "development" | "production",
-    server: {
-        port: parseInt(process.env.PORT || "3000"),
-        host: process.env.HOST || "localhost",
+  env: process.env.NODE_ENV as "development" | "production",
+  server: {
+    port: parseInt(process.env.PORT || "3000"),
+    host: process.env.HOST || "localhost",
+  },
+  cache: {
+    strategy: process.env.CACHE_STRATEGY as "memory" | "redis",
+    redis: {
+      host: process.env.REDIS_HOST || "localhost",
+      port: parseInt(process.env.REDIS_PORT || "6379"),
     },
-    cache: {
-        strategy: process.env.CACHE_STRATEGY as "memory" | "redis",
-        redis: {
-            host: process.env.REDIS_HOST || "localhost",
-            port: parseInt(process.env.REDIS_PORT || "6379"),
-        },
-    },
+  },
 });
 ```
 
@@ -400,17 +400,17 @@ Create `xypriss.config.js`:
 
 ```javascript
 module.exports = {
-    development: {
-        server: { port: 3000 },
-        security: { level: "basic" },
-        logging: { level: "debug" },
-    },
-    production: {
-        server: { port: 8080, host: "0.0.0.0" },
-        security: { level: "maximum" },
-        logging: { level: "error" },
-        cluster: { enabled: true },
-    },
+  development: {
+    server: { port: 3000 },
+    security: { level: "basic" },
+    logging: { level: "debug" },
+  },
+  production: {
+    server: { port: 8080, host: "0.0.0.0" },
+    security: { level: "maximum" },
+    logging: { level: "error" },
+    cluster: { enabled: true },
+  },
 };
 ```
 
@@ -446,11 +446,11 @@ XyPriss validates configuration on startup:
 
 ```typescript
 try {
-    const server = createServer({
-        server: { port: -1 }, // Invalid port
-    });
+  const server = createServer({
+    server: { port: -1 }, // Invalid port
+  });
 } catch (error) {
-    console.error("Configuration error:", error.message);
+  console.error("Configuration error:", error.message);
 }
 ```
 
@@ -458,15 +458,14 @@ try {
 
 If not specified, XyPriss uses these defaults:
 
--   **Port**: 3000
--   **Host**: "localhost"
--   **Environment**: "development"
--   **Security**: disabled
--   **Clustering**: disabled
--   **Cache**: memory strategy
--   **Logging**: enabled with "info" level
+- **Port**: 3000 (or the value of the `PORT` environment variable, but sometimes it may change)
+- **Host**: "localhost"
+- **Environment**: "development"
+- **Security**: disabled
+- **Clustering**: disabled
+- **Cache**: memory strategy
+- **Logging**: enabled with "info" level
 
 ---
 
 [← Back to Main Documentation](../README.md)
-

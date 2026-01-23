@@ -18,7 +18,7 @@ const router = Router();
 
 // Health check endpoint
 router.get("/health", (reqw: Request, res: Response) => {
-  res.json({
+  res.xJson({
     status: "healthy",
     timestamp: new Date().toISOString(),
     version: __sys__.__version__,
@@ -28,7 +28,7 @@ router.get("/health", (reqw: Request, res: Response) => {
 
 // API status endpoint
 router.get("/status", (reqw: Request, res: Response) => {
-  res.json({
+  res.xJson({
     name: "XyPriss Application",
     version: __sys__.__version__,
     author: "XyPriss Team",
@@ -43,7 +43,7 @@ router.get("/status", (reqw: Request, res: Response) => {
 
 // Welcome endpoint
 router.get("/", (reqw: Request, res: Response) => {
-  res.json({
+  res.xJson({
     message: "Welcome to XyPriss Application",
     description: "High-performance Node.js web framework",
     docs: "/api/status",
@@ -55,7 +55,7 @@ router.get("/", (reqw: Request, res: Response) => {
 // User management routes (example implementation)
 router.get("/users", (reqw: Request, res: Response) => {
   // TODO: Implement user listing with authentication
-  res.json({
+  res.xJson({
     message: "User management endpoint",
     note: "Implement authentication and database integration",
   });
@@ -72,7 +72,7 @@ router.post("/users", (reqw: Request, res: Response) => {
 // File upload routes (example implementation)
 router.post("/upload", (reqw: Request, res: Response) => {
   // TODO: Implement file upload with multer integration
-  res.json({
+  res.xJson({
     message: "File upload endpoint",
     note: "Implement multer middleware and file processing",
   });
@@ -86,12 +86,12 @@ router.post(
     const validatedData = reqw.body;
     console.log("validatedData", validatedData);
     // TODO: Implement input validation with validation middleware
-    res.json({
+    res.xJson({
       message: "Input validation endpoint",
       note: "Implement validation middleware and schema validation",
       validatedData,
     });
-  }
+  },
 );
 
 export default router;

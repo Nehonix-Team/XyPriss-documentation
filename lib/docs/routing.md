@@ -23,31 +23,31 @@ const app = createServer();
 
 // Basic HTTP methods
 app.get("/", (req, res) => {
-    res.json({ message: "GET request" });
+  res.xJson({ message: "GET request" });
 });
 
 app.post("/users", (req, res) => {
-    res.json({ message: "POST request", data: req.body });
+  res.xJson({ message: "POST request", data: req.body });
 });
 
 app.put("/users/:id", (req, res) => {
-    res.json({ message: "PUT request", id: req.params.id });
+  res.xJson({ message: "PUT request", id: req.params.id });
 });
 
 app.delete("/users/:id", (req, res) => {
-    res.json({ message: "DELETE request", id: req.params.id });
+  res.xJson({ message: "DELETE request", id: req.params.id });
 });
 
 app.patch("/users/:id", (req, res) => {
-    res.json({ message: "PATCH request", id: req.params.id });
+  res.xJson({ message: "PATCH request", id: req.params.id });
 });
 
 app.options("/users", (req, res) => {
-    res.json({ message: "OPTIONS request" });
+  res.xJson({ message: "OPTIONS request" });
 });
 
 app.head("/users", (req, res) => {
-    res.status(200).end();
+  res.status(200).end();
 });
 ```
 
@@ -58,19 +58,19 @@ app.head("/users", (req, res) => {
 ```typescript
 // Single parameter
 app.get("/users/:id", (req, res) => {
-    const userId = req.params.id;
-    res.json({ userId });
+  const userId = req.params.id;
+  res.xJson({ userId });
 });
 
 // Parameter with validation
 app.get("/posts/:postId", (req, res) => {
-    const { postId } = req.params;
-    
-    if (!postId || isNaN(Number(postId))) {
-        return res.status(400).json({ error: "Invalid post ID" });
-    }
-    
-    res.json({ postId: Number(postId) });
+  const { postId } = req.params;
+
+  if (!postId || isNaN(Number(postId))) {
+    return res.status(400).json({ error: "Invalid post ID" });
+  }
+
+  res.xJson({ postId: Number(postId) });
 });
 ```
 
@@ -79,14 +79,14 @@ app.get("/posts/:postId", (req, res) => {
 ```typescript
 // Multiple parameters
 app.get("/users/:userId/posts/:postId", (req, res) => {
-    const { userId, postId } = req.params;
-    res.json({ userId, postId });
+  const { userId, postId } = req.params;
+  res.xJson({ userId, postId });
 });
 
 // Nested resource parameters
 app.get("/organizations/:orgId/teams/:teamId/members/:memberId", (req, res) => {
-    const { orgId, teamId, memberId } = req.params;
-    res.json({ orgId, teamId, memberId });
+  const { orgId, teamId, memberId } = req.params;
+  res.xJson({ orgId, teamId, memberId });
 });
 ```
 
@@ -102,12 +102,12 @@ The single wildcard `*` matches exactly one path segment (no forward slashes).
 // Matches: /files/document.pdf, /files/image.jpg
 // Does NOT match: /files/folder/document.pdf, /files/a/b/c.txt
 app.get("/files/*", (req, res) => {
-    const filename = req.params["*"];
-    res.json({ 
-        message: "Single wildcard match",
-        filename,
-        type: "file"
-    });
+  const filename = req.params["*"];
+  res.xJson({
+    message: "Single wildcard match",
+    filename,
+    type: "file",
+  });
 });
 
 // Example matches:
@@ -123,12 +123,12 @@ The double wildcard `**` matches multiple path segments (including forward slash
 ```typescript
 // Matches: /api/v1/users, /api/v1/users/123/posts, /api/v1/admin/settings/security
 app.get("/api/**", (req, res) => {
-    const path = req.params["**"];
-    res.json({ 
-        message: "Double wildcard match",
-        capturedPath: path,
-        segments: path.split("/")
-    });
+  const path = req.params["**"];
+  res.xJson({
+    message: "Double wildcard match",
+    capturedPath: path,
+    segments: path.split("/"),
+  });
 });
 
 // Example matches:
@@ -142,16 +142,16 @@ app.get("/api/**", (req, res) => {
 ```typescript
 // Parameter + single wildcard
 app.get("/users/:id/files/*", (req, res) => {
-    const { id } = req.params;
-    const filename = req.params["*"];
-    res.json({ userId: id, filename });
+  const { id } = req.params;
+  const filename = req.params["*"];
+  res.xJson({ userId: id, filename });
 });
 
 // Parameter + double wildcard
 app.get("/users/:id/data/**", (req, res) => {
-    const { id } = req.params;
-    const dataPath = req.params["**"];
-    res.json({ userId: id, dataPath });
+  const { id } = req.params;
+  const dataPath = req.params["**"];
+  res.xJson({ userId: id, dataPath });
 });
 ```
 
@@ -171,23 +171,23 @@ const userRouter = Router();
 
 // Add routes to router
 userRouter.get("/", (req, res) => {
-    res.json({ message: "Get all users" });
+  res.xJson({ message: "Get all users" });
 });
 
 userRouter.get("/:id", (req, res) => {
-    res.json({ message: "Get user", id: req.params.id });
+  res.xJson({ message: "Get user", id: req.params.id });
 });
 
 userRouter.post("/", (req, res) => {
-    res.json({ message: "Create user", data: req.body });
+  res.xJson({ message: "Create user", data: req.body });
 });
 
 userRouter.put("/:id", (req, res) => {
-    res.json({ message: "Update user", id: req.params.id, data: req.body });
+  res.xJson({ message: "Update user", id: req.params.id, data: req.body });
 });
 
 userRouter.delete("/:id", (req, res) => {
-    res.json({ message: "Delete user", id: req.params.id });
+  res.xJson({ message: "Delete user", id: req.params.id });
 });
 
 // Mount router at /api/users
@@ -201,22 +201,22 @@ const adminRouter = Router();
 
 // Router-level middleware
 adminRouter.use((req, res, next) => {
-    console.log("Admin route accessed");
-    
-    // Simple authentication check
-    if (!req.headers.authorization) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-    
-    next();
+  console.log("Admin route accessed");
+
+  // Simple authentication check
+  if (!req.headers.authorization) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  next();
 });
 
 adminRouter.get("/dashboard", (req, res) => {
-    res.json({ message: "Admin dashboard" });
+  res.xJson({ message: "Admin dashboard" });
 });
 
 adminRouter.get("/users", (req, res) => {
-    res.json({ message: "Admin users list" });
+  res.xJson({ message: "Admin users list" });
 });
 
 app.use("/admin", adminRouter);
@@ -229,30 +229,30 @@ app.use("/admin", adminRouter);
 const v1Router = Router();
 
 v1Router.get("/users", (req, res) => {
-    res.json({ version: "v1", users: [] });
+  res.xJson({ version: "v1", users: [] });
 });
 
 v1Router.get("/posts", (req, res) => {
-    res.json({ version: "v1", posts: [] });
+  res.xJson({ version: "v1", posts: [] });
 });
 
 // API v2 router
 const v2Router = Router();
 
 v2Router.get("/users", (req, res) => {
-    res.json({ 
-        version: "v2", 
-        users: [], 
-        pagination: { page: 1, limit: 10 } 
-    });
+  res.xJson({
+    version: "v2",
+    users: [],
+    pagination: { page: 1, limit: 10 },
+  });
 });
 
 v2Router.get("/posts", (req, res) => {
-    res.json({ 
-        version: "v2", 
-        posts: [], 
-        meta: { total: 0 } 
-    });
+  res.xJson({
+    version: "v2",
+    posts: [],
+    meta: { total: 0 },
+  });
 });
 
 // Mount versioned APIs
@@ -267,16 +267,16 @@ app.use("/api/v2", v2Router);
 ```typescript
 // Global middleware - applies to all routes
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-    next();
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
 });
 
 // CORS middleware
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 ```
 
@@ -285,46 +285,47 @@ app.use((req, res, next) => {
 ```typescript
 // Authentication middleware
 const authenticate = (req, res, next) => {
-    const token = req.headers.authorization;
-    
-    if (!token) {
-        return res.status(401).json({ error: "No token provided" });
-    }
-    
-    // Validate token (simplified)
-    if (token !== "Bearer valid-token") {
-        return res.status(401).json({ error: "Invalid token" });
-    }
-    
-    req.user = { id: 1, name: "John Doe" };
-    next();
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  // Validate token (simplified)
+  if (token !== "Bearer valid-token") {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+
+  req.user = { id: 1, name: "John Doe" };
+  next();
 };
 
 // Protected route with middleware
 app.get("/protected", authenticate, (req, res) => {
-    res.json({ 
-        message: "Protected resource", 
-        user: req.user 
-    });
+  res.xJson({
+    message: "Protected resource",
+    user: req.user,
+  });
 });
 
 // Multiple middleware functions
-app.post("/api/data", 
-    authenticate,
-    (req, res, next) => {
-        // Validation middleware
-        if (!req.body.name) {
-            return res.status(400).json({ error: "Name is required" });
-        }
-        next();
-    },
-    (req, res) => {
-        res.json({ 
-            message: "Data created", 
-            data: req.body,
-            user: req.user
-        });
+app.post(
+  "/api/data",
+  authenticate,
+  (req, res, next) => {
+    // Validation middleware
+    if (!req.body.name) {
+      return res.status(400).json({ error: "Name is required" });
     }
+    next();
+  },
+  (req, res) => {
+    res.xJson({
+      message: "Data created",
+      data: req.body,
+      user: req.user,
+    });
+  },
 );
 ```
 
@@ -335,30 +336,30 @@ app.post("/api/data",
 ```typescript
 // Static file serving with single wildcard
 app.get("/static/*", (req, res) => {
-    const filename = req.params["*"];
-    const filepath = path.join(__dirname, "public", filename);
-    
-    // Security check - prevent directory traversal
-    if (filename.includes("..")) {
-        return res.status(400).json({ error: "Invalid filename" });
-    }
-    
-    res.sendFile(filepath);
+  const filename = req.params["*"];
+  const filepath = path.join(__dirname, "public", filename);
+
+  // Security check - prevent directory traversal
+  if (filename.includes("..")) {
+    return res.status(400).json({ error: "Invalid filename" });
+  }
+
+  res.sendFile(filepath);
 });
 
 // Documentation with double wildcard
 app.get("/docs/**", (req, res) => {
-    const docPath = req.params["**"];
-    const sections = docPath.split("/");
-    
-    res.json({
-        documentPath: docPath,
-        sections,
-        breadcrumb: sections.map((section, index) => ({
-            name: section,
-            path: sections.slice(0, index + 1).join("/")
-        }))
-    });
+  const docPath = req.params["**"];
+  const sections = docPath.split("/");
+
+  res.xJson({
+    documentPath: docPath,
+    sections,
+    breadcrumb: sections.map((section, index) => ({
+      name: section,
+      path: sections.slice(0, index + 1).join("/"),
+    })),
+  });
 });
 ```
 
@@ -370,34 +371,34 @@ const catalogRouter = Router();
 
 // Categories with subcategories (double wildcard)
 catalogRouter.get("/categories/**", (req, res) => {
-    const categoryPath = req.params["**"];
-    const categories = categoryPath.split("/");
-    
-    res.json({
-        categoryPath: categories,
-        products: `Products in ${categories.join(" > ")}`
-    });
+  const categoryPath = req.params["**"];
+  const categories = categoryPath.split("/");
+
+  res.xJson({
+    categoryPath: categories,
+    products: `Products in ${categories.join(" > ")}`,
+  });
 });
 
 // Product search with single wildcard for search terms
 catalogRouter.get("/search/*", (req, res) => {
-    const searchTerm = req.params["*"];
-    
-    res.json({
-        searchTerm,
-        results: `Search results for "${searchTerm}"`
-    });
+  const searchTerm = req.params["*"];
+
+  res.xJson({
+    searchTerm,
+    results: `Search results for "${searchTerm}"`,
+  });
 });
 
 // Specific product by ID
 catalogRouter.get("/products/:id", (req, res) => {
-    const { id } = req.params;
-    
-    res.json({
-        productId: id,
-        name: `Product ${id}`,
-        category: "Electronics"
-    });
+  const { id } = req.params;
+
+  res.xJson({
+    productId: id,
+    name: `Product ${id}`,
+    category: "Electronics",
+  });
 });
 
 app.use("/api/catalog", catalogRouter);
@@ -408,7 +409,7 @@ app.use("/api/catalog", catalogRouter);
 ### App Methods
 
 - `app.get(path, ...handlers)` - Handle GET requests
-- `app.post(path, ...handlers)` - Handle POST requests  
+- `app.post(path, ...handlers)` - Handle POST requests
 - `app.put(path, ...handlers)` - Handle PUT requests
 - `app.delete(path, ...handlers)` - Handle DELETE requests
 - `app.patch(path, ...handlers)` - Handle PATCH requests
@@ -449,7 +450,7 @@ app.use("/api/catalog", catalogRouter);
 
 ### Response Object
 
-- `res.json(data)` - Send JSON response
+- `res.xJson(data)` - Send JSON response
 - `res.send(data)` - Send response
 - `res.status(code)` - Set status code
 - `res.setHeader(name, value)` - Set response header

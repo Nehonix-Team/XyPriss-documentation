@@ -12,17 +12,17 @@ The `onError` hook is **deprecated** and not automatically applied due to limita
 {
   name: 'my-plugin',
   version: '1.0.0',
-  
+
   registerRoutes: (app) => {
     app.get('/api/data', async (req, res) => {
       try {
         const data = await fetchData();
-        res.json(data);
+        res.xJson(data);
       } catch (error) {
         console.error('[Plugin] Error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
           error: 'Failed to fetch data',
-          message: error.message 
+          message: error.message
         });
       }
     });
@@ -36,13 +36,13 @@ The `onError` hook is **deprecated** and not automatically applied due to limita
 {
   name: 'error-handler-plugin',
   version: '1.0.0',
-  
+
   onRequest: (req, res, next) => {
     // Wrap the response methods to catch errors
-    const originalJson = res.json.bind(res);
+    const originalJson = res.xJson.bind(res);
     const originalSend = res.send.bind(res);
-    
-    res.json = function(data) {
+
+    res.xJson = function(data) {
       try {
         return originalJson(data);
       } catch (error) {
@@ -50,7 +50,7 @@ The `onError` hook is **deprecated** and not automatically applied due to limita
         return res.status(500).json({ error: 'Internal error' });
       }
     };
-    
+
     next();
   }
 }
@@ -62,14 +62,14 @@ The `onError` hook is **deprecated** and not automatically applied due to limita
 {
   name: 'error-handler',
   version: '1.0.0',
-  
+
   registerRoutes: (app) => {
     // Register a catch-all error route at the end
     app.use((req, res) => {
       res.status(404).json({ error: 'Not found' });
     });
   },
-  
+
   middlewarePriority: 'last' // Ensure it runs last
 }
 ```

@@ -196,7 +196,7 @@ server.post("/api/secure-data", async (req, res) => {
       entropy: "maximum",
     });
 
-    res.json({
+    res.xJson({
       success: true,
       token,
       itemCount: secureData.length,
@@ -243,7 +243,7 @@ server.post("/auth/login", async (req, res) => {
     { expiresIn: "1h" },
   );
 
-  res.json({ token, user: { id: user.id, username: user.username } });
+  res.xJson({ token, user: { id: user.id, username: user.username } });
 });
 
 // Authentication middleware
@@ -266,7 +266,7 @@ function authenticateToken(req, res, next) {
 
 // Protected route
 server.get("/api/protected", authenticateToken, (req, res) => {
-  res.json({ message: "This is protected data", user: req.user });
+  res.xJson({ message: "This is protected data", user: req.user });
 });
 ```
 
@@ -301,7 +301,7 @@ server.post("/auth/register", async (req, res) => {
   // Save user (implement your user storage logic)
   const user = await createUser(username, hashedPassword);
 
-  res.json({ message: "User created successfully", userId: user.id });
+  res.xJson({ message: "User created successfully", userId: user.id });
 });
 
 // Verify password during login
@@ -326,7 +326,7 @@ server.post("/auth/login", async (req, res) => {
     entropy: "maximum",
   });
 
-  res.json({ token, user: { id: user.id, username: user.username } });
+  res.xJson({ token, user: { id: user.id, username: user.username } });
 });
 ```
 
@@ -351,7 +351,7 @@ server.post("/api/user-data", authenticateToken, async (req, res) => {
   // Store in database (the data will be encrypted)
   await saveUserData(userId, secureUserData.serialize());
 
-  res.json({ message: "Data saved securely" });
+  res.xJson({ message: "Data saved securely" });
 });
 
 // Retrieve and decrypt user data
@@ -366,7 +366,7 @@ server.get("/api/user-data", authenticateToken, async (req, res) => {
     encryptionKey: process.env.DATA_ENCRYPTION_KEY,
   });
 
-  res.json(secureUserData.toPlainObject());
+  res.xJson(secureUserData.toPlainObject());
 });
 ```
 
@@ -420,7 +420,7 @@ server.post(
   }),
   (req, res) => {
     // req.body now contains validated and sanitized data
-    res.json({ message: "User data is valid" });
+    res.xJson({ message: "User data is valid" });
   },
 );
 ```
@@ -535,7 +535,7 @@ server.post("/auth/login", async (req, res) => {
       userAgent: req.get("User-Agent"),
     });
 
-    res.json({ token });
+    res.xJson({ token });
   } catch (error) {
     await logSecurityEvent("login_failure", {
       username,

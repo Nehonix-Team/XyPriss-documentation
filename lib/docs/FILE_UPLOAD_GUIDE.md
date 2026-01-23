@@ -22,8 +22,8 @@ const form = new FormData();
 form.append("file", blob, "filename.jpg");
 
 const response = await fetch("http://localhost:8085/upload", {
-    method: "POST",
-    body: form,
+  method: "POST",
+  body: form,
 });
 ```
 
@@ -36,15 +36,15 @@ import fs from "fs";
 
 const fileBuffer = fs.readFileSync(filePath);
 const file = new File([fileBuffer], "filename.jpg", {
-    type: "image/jpeg",
+  type: "image/jpeg",
 });
 
 const form = new FormData();
 form.append("file", file);
 
 const response = await fetch("http://localhost:8085/upload", {
-    method: "POST",
-    body: form,
+  method: "POST",
+  body: form,
 });
 ```
 
@@ -61,9 +61,9 @@ form.append("file", fs.createReadStream(filePath));
 
 // This will fail with "Unexpected end of form" error
 const response = await fetch(url, {
-    method: "POST",
-    body: form,
-    headers: form.getHeaders(),
+  method: "POST",
+  body: form,
+  headers: form.getHeaders(),
 });
 ```
 
@@ -84,14 +84,14 @@ import fs from "fs";
 
 const form = new FormData();
 form.append("file", fs.createReadStream(filePath), {
-    filename: "file.jpg",
-    contentType: "image/jpeg",
+  filename: "file.jpg",
+  contentType: "image/jpeg",
 });
 
 const response = await fetch("http://localhost:8085/upload", {
-    method: "POST",
-    body: form,
-    headers: form.getHeaders(),
+  method: "POST",
+  body: form,
+  headers: form.getHeaders(),
 });
 ```
 
@@ -108,8 +108,8 @@ const form = new FormData();
 form.append("file", blob, "filename.jpg");
 
 const response = await fetch("http://localhost:8085/upload", {
-    method: "POST",
-    body: form,
+  method: "POST",
+  body: form,
 });
 ```
 
@@ -127,30 +127,30 @@ The `Uploader` is a pre-initialized singleton that automatically uses the `Confi
 import { createServer, Upload } from "xypriss";
 
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        storage: "memory", // or "disk"
-        allowedMimeTypes: [
-            "image/jpeg",
-            "image/png",
-            "image/gif",
-            "application/pdf",
-        ],
-        allowedExtensions: [".jpg", ".jpeg", ".png", ".gif", ".pdf"],
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    storage: "memory", // or "disk"
+    allowedMimeTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "application/pdf",
+    ],
+    allowedExtensions: [".jpg", ".jpeg", ".png", ".gif", ".pdf"],
+  },
 });
 
 // Use the Uploader singleton directly - no initialization needed!
 app.post("/upload", upload.single("file"), (req, res) => {
-    console.log("Uploaded file:", req.file);
-    res.json({ success: true, file: req.file });
+  console.log("Uploaded file:", req.file);
+  res.xJson({ success: true, file: req.file });
 });
 
 // Multiple files upload
 app.post("/upload-multiple", upload.array("files", 5), (req, res) => {
-    console.log("Uploaded files:", req.files);
-    res.json({ success: true, files: req.files });
+  console.log("Uploaded files:", req.files);
+  res.xJson({ success: true, files: req.files });
 });
 
 app.start();
@@ -158,11 +158,11 @@ app.start();
 
 **Why use `Uploader`?**
 
--   ✅ No manual initialization required
--   ✅ Automatically uses `Configs` system
--   ✅ Single source of truth for configuration
--   ✅ Less boilerplate code
--   ✅ Perfect for simple use cases
+- ✅ No manual initialization required
+- ✅ Automatically uses `Configs` system
+- ✅ Single source of truth for configuration
+- ✅ Less boilerplate code
+- ✅ Perfect for simple use cases
 
 ### ✅ Option 2: Using the `FileUploadAPI` Class (OLD - For Advanced Use Cases)
 
@@ -172,18 +172,18 @@ Use this approach when you need multiple upload instances with different configu
 import { createServer, FileUploadAPI, Configs } from "xypriss";
 
 const app = createServer({
-    fileUpload: {
-        enabled: true,
-        maxFileSize: 5 * 1024 * 1024, // 5MB
-        storage: "memory", // or "disk"
-        allowedMimeTypes: [
-            "image/jpeg",
-            "image/png",
-            "image/gif",
-            "application/pdf",
-        ],
-        allowedExtensions: [".jpg", ".jpeg", ".png", ".gif", ".pdf"],
-    },
+  fileUpload: {
+    enabled: true,
+    maxFileSize: 5 * 1024 * 1024, // 5MB
+    storage: "memory", // or "disk"
+    allowedMimeTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "application/pdf",
+    ],
+    allowedExtensions: [".jpg", ".jpeg", ".png", ".gif", ".pdf"],
+  },
 });
 
 // Create file upload instance
@@ -192,14 +192,14 @@ await upload.initialize(Configs); // Pass Configs class for single source of tru
 
 // Single file upload
 app.post("/upload", upload.single("file"), (req, res) => {
-    console.log("Uploaded file:", req.file);
-    res.json({ success: true, file: req.file });
+  console.log("Uploaded file:", req.file);
+  res.xJson({ success: true, file: req.file });
 });
 
 // Multiple files upload
 app.post("/upload-multiple", upload.array("files", 5), (req, res) => {
-    console.log("Uploaded files:", req.files);
-    res.json({ success: true, files: req.files });
+  console.log("Uploaded files:", req.files);
+  res.xJson({ success: true, files: req.files });
 });
 
 app.start();
@@ -207,10 +207,10 @@ app.start();
 
 **When to use `FileUploadAPI`?**
 
--   ✅ Need multiple upload instances with different configs
--   ✅ Need custom logger instance
--   ✅ Advanced use cases requiring more control
--   ✅ Testing scenarios
+- ✅ Need multiple upload instances with different configs
+- ✅ Need custom logger instance
+- ✅ Advanced use cases requiring more control
+- ✅ Testing scenarios
 
 ### Comparison
 
@@ -227,22 +227,22 @@ app.start();
 
 ```typescript
 interface FileUploadConfig {
-    enabled: boolean;
-    maxFileSize?: number; // in bytes
-    maxFiles?: number; // max number of files
-    storage?: "memory" | "disk";
-    destination?: string; // for disk storage
-    allowedMimeTypes?: string[];
-    allowedExtensions?: string[];
-    limits?: {
-        fieldNameSize?: number;
-        fieldSize?: number;
-        fields?: number;
-        fileSize?: number;
-        files?: number;
-        parts?: number;
-        headerPairs?: number;
-    };
+  enabled: boolean;
+  maxFileSize?: number; // in bytes
+  maxFiles?: number; // max number of files
+  storage?: "memory" | "disk";
+  destination?: string; // for disk storage
+  allowedMimeTypes?: string[];
+  allowedExtensions?: string[];
+  limits?: {
+    fieldNameSize?: number;
+    fieldSize?: number;
+    fields?: number;
+    fileSize?: number;
+    files?: number;
+    parts?: number;
+    headerPairs?: number;
+  };
 }
 ```
 
@@ -257,21 +257,21 @@ interface FileUploadConfig {
 <button onclick="uploadFile()">Upload</button>
 
 <script>
-    async function uploadFile() {
-        const fileInput = document.getElementById("fileInput");
-        const file = fileInput.files[0];
+  async function uploadFile() {
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
 
-        const form = new FormData();
-        form.append("file", file);
+    const form = new FormData();
+    form.append("file", file);
 
-        const response = await fetch("http://localhost:8085/upload", {
-            method: "POST",
-            body: form,
-        });
+    const response = await fetch("http://localhost:8085/upload", {
+      method: "POST",
+      body: form,
+    });
 
-        const result = await response.json();
-        console.log(result);
-    }
+    const result = await response.json();
+    console.log(result);
+  }
 </script>
 ```
 
@@ -316,21 +316,21 @@ function FileUpload() {
 import fs from "fs";
 
 async function uploadFile(filePath: string) {
-    // Read file
-    const fileBuffer = fs.readFileSync(filePath);
-    const blob = new Blob([fileBuffer], { type: "image/jpeg" });
+  // Read file
+  const fileBuffer = fs.readFileSync(filePath);
+  const blob = new Blob([fileBuffer], { type: "image/jpeg" });
 
-    // Create form
-    const form = new FormData();
-    form.append("file", blob, "myfile.jpg");
+  // Create form
+  const form = new FormData();
+  form.append("file", blob, "myfile.jpg");
 
-    // Upload
-    const response = await fetch("http://localhost:8085/upload", {
-        method: "POST",
-        body: form,
-    });
+  // Upload
+  const response = await fetch("http://localhost:8085/upload", {
+    method: "POST",
+    body: form,
+  });
 
-    return response.json();
+  return response.json();
 }
 
 // Usage
@@ -382,26 +382,26 @@ console.log(result);
 
 ```typescript
 async function uploadWithErrorHandling(file: File) {
-    try {
-        const form = new FormData();
-        form.append("file", file);
+  try {
+    const form = new FormData();
+    form.append("file", file);
 
-        const response = await fetch("http://localhost:8085/upload", {
-            method: "POST",
-            body: form,
-        });
+    const response = await fetch("http://localhost:8085/upload", {
+      method: "POST",
+      body: form,
+    });
 
-        const result = await response.json();
+    const result = await response.json();
 
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Upload failed");
-        }
-
-        return result;
-    } catch (error) {
-        console.error("Upload error:", error);
-        throw error;
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Upload failed");
     }
+
+    return result;
+  } catch (error) {
+    console.error("Upload error:", error);
+    throw error;
+  }
 }
 ```
 
@@ -452,10 +452,10 @@ bun .private/test_upload_comprehensive.ts
 
 The server logs detailed information about file uploads. Check the console for:
 
--   Content-Type headers
--   File size validation
--   MIME type checking
--   Extension validation
+- Content-Type headers
+- File size validation
+- MIME type checking
+- Extension validation
 
 ### Verify Server Configuration
 
@@ -483,4 +483,3 @@ curl -X POST http://localhost:8085/upload \
 | Browser | Native FormData + File               | Server-side streaming packages |
 
 **Golden Rule:** When in doubt, use native `FormData` with `Blob` or `File` - it works everywhere! 🎯
-

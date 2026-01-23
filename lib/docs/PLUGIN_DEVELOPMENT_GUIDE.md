@@ -151,7 +151,7 @@ export const MyPlugin = Plugin.create({
 
   registerRoutes(app) {
     app.get("/plugin/status", (req, res) => {
-      res.json({ status: "active", plugin: "my-plugin" });
+      res.xJson({ status: "active", plugin: "my-plugin" });
     });
   },
 });
@@ -608,18 +608,18 @@ Called during server initialization to register plugin routes.
     registerRoutes(app) {
         // Health check
         app.get('/health', (req, res) => {
-            res.json({ status: 'healthy' });
+            res.xJson({ status: 'healthy' });
         });
 
         // Plugin API
         app.get('/api/plugin/stats', (req, res) => {
-            res.json(getStats());
+            res.xJson(getStats());
         });
 
         // Admin endpoint
         app.post('/api/plugin/config', (req, res) => {
             updateConfig(req.body);
-            res.json({ success: true });
+            res.xJson({ success: true });
         });
     }
 }
@@ -723,7 +723,7 @@ export const createCachePlugin = Plugin.factory<CacheConfig>((config) => ({
   onRequest(req, res, next) {
     const cached = cache.get(req.url);
     if (cached) {
-      return res.json(cached);
+      return res.xJson(cached);
     }
     next();
   },
@@ -1074,7 +1074,7 @@ export const HealthCheckPlugin = Plugin.create({
 
   registerRoutes(app) {
     app.get("/health", (req, res) => {
-      res.json({
+      res.xJson({
         status: "healthy",
         uptime: process.uptime(),
         memory: process.memoryUsage(),

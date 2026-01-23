@@ -116,12 +116,12 @@ const server = createServer({
 ```typescript
 app.get("/form", (req, res) => {
   const csrfToken = req.csrfToken();
-  res.json({ csrfToken });
+  res.xJson({ csrfToken });
 });
 
 app.post("/submit", (req, res) => {
   // CSRF token is automatically validated
-  res.json({ success: true });
+  res.xJson({ success: true });
 });
 ```
 
@@ -147,7 +147,7 @@ app.post("/api/user", (req, res) => {
     return res.status(400).json({ errors });
   }
 
-  res.json({ success: true, data: cleanData });
+  res.xJson({ success: true, data: cleanData });
 });
 ```
 
@@ -203,7 +203,7 @@ server.post("/api/register", async (req, res) => {
   // Generate secure tokens
   const token = generateSecureToken({ length: 32 });
 
-  res.json({ token });
+  res.xJson({ token });
 });
 ```
 

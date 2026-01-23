@@ -46,7 +46,7 @@ export function RequestFlowSection() {
                   color="primary"
                   code={`app.get("/api/users", async (req, res) => {
   const users = await db.users.findMany();
-  res.json({ users });
+  res.xJson({ users });
 });`}
                   delay={0}
                 />

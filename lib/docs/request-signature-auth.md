@@ -11,9 +11,9 @@ XyPriss provides a powerful request signature authentication system that allows 
 
 Request Signature Authentication works by requiring clients to include a cryptographic signature in the `XP-Request-Sig` header. The signature is computed using a shared secret and the request data, ensuring that:
 
--   Only authorized clients can access your API
--   Requests cannot be tampered with in transit
--   Replay attacks are prevented (with proper timestamp validation)
+- Only authorized clients can access your API
+- Requests cannot be tampered with in transit
+- Replay attacks are prevented (with proper timestamp validation)
 
 ## Quick Start
 
@@ -21,16 +21,16 @@ Request Signature Authentication works by requiring clients to include a cryptog
 import { createServer } from "xypriss";
 
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "your-super-secret-api-key-12345",
-            debug: true, // Enable debug logging in development
-        },
+  security: {
+    requestSignature: {
+      secret: "your-super-secret-api-key-12345",
+      debug: true, // Enable debug logging in development
     },
+  },
 });
 
 server.get("/api/protected", (req, res) => {
-    res.json({ message: "Access granted!", user: req.user });
+  res.xJson({ message: "Access granted!", user: req.user });
 });
 
 server.start();
@@ -44,26 +44,26 @@ server.start();
 const crypto = require("crypto");
 
 function signRequest(url, method, body = "", secret, timestamp = Date.now()) {
-    const data = `${method.toUpperCase()}${url}${body}${timestamp}`;
-    const signature = crypto
-        .createHmac("sha256", secret)
-        .update(data)
-        .digest("hex");
-    return { signature, timestamp };
+  const data = `${method.toUpperCase()}${url}${body}${timestamp}`;
+  const signature = crypto
+    .createHmac("sha256", secret)
+    .update(data)
+    .digest("hex");
+  return { signature, timestamp };
 }
 
 // Usage
 const { signature, timestamp } = signRequest(
-    "/api/protected",
-    "GET",
-    "",
-    "your-secret"
+  "/api/protected",
+  "GET",
+  "",
+  "your-secret",
 );
 const response = await fetch("http://localhost:3000/api/protected", {
-    headers: {
-        "XP-Request-Sig": signature,
-        "X-Timestamp": timestamp,
-    },
+  headers: {
+    "XP-Request-Sig": signature,
+    "X-Timestamp": timestamp,
+  },
 });
 ```
 
@@ -113,32 +113,32 @@ response = requests.get('http://localhost:3000/api/protected', headers={
 
 ```typescript
 interface RequestSignatureConfig {
-    /** Secret key for signing requests */
-    secret: string;
+  /** Secret key for signing requests */
+  secret: string;
 
-    /** Enable debug logging */
-    debug?: boolean;
+  /** Enable debug logging */
+  debug?: boolean;
 
-    /** Algorithm to use for signing (default: sha256) */
-    algorithm?: "sha256" | "sha512";
+  /** Algorithm to use for signing (default: sha256) */
+  algorithm?: "sha256" | "sha512";
 
-    /** Maximum age of signature in milliseconds (default: 300000 = 5 minutes) */
-    maxAge?: number;
+  /** Maximum age of signature in milliseconds (default: 300000 = 5 minutes) */
+  maxAge?: number;
 
-    /** Custom header name for signature (default: XP-Request-Sig) */
-    headerName?: string;
+  /** Custom header name for signature (default: XP-Request-Sig) */
+  headerName?: string;
 
-    /** Custom header name for timestamp (default: X-Timestamp) */
-    timestampHeaderName?: string;
+  /** Custom header name for timestamp (default: X-Timestamp) */
+  timestampHeaderName?: string;
 
-    /** Whether to include body in signature (default: true) */
-    includeBody?: boolean;
+  /** Whether to include body in signature (default: true) */
+  includeBody?: boolean;
 
-    /** Whether to include query parameters in signature (default: true) */
-    includeQuery?: boolean;
+  /** Whether to include query parameters in signature (default: true) */
+  includeQuery?: boolean;
 
-    /** Clock skew tolerance in milliseconds (default: 30000 = 30 seconds) */
-    clockSkew?: number;
+  /** Clock skew tolerance in milliseconds (default: 30000 = 30 seconds) */
+  clockSkew?: number;
 }
 ```
 
@@ -148,16 +148,16 @@ interface RequestSignatureConfig {
 
 ```typescript
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "my-secret-key",
-            algorithm: "sha512", // Use SHA-512 instead of SHA-256
-            headerName: "X-API-Signature", // Custom header name
-            timestampHeaderName: "X-API-Timestamp", // Custom timestamp header
-            maxAge: 600000, // 10 minutes validity
-            clockSkew: 60000, // 1 minute clock skew tolerance
-        },
+  security: {
+    requestSignature: {
+      secret: "my-secret-key",
+      algorithm: "sha512", // Use SHA-512 instead of SHA-256
+      headerName: "X-API-Signature", // Custom header name
+      timestampHeaderName: "X-API-Timestamp", // Custom timestamp header
+      maxAge: 600000, // 10 minutes validity
+      clockSkew: 60000, // 1 minute clock skew tolerance
     },
+  },
 });
 ```
 
@@ -165,13 +165,13 @@ const server = createServer({
 
 ```typescript
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "my-secret",
-            includeBody: false, // Don't include body in signature (useful for file uploads)
-            includeQuery: true, // Include query parameters
-        },
+  security: {
+    requestSignature: {
+      secret: "my-secret",
+      includeBody: false, // Don't include body in signature (useful for file uploads)
+      includeQuery: true, // Include query parameters
     },
+  },
 });
 ```
 
@@ -181,23 +181,23 @@ You can apply request signature authentication to specific routes:
 
 ```typescript
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "global-secret",
-        },
-        routeConfig: {
-            requestSignature: {
-                includeRoutes: ["/api/webhooks/*", "/api/admin/*"],
-                excludeRoutes: ["/api/public/*"],
-            },
-        },
+  security: {
+    requestSignature: {
+      secret: "global-secret",
     },
+    routeConfig: {
+      requestSignature: {
+        includeRoutes: ["/api/webhooks/*", "/api/admin/*"],
+        excludeRoutes: ["/api/public/*"],
+      },
+    },
+  },
 });
 
 // Or disable for specific routes
 server.get("/api/public/status", (req, res) => {
-    // This route doesn't require signature
-    res.json({ status: "ok" });
+  // This route doesn't require signature
+  res.xJson({ status: "ok" });
 });
 ```
 
@@ -231,15 +231,15 @@ requestSignature: {
 ```typescript
 // Always use HTTPS to prevent signature interception
 const server = createServer({
-    server: {
-        https: {
-            key: fs.readFileSync("server.key"),
-            cert: fs.readFileSync("server.crt"),
-        },
+  server: {
+    https: {
+      key: fs.readFileSync("server.key"),
+      cert: fs.readFileSync("server.crt"),
     },
-    security: {
-        requestSignature: { secret: "your-secret" },
-    },
+  },
+  security: {
+    requestSignature: { secret: "your-secret" },
+  },
 });
 ```
 
@@ -248,13 +248,13 @@ const server = createServer({
 ```typescript
 // Implement secret rotation
 const secrets = {
-    current: "current-secret",
-    previous: "previous-secret", // Allow old signatures during transition
+  current: "current-secret",
+  previous: "previous-secret", // Allow old signatures during transition
 };
 
 // Validate against multiple secrets
 function validateSignature(signature, data) {
-    return secrets.current === signature || secrets.previous === signature; // Grace period
+  return secrets.current === signature || secrets.previous === signature; // Grace period
 }
 ```
 
@@ -264,7 +264,7 @@ The middleware provides clear error messages:
 
 ```typescript
 server.get('/api/protected', (req, res) => {
-  res.json({ message: 'Success!' });
+  res.xJson({ message: 'Success!' });
 });
 
 // Error responses:
@@ -290,18 +290,18 @@ server.get('/api/protected', (req, res) => {
 
 ```typescript
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: process.env.WEBHOOK_SECRET,
-        },
+  security: {
+    requestSignature: {
+      secret: process.env.WEBHOOK_SECRET,
     },
+  },
 });
 
 server.post("/webhooks/stripe", (req, res) => {
-    // Only Stripe can call this endpoint
-    const event = req.body;
-    // Process webhook...
-    res.json({ received: true });
+  // Only Stripe can call this endpoint
+  const event = req.body;
+  // Process webhook...
+  res.xJson({ received: true });
 });
 ```
 
@@ -310,38 +310,38 @@ server.post("/webhooks/stripe", (req, res) => {
 ```typescript
 // Service A (Client)
 const client = {
-    async callServiceB(endpoint, data) {
-        const { signature, timestamp } = signRequest(
-            endpoint,
-            "POST",
-            JSON.stringify(data),
-            SHARED_SECRET
-        );
+  async callServiceB(endpoint, data) {
+    const { signature, timestamp } = signRequest(
+      endpoint,
+      "POST",
+      JSON.stringify(data),
+      SHARED_SECRET,
+    );
 
-        return fetch(`http://service-b${endpoint}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "XP-Request-Sig": signature,
-                "X-Timestamp": timestamp,
-            },
-            body: JSON.stringify(data),
-        });
-    },
+    return fetch(`http://service-b${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "XP-Request-Sig": signature,
+        "X-Timestamp": timestamp,
+      },
+      body: JSON.stringify(data),
+    });
+  },
 };
 
 // Service B (Server)
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: SHARED_SECRET,
-        },
+  security: {
+    requestSignature: {
+      secret: SHARED_SECRET,
     },
+  },
 });
 
 server.post("/api/data", (req, res) => {
-    // Trust that this request came from Service A
-    res.json({ processed: req.body });
+  // Trust that this request came from Service A
+  res.xJson({ processed: req.body });
 });
 ```
 
@@ -350,25 +350,25 @@ server.post("/api/data", (req, res) => {
 ```typescript
 // Mobile apps can include the signature in requests
 const mobileClient = {
-    async apiCall(endpoint, data) {
-        const { signature, timestamp } = signRequest(
-            endpoint,
-            "POST",
-            JSON.stringify(data),
-            APP_SECRET
-        );
+  async apiCall(endpoint, data) {
+    const { signature, timestamp } = signRequest(
+      endpoint,
+      "POST",
+      JSON.stringify(data),
+      APP_SECRET,
+    );
 
-        return fetch(`${API_BASE}${endpoint}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "XP-Request-Sig": signature,
-                "X-Timestamp": timestamp,
-                Authorization: `Bearer ${userToken}`, // Additional auth if needed
-            },
-            body: JSON.stringify(data),
-        });
-    },
+    return fetch(`${API_BASE}${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "XP-Request-Sig": signature,
+        "X-Timestamp": timestamp,
+        Authorization: `Bearer ${userToken}`, // Additional auth if needed
+      },
+      body: JSON.stringify(data),
+    });
+  },
 };
 ```
 
@@ -377,19 +377,17 @@ const mobileClient = {
 ### Common Issues
 
 1. **"Missing signature header"**
-
-    - Ensure client includes `XP-Request-Sig` header
-    - Check header name if using custom configuration
+   - Ensure client includes `XP-Request-Sig` header
+   - Check header name if using custom configuration
 
 2. **"Invalid signature"**
-
-    - Verify secret key matches between client and server
-    - Check that request data is signed in the correct order: `METHOD + URL + BODY + TIMESTAMP`
+   - Verify secret key matches between client and server
+   - Check that request data is signed in the correct order: `METHOD + URL + BODY + TIMESTAMP`
 
 3. **"Signature expired"**
-    - Check system clock synchronization
-    - Increase `maxAge` if needed
-    - Adjust `clockSkew` for clock differences
+   - Check system clock synchronization
+   - Increase `maxAge` if needed
+   - Adjust `clockSkew` for clock differences
 
 ### Debug Mode
 
@@ -397,12 +395,12 @@ Enable debug logging to troubleshoot signature validation:
 
 ```typescript
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "your-secret",
-            debug: true, // Enable detailed logging
-        },
+  security: {
+    requestSignature: {
+      secret: "your-secret",
+      debug: true, // Enable detailed logging
     },
+  },
 });
 ```
 
@@ -410,10 +408,10 @@ This will log signature validation steps, making it easier to identify issues.
 
 ## Performance Considerations
 
--   Signature validation is computationally lightweight (HMAC-SHA256)
--   No external service calls required
--   Minimal impact on response times
--   Scales well with high request volumes
+- Signature validation is computationally lightweight (HMAC-SHA256)
+- No external service calls required
+- Minimal impact on response times
+- Scales well with high request volumes
 
 ## Migration Guide
 
@@ -422,20 +420,20 @@ This will log signature validation steps, making it easier to identify issues.
 ```typescript
 // Old approach
 server.use("/api/*", (req, res, next) => {
-    const apiKey = req.headers["x-api-key"];
-    if (apiKey !== "expected-key") {
-        return res.status(401).json({ error: "Invalid API key" });
-    }
-    next();
+  const apiKey = req.headers["x-api-key"];
+  if (apiKey !== "expected-key") {
+    return res.status(401).json({ error: "Invalid API key" });
+  }
+  next();
 });
 
 // New approach
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "your-secret",
-        },
+  security: {
+    requestSignature: {
+      secret: "your-secret",
     },
+  },
 });
 ```
 
@@ -444,12 +442,12 @@ const server = createServer({
 ```typescript
 // Request signatures can complement JWT
 const server = createServer({
-    security: {
-        requestSignature: {
-            secret: "signature-secret",
-        },
-        // JWT validation can be added separately
+  security: {
+    requestSignature: {
+      secret: "signature-secret",
     },
+    // JWT validation can be added separately
+  },
 });
 ```
 

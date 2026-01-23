@@ -364,21 +364,36 @@
     }
   }
 
-  /* Keyword Highlight Effect */
+  /* Keyword Highlight Effect - Cosmic Amber Edition */
   .kw-highlight {
-    background: rgba(96, 165, 250, 0.3) !important;
-    border-radius: 4px;
-    box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
-    animation: kw-pulse 12s infinite alternate;
+    background: rgba(245, 158, 11, 0.25) !important;
+    border-radius: 6px;
+    box-shadow:
+      0 0 20px rgba(245, 158, 11, 0.4),
+      inset 0 0 0 1px rgba(245, 158, 11, 0.3);
+    animation: kw-cosmic-pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
   }
-  /* Internal Comments are now managed dynamically in code-block.tsx with Framer Motion */
 }
 
-@keyframes kw-pulse {
-  from {
-    box-shadow: 0 0 5px rgba(96, 165, 250, 0.3);
+@keyframes kw-cosmic-pulse {
+  0% {
+    box-shadow:
+      0 0 10px rgba(245, 158, 11, 0.3),
+      inset 0 0 0 1px rgba(245, 158, 11, 0.2);
+    transform: scale(1);
   }
-  to {
-    box-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+  50% {
+    box-shadow:
+      0 0 25px rgba(245, 158, 11, 0.6),
+      inset 0 0 0 1px rgba(245, 158, 11, 0.5);
+    background: rgba(245, 158, 11, 0.35) !important;
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow:
+      0 0 10px rgba(245, 158, 11, 0.3),
+      inset 0 0 0 1px rgba(245, 158, 11, 0.2);
+    transform: scale(1);
   }
 }

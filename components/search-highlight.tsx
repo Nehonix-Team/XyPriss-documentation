@@ -20,8 +20,9 @@ function SearchHighlightContent() {
       if (isSearchable) {
         const text = target.innerText.trim();
         if (text) {
-          // Update URL using Next.js router
+          // Update URL using Next.js router - Trigger BOTH global search (q) and local highlight (kw)
           const params = new URLSearchParams(searchParams.toString());
+          params.set("q", text);
           params.set("kw", text);
           router.push(`?${params.toString()}`, { scroll: false });
 
@@ -49,20 +50,30 @@ function SearchHighlightContent() {
       const article = document.querySelector(".documentation-article");
       if (!article) return;
 
-      // Find all elements that might contain text
+      // Find all elements that might contain text, including spans for code blocks
       const elements = article.querySelectorAll(
-        "p, li, h1, h2, h3, h4, strong, code",
+        "p, li, h1, h2, h3, h4, strong, code, span",
       );
 
       let foundElement: HTMLElement | null = null;
 
       for (const el of Array.from(elements)) {
         const htmlElement = el as HTMLElement;
-        const text = htmlElement.innerText.toLowerCase();
+        const text = htmlElement.innerText; // Use original case for better text flow check
 
-        if (text.includes(searchTerm)) {
-          foundElement = htmlElement;
-          break;
+        if (text.toLowerCase().includes(searchTerm)) {
+          // Robust check: Is this the smallest element containing the term?
+          const hasDeeperMatch = Array.from(htmlElement.children).some(
+            (child) =>
+              (child as HTMLElement).innerText
+                .toLowerCase()
+                .includes(searchTerm),
+          );
+
+          if (!hasDeeperMatch) {
+            foundElement = htmlElement;
+            break;
+          }
         }
       }
 
