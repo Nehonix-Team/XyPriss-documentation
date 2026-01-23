@@ -24,23 +24,23 @@ The XyPriss Plugin System provides a powerful and flexible way to extend server 
 
 ### Key Features
 
--   **Lifecycle Hooks**: Integrate at every stage of server operation
--   **Imperative API**: Register plugins programmatically with `Plugin.exec()`
--   **Declarative API**: Configure plugins via server options
--   **Dependency Resolution**: Automatic handling of plugin dependencies
--   **Type Safety**: Full TypeScript support with comprehensive type definitions
--   **Performance**: Minimal overhead with intelligent middleware ordering
+- **Lifecycle Hooks**: Integrate at every stage of server operation
+- **Imperative API**: Register plugins programmatically with `Plugin.exec()`
+- **Declarative API**: Configure plugins via server options
+- **Dependency Resolution**: Automatic handling of plugin dependencies
+- **Type Safety**: Full TypeScript support with comprehensive type definitions
+- **Performance**: Minimal overhead with intelligent middleware ordering
 
 ### Use Cases
 
--   Authentication and authorization systems
--   Request/response logging and monitoring
--   Rate limiting and throttling
--   Custom caching strategies
--   API versioning
--   Error tracking and reporting
--   Performance profiling
--   Process management (e.g., Prydam)
+- Authentication and authorization systems
+- Request/response logging and monitoring
+- Rate limiting and throttling
+- Custom caching strategies
+- API versioning
+- Error tracking and reporting
+- Performance profiling
+- Process management (e.g., Prydam)
 
 ---
 
@@ -52,36 +52,36 @@ A XyPriss plugin is a TypeScript/JavaScript object that implements the `XyPrissP
 
 ```typescript
 interface XyPrissPlugin {
-    // Required metadata
-    name: string;
-    version: string;
+  // Required metadata
+  name: string;
+  version: string;
 
-    // Optional metadata
-    description?: string;
-    author?: string;
-    dependencies?: string[];
+  // Optional metadata
+  description?: string;
+  author?: string;
+  dependencies?: string[];
 
-    // Lifecycle hooks
-    onServerStart?: (server: UltraFastApp) => void | Promise<void>;
-    onServerReady?: (server: UltraFastApp) => void | Promise<void>;
-    onServerStop?: (server: UltraFastApp) => void | Promise<void>;
+  // Lifecycle hooks
+  onServerStart?: (server: UltraFastApp) => void | Promise<void>;
+  onServerReady?: (server: UltraFastApp) => void | Promise<void>;
+  onServerStop?: (server: UltraFastApp) => void | Promise<void>;
 
-    // Request/Response hooks
-    onRequest?: (req: Request, res: Response, next: NextFunction) => void;
-    onResponse?: (req: Request, res: Response) => void;
-    onError?: (
-        error: Error,
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) => void;
+  // Request/Response hooks
+  onRequest?: (req: Request, res: Response, next: NextFunction) => void;
+  onResponse?: (req: Request, res: Response) => void;
+  onError?: (
+    error: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => void;
 
-    // Route registration
-    registerRoutes?: (app: UltraFastApp) => void;
+  // Route registration
+  registerRoutes?: (app: UltraFastApp) => void;
 
-    // Middleware
-    middleware?: RequestHandler | RequestHandler[];
-    middlewarePriority?: "first" | "normal" | "last";
+  // Middleware
+  middleware?: RequestHandler | RequestHandler[];
+  middlewarePriority?: "first" | "normal" | "last";
 }
 ```
 
@@ -125,7 +125,7 @@ interface XyPrissPlugin {
 #### Step 1: Install Dependencies
 
 ```bash
-npm install xypriss
+xfpm i xypriss
 # or
 bun add xypriss
 ```
@@ -137,23 +137,23 @@ bun add xypriss
 import { Plugin } from "xypriss";
 
 export const MyPlugin = Plugin.create({
-    name: "my-plugin",
-    version: "1.0.0",
-    description: "My awesome XyPriss plugin",
+  name: "my-plugin",
+  version: "1.0.0",
+  description: "My awesome XyPriss plugin",
 
-    onServerStart(server) {
-        console.log("[MyPlugin] Server starting...");
-    },
+  onServerStart(server) {
+    console.log("[MyPlugin] Server starting...");
+  },
 
-    onServerReady(server) {
-        console.log("[MyPlugin] Server ready!");
-    },
+  onServerReady(server) {
+    console.log("[MyPlugin] Server ready!");
+  },
 
-    registerRoutes(app) {
-        app.get("/plugin/status", (req, res) => {
-            res.json({ status: "active", plugin: "my-plugin" });
-        });
-    },
+  registerRoutes(app) {
+    app.get("/plugin/status", (req, res) => {
+      res.json({ status: "active", plugin: "my-plugin" });
+    });
+  },
 });
 ```
 
@@ -169,7 +169,7 @@ import { MyPlugin } from "./plugins/my-plugin";
 Plugin.exec(MyPlugin);
 
 const app = createServer({
-    server: { port: 3000 },
+  server: { port: 3000 },
 });
 
 app.start();
@@ -182,10 +182,10 @@ import { createServer } from "xypriss";
 import { MyPlugin } from "./plugins/my-plugin";
 
 const app = createServer({
-    server: { port: 3000 },
-    plugins: {
-        register: [MyPlugin],
-    },
+  server: { port: 3000 },
+  plugins: {
+    register: [MyPlugin],
+  },
 });
 
 app.start();
@@ -205,26 +205,26 @@ Plugin.create(config: XyPrissPlugin): XyPrissPlugin
 
 **Parameters:**
 
--   `config`: Plugin configuration object implementing `XyPrissPlugin` interface
+- `config`: Plugin configuration object implementing `XyPrissPlugin` interface
 
 **Returns:**
 
--   Plugin instance ready for registration
+- Plugin instance ready for registration
 
 **Example:**
 
 ```typescript
 const authPlugin = Plugin.create({
-    name: "auth-plugin",
-    version: "1.0.0",
+  name: "auth-plugin",
+  version: "1.0.0",
 
-    onRequest(req, res, next) {
-        const token = req.headers.authorization;
-        if (!token) {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
-        next();
-    },
+  onRequest(req, res, next) {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    next();
+  },
 });
 ```
 
@@ -241,8 +241,8 @@ Plugin.register(
 
 **Parameters:**
 
--   `plugin`: Plugin instance or creator function
--   `config`: Optional configuration object
+- `plugin`: Plugin instance or creator function
+- `config`: Optional configuration object
 
 **Example:**
 
@@ -251,7 +251,7 @@ Plugin.register(authPlugin);
 
 // With configuration
 Plugin.register(authPlugin, {
-    secretKey: process.env.JWT_SECRET,
+  secretKey: process.env.JWT_SECRET,
 });
 ```
 
@@ -270,14 +270,14 @@ Plugin.exec(
 
 ```typescript
 Plugin.exec(
-    Plugin.create({
-        name: "logger",
-        version: "1.0.0",
-        onRequest(req, res, next) {
-            console.log(`${req.method} ${req.url}`);
-            next();
-        },
-    })
+  Plugin.create({
+    name: "logger",
+    version: "1.0.0",
+    onRequest(req, res, next) {
+      console.log(`${req.method} ${req.url}`);
+      next();
+    },
+  }),
 );
 ```
 
@@ -291,18 +291,18 @@ Plugin.get(name: string): XyPrissPlugin | undefined
 
 **Parameters:**
 
--   `name`: Plugin name
+- `name`: Plugin name
 
 **Returns:**
 
--   Plugin instance or `undefined` if not found
+- Plugin instance or `undefined` if not found
 
 **Example:**
 
 ```typescript
 const authPlugin = Plugin.get("auth-plugin");
 if (authPlugin) {
-    console.log("Auth plugin is registered");
+  console.log("Auth plugin is registered");
 }
 ```
 
@@ -318,33 +318,33 @@ Plugin.factory<T = any>(
 
 **Parameters:**
 
--   `creator`: Function that receives configuration and returns a plugin
+- `creator`: Function that receives configuration and returns a plugin
 
 **Returns:**
 
--   Plugin creator function
+- Plugin creator function
 
 **Example:**
 
 ```typescript
 const createRateLimiter = Plugin.factory(
-    (config: { maxRequests: number; windowMs: number }) => ({
-        name: "rate-limiter",
-        version: "1.0.0",
+  (config: { maxRequests: number; windowMs: number }) => ({
+    name: "rate-limiter",
+    version: "1.0.0",
 
-        onRequest(req, res, next) {
-            // Rate limiting logic using config
-            next();
-        },
-    })
+    onRequest(req, res, next) {
+      // Rate limiting logic using config
+      next();
+    },
+  }),
 );
 
 // Use the factory
 Plugin.exec(
-    createRateLimiter({
-        maxRequests: 100,
-        windowMs: 60000,
-    })
+  createRateLimiter({
+    maxRequests: 100,
+    windowMs: 60000,
+  }),
 );
 ```
 
@@ -365,30 +365,30 @@ Called during server initialization, BEFORE the HTTP server starts listening. Th
 
 **Use Cases:**
 
--   Database connection initialization
--   External service authentication
--   Configuration validation
--   Resource allocation
+- Database connection initialization
+- External service authentication
+- Configuration validation
+- Resource allocation
 
 **Important:**
 
--   This hook is BLOCKING - server will not start until it completes
--   Async operations are fully supported
--   Errors will prevent server startup
+- This hook is BLOCKING - server will not start until it completes
+- Async operations are fully supported
+- Errors will prevent server startup
 
 **Example:**
 
 ```typescript
 {
-    onServerStart: async (server) => {
-        // Connect to database
-        await database.connect();
+  onServerStart: async (server) => {
+    // Connect to database
+    await database.connect();
 
-        // Initialize cache
-        await cache.initialize();
+    // Initialize cache
+    await cache.initialize();
 
-        console.log("Plugin initialized successfully");
-    };
+    console.log("Plugin initialized successfully");
+  };
 }
 ```
 
@@ -405,27 +405,27 @@ Called AFTER the HTTP server has started and is ready to accept connections.
 
 **Use Cases:**
 
--   Start background jobs
--   Register with service discovery
--   Send startup notifications
--   Begin health checks
+- Start background jobs
+- Register with service discovery
+- Send startup notifications
+- Begin health checks
 
 **Example:**
 
 ```typescript
 {
-    onServerReady: async (server) => {
-        // Start background job
-        setInterval(() => {
-            performCleanup();
-        }, 60000);
+  onServerReady: async (server) => {
+    // Start background job
+    setInterval(() => {
+      performCleanup();
+    }, 60000);
 
-        // Register with service discovery
-        await serviceRegistry.register({
-            name: "my-service",
-            port: server.getPort(),
-        });
-    };
+    // Register with service discovery
+    await serviceRegistry.register({
+      name: "my-service",
+      port: server.getPort(),
+    });
+  };
 }
 ```
 
@@ -442,24 +442,24 @@ Called when the server is shutting down.
 
 **Use Cases:**
 
--   Close database connections
--   Flush logs
--   Cleanup resources
--   Deregister from service discovery
+- Close database connections
+- Flush logs
+- Cleanup resources
+- Deregister from service discovery
 
 **Example:**
 
 ```typescript
 {
-    onServerStop: async (server) => {
-        // Close connections
-        await database.disconnect();
+  onServerStop: async (server) => {
+    // Close connections
+    await database.disconnect();
 
-        // Flush logs
-        await logger.flush();
+    // Flush logs
+    await logger.flush();
 
-        console.log("Plugin shutdown complete");
-    };
+    console.log("Plugin shutdown complete");
+  };
 }
 ```
 
@@ -476,10 +476,10 @@ Called for EVERY incoming request, before route handlers.
 
 **Use Cases:**
 
--   Request logging
--   Authentication
--   Request modification
--   Metrics collection
+- Request logging
+- Authentication
+- Request modification
+- Metrics collection
 
 **Example:**
 
@@ -513,10 +513,10 @@ Called AFTER the response has been sent to the client.
 
 **Use Cases:**
 
--   Response logging
--   Metrics collection
--   Cleanup operations
--   Audit logging
+- Response logging
+- Metrics collection
+- Cleanup operations
+- Audit logging
 
 **Example:**
 
@@ -550,10 +550,10 @@ Called when an error occurs during request processing.
 
 **Use Cases:**
 
--   Error logging
--   Error reporting to external services
--   Custom error responses
--   Error recovery
+- Error logging
+- Error reporting to external services
+- Custom error responses
+- Error recovery
 
 **Example:**
 
@@ -596,10 +596,10 @@ Called during server initialization to register plugin routes.
 
 **Use Cases:**
 
--   Add API endpoints
--   Health check endpoints
--   Admin interfaces
--   Webhook handlers
+- Add API endpoints
+- Health check endpoints
+- Admin interfaces
+- Webhook handlers
 
 **Example:**
 
@@ -635,23 +635,23 @@ Plugins can declare dependencies on other plugins. The plugin manager will autom
 
 ```typescript
 const databasePlugin = Plugin.create({
-    name: "database",
-    version: "1.0.0",
+  name: "database",
+  version: "1.0.0",
 
-    onServerStart: async () => {
-        await database.connect();
-    },
+  onServerStart: async () => {
+    await database.connect();
+  },
 });
 
 const authPlugin = Plugin.create({
-    name: "auth",
-    version: "1.0.0",
-    dependencies: ["database"], // Requires database plugin
+  name: "auth",
+  version: "1.0.0",
+  dependencies: ["database"], // Requires database plugin
 
-    onServerStart: async () => {
-        // Database is guaranteed to be connected
-        await loadUsers();
-    },
+  onServerStart: async () => {
+    // Database is guaranteed to be connected
+    await loadUsers();
+  },
 });
 
 Plugin.exec(authPlugin);
@@ -674,9 +674,9 @@ Control when your middleware executes relative to other plugins.
 
 **Priority Levels:**
 
--   `first`: Executes before all other middleware
--   `normal`: Default priority (default)
--   `last`: Executes after all other middleware
+- `first`: Executes before all other middleware
+- `normal`: Default priority (default)
+- `last`: Executes after all other middleware
 
 ### Multiple Middleware
 
@@ -684,16 +684,16 @@ Plugins can register multiple middleware functions.
 
 ```typescript
 {
-    middleware: [
-        (req, res, next) => {
-            // First middleware
-            next();
-        },
-        (req, res, next) => {
-            // Second middleware
-            next();
-        },
-    ];
+  middleware: [
+    (req, res, next) => {
+      // First middleware
+      next();
+    },
+    (req, res, next) => {
+      // Second middleware
+      next();
+    },
+  ];
 }
 ```
 
@@ -703,39 +703,39 @@ Use `Plugin.factory()` to create configurable plugins.
 
 ```typescript
 interface CacheConfig {
-    ttl: number;
-    maxSize: number;
-    strategy: "lru" | "lfu";
+  ttl: number;
+  maxSize: number;
+  strategy: "lru" | "lfu";
 }
 
 export const createCachePlugin = Plugin.factory<CacheConfig>((config) => ({
-    name: "cache-plugin",
-    version: "1.0.0",
+  name: "cache-plugin",
+  version: "1.0.0",
 
-    onServerStart: async () => {
-        await cache.initialize({
-            ttl: config.ttl,
-            maxSize: config.maxSize,
-            strategy: config.strategy,
-        });
-    },
+  onServerStart: async () => {
+    await cache.initialize({
+      ttl: config.ttl,
+      maxSize: config.maxSize,
+      strategy: config.strategy,
+    });
+  },
 
-    onRequest(req, res, next) {
-        const cached = cache.get(req.url);
-        if (cached) {
-            return res.json(cached);
-        }
-        next();
-    },
+  onRequest(req, res, next) {
+    const cached = cache.get(req.url);
+    if (cached) {
+      return res.json(cached);
+    }
+    next();
+  },
 }));
 
 // Usage
 Plugin.exec(
-    createCachePlugin({
-        ttl: 3600,
-        maxSize: 1000,
-        strategy: "lru",
-    })
+  createCachePlugin({
+    ttl: 3600,
+    maxSize: 1000,
+    strategy: "lru",
+  }),
 );
 ```
 
@@ -749,15 +749,15 @@ Always handle errors gracefully in your plugins.
 
 ```typescript
 {
-    onServerStart: async (server) => {
-        try {
-            await externalService.connect();
-        } catch (error) {
-            console.error("Failed to connect to external service:", error);
-            // Decide: fail fast or continue with degraded functionality
-            throw error; // Prevents server startup
-        }
-    };
+  onServerStart: async (server) => {
+    try {
+      await externalService.connect();
+    } catch (error) {
+      console.error("Failed to connect to external service:", error);
+      // Decide: fail fast or continue with degraded functionality
+      throw error; // Prevents server startup
+    }
+  };
 }
 ```
 
@@ -809,18 +809,18 @@ Use descriptive, unique names for your plugins.
 ```typescript
 // Bad
 {
-    name: "plugin";
+  name: "plugin";
 }
 
 // Good
 {
-    name: "xypriss-auth-jwt";
+  name: "xypriss-auth-jwt";
 }
 {
-    name: "xypriss-logger-winston";
+  name: "xypriss-logger-winston";
 }
 {
-    name: "xypriss-cache-redis";
+  name: "xypriss-cache-redis";
 }
 ```
 
@@ -854,7 +854,7 @@ Document your plugin's configuration and usage.
  * ```
  */
 export const createJWTAuth = Plugin.factory<JWTConfig>((config) => ({
-    // Plugin implementation
+  // Plugin implementation
 }));
 ````
 
@@ -880,19 +880,19 @@ my-xypriss-plugin/
 
 ```json
 {
-    "name": "@yourorg/xypriss-plugin-name",
-    "version": "1.0.0",
-    "description": "Description of your plugin",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "keywords": ["xypriss", "plugin", "your-keywords"],
-    "peerDependencies": {
-        "xypriss": "^4.5.0"
-    },
-    "devDependencies": {
-        "xypriss": "^4.5.11",
-        "typescript": "^5.0.0"
-    }
+  "name": "@yourorg/xypriss-plugin-name",
+  "version": "1.0.0",
+  "description": "Description of your plugin",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": ["xypriss", "plugin", "your-keywords"],
+  "peerDependencies": {
+    "xypriss": "^4.5.0"
+  },
+  "devDependencies": {
+    "xypriss": "^4.5.11",
+    "typescript": "^5.0.0"
+  }
 }
 ```
 
@@ -952,24 +952,22 @@ npm publish --access public
 import { Plugin } from "xypriss";
 
 export const RequestLogger = Plugin.create({
-    name: "request-logger",
-    version: "1.0.0",
-    description: "Logs all incoming requests",
+  name: "request-logger",
+  version: "1.0.0",
+  description: "Logs all incoming requests",
 
-    onRequest(req, res, next) {
-        const start = Date.now();
-        req.startTime = start;
+  onRequest(req, res, next) {
+    const start = Date.now();
+    req.startTime = start;
 
-        console.log(`--> ${req.method} ${req.url}`);
-        next();
-    },
+    console.log(`--> ${req.method} ${req.url}`);
+    next();
+  },
 
-    onResponse(req, res) {
-        const duration = Date.now() - req.startTime;
-        console.log(
-            `<-- ${req.method} ${req.url} ${res.statusCode} ${duration}ms`
-        );
-    },
+  onResponse(req, res) {
+    const duration = Date.now() - req.startTime;
+    console.log(`<-- ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+  },
 });
 ```
 
@@ -979,35 +977,35 @@ export const RequestLogger = Plugin.create({
 import { Plugin } from "xypriss";
 
 interface AuthConfig {
-    apiKeys: string[];
-    headerName?: string;
+  apiKeys: string[];
+  headerName?: string;
 }
 
 export const createAPIKeyAuth = Plugin.factory<AuthConfig>((config) => ({
-    name: "api-key-auth",
-    version: "1.0.0",
+  name: "api-key-auth",
+  version: "1.0.0",
 
-    onRequest(req, res, next) {
-        const headerName = config.headerName || "x-api-key";
-        const apiKey = req.headers[headerName];
+  onRequest(req, res, next) {
+    const headerName = config.headerName || "x-api-key";
+    const apiKey = req.headers[headerName];
 
-        if (!apiKey || !config.apiKeys.includes(apiKey as string)) {
-            return res.status(401).json({
-                error: "Unauthorized",
-                message: "Invalid or missing API key",
-            });
-        }
+    if (!apiKey || !config.apiKeys.includes(apiKey as string)) {
+      return res.status(401).json({
+        error: "Unauthorized",
+        message: "Invalid or missing API key",
+      });
+    }
 
-        next();
-    },
+    next();
+  },
 }));
 
 // Usage
 Plugin.exec(
-    createAPIKeyAuth({
-        apiKeys: ["key1", "key2", "key3"],
-        headerName: "x-api-key",
-    })
+  createAPIKeyAuth({
+    apiKeys: ["key1", "key2", "key3"],
+    headerName: "x-api-key",
+  }),
 );
 ```
 
@@ -1017,51 +1015,51 @@ Plugin.exec(
 import { Plugin } from "xypriss";
 
 interface RateLimitConfig {
-    maxRequests: number;
-    windowMs: number;
+  maxRequests: number;
+  windowMs: number;
 }
 
 export const createRateLimiter = Plugin.factory<RateLimitConfig>((config) => {
-    const requests = new Map<string, number[]>();
+  const requests = new Map<string, number[]>();
 
-    return {
-        name: "rate-limiter",
-        version: "1.0.0",
+  return {
+    name: "rate-limiter",
+    version: "1.0.0",
 
-        onRequest(req, res, next) {
-            const ip = req.ip || req.connection.remoteAddress;
-            const now = Date.now();
+    onRequest(req, res, next) {
+      const ip = req.ip || req.connection.remoteAddress;
+      const now = Date.now();
 
-            if (!requests.has(ip)) {
-                requests.set(ip, []);
-            }
+      if (!requests.has(ip)) {
+        requests.set(ip, []);
+      }
 
-            const timestamps = requests.get(ip)!;
-            const validTimestamps = timestamps.filter(
-                (t) => now - t < config.windowMs
-            );
+      const timestamps = requests.get(ip)!;
+      const validTimestamps = timestamps.filter(
+        (t) => now - t < config.windowMs,
+      );
 
-            if (validTimestamps.length >= config.maxRequests) {
-                return res.status(429).json({
-                    error: "Too Many Requests",
-                    retryAfter: Math.ceil(config.windowMs / 1000),
-                });
-            }
+      if (validTimestamps.length >= config.maxRequests) {
+        return res.status(429).json({
+          error: "Too Many Requests",
+          retryAfter: Math.ceil(config.windowMs / 1000),
+        });
+      }
 
-            validTimestamps.push(now);
-            requests.set(ip, validTimestamps);
+      validTimestamps.push(now);
+      requests.set(ip, validTimestamps);
 
-            next();
-        },
-    };
+      next();
+    },
+  };
 });
 
 // Usage
 Plugin.exec(
-    createRateLimiter({
-        maxRequests: 100,
-        windowMs: 60000, // 1 minute
-    })
+  createRateLimiter({
+    maxRequests: 100,
+    windowMs: 60000, // 1 minute
+  }),
 );
 ```
 
@@ -1071,28 +1069,28 @@ Plugin.exec(
 import { Plugin } from "xypriss";
 
 export const HealthCheckPlugin = Plugin.create({
-    name: "health-check",
-    version: "1.0.0",
+  name: "health-check",
+  version: "1.0.0",
 
-    registerRoutes(app) {
-        app.get("/health", (req, res) => {
-            res.json({
-                status: "healthy",
-                uptime: process.uptime(),
-                memory: process.memoryUsage(),
-                timestamp: new Date().toISOString(),
-            });
-        });
+  registerRoutes(app) {
+    app.get("/health", (req, res) => {
+      res.json({
+        status: "healthy",
+        uptime: process.uptime(),
+        memory: process.memoryUsage(),
+        timestamp: new Date().toISOString(),
+      });
+    });
 
-        app.get("/ready", (req, res) => {
-            // Check if all dependencies are ready
-            const ready = checkDependencies();
-            res.status(ready ? 200 : 503).json({
-                ready,
-                timestamp: new Date().toISOString(),
-            });
-        });
-    },
+    app.get("/ready", (req, res) => {
+      // Check if all dependencies are ready
+      const ready = checkDependencies();
+      res.status(ready ? 200 : 503).json({
+        ready,
+        timestamp: new Date().toISOString(),
+      });
+    });
+  },
 });
 ```
 
@@ -1102,44 +1100,44 @@ export const HealthCheckPlugin = Plugin.create({
 import { Plugin } from "xypriss";
 
 interface ErrorTrackerConfig {
-    apiKey: string;
-    environment: string;
+  apiKey: string;
+  environment: string;
 }
 
 export const createErrorTracker = Plugin.factory<ErrorTrackerConfig>(
-    (config) => ({
-        name: "error-tracker",
-        version: "1.0.0",
+  (config) => ({
+    name: "error-tracker",
+    version: "1.0.0",
 
-        onError: async (error, req, res, next) => {
-            // Send error to tracking service
-            await fetch("https://error-tracker.example.com/api/errors", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-API-Key": config.apiKey,
-                },
-                body: JSON.stringify({
-                    error: {
-                        message: error.message,
-                        stack: error.stack,
-                        name: error.name,
-                    },
-                    request: {
-                        method: req.method,
-                        url: req.url,
-                        headers: req.headers,
-                        ip: req.ip,
-                    },
-                    environment: config.environment,
-                    timestamp: new Date().toISOString(),
-                }),
-            });
-
-            // Continue error handling
-            next();
+    onError: async (error, req, res, next) => {
+      // Send error to tracking service
+      await fetch("https://error-tracker.example.com/api/errors", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": config.apiKey,
         },
-    })
+        body: JSON.stringify({
+          error: {
+            message: error.message,
+            stack: error.stack,
+            name: error.name,
+          },
+          request: {
+            method: req.method,
+            url: req.url,
+            headers: req.headers,
+            ip: req.ip,
+          },
+          environment: config.environment,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      // Continue error handling
+      next();
+    },
+  }),
 );
 ```
 
@@ -1147,12 +1145,11 @@ export const createErrorTracker = Plugin.factory<ErrorTrackerConfig>(
 
 ## Support and Resources
 
--   **Documentation**: https://docs.xypriss.nehonix.com
--   **GitHub**: https://github.com/Nehonix-Team/xypriss
--   **Issues**: https://github.com/Nehonix-Team/xypriss/issues
+- **Documentation**: https://docs.xypriss.nehonix.com
+- **GitHub**: https://github.com/Nehonix-Team/xypriss
+- **Issues**: https://github.com/Nehonix-Team/xypriss/issues
 
 ---
 
 **Copyright** 2025 Nehonix Team  
 **License**: MIT
-

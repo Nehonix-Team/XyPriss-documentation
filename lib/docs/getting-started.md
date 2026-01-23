@@ -24,10 +24,10 @@ You can install XyPriss via your preferred package manager.
 
 ```bash
 # Using npm
-npm install xypriss
+xfpm i xypriss
 
 # Optional: Install the security module for enhanced protection
-npm install xypriss-security
+xfpm i xypriss-security
 ```
 
 ### TypeScript Setup (Recommended)
@@ -322,22 +322,25 @@ Create `xypriss.config.json`:
 
 ```json
 {
-  "server": {
-    "port": 3000,
-    "host": "0.0.0.0",
-    "autoPortSwitch": {
-      "enabled": true,
-      "portRange": [3000, 3010]
+  "$internal": {
+    "$plg": {
+      "__meta__": {
+        "path": "#$./plugin/directory" [#! Ce commentaire est interne et ne sera pas copié !#]
+
+      },
+      "__xfs__": {
+        "path": "$#./path/to/xfs/directory"
+      }
     }
   },
-  "cache": {
-    "strategy": "memory",
-    "maxSize": 104857600,
-    "ttl": 3600
-  },
-  "cluster": {
-    "enabled": false,
-    "workers": "auto"
+  "__sys__": {
+    "__PORT__": 4567,
+    "__alias__": "my-app",
+    "__author__": "Nehonix-Team",
+    "__description__": "A starter XyPriss server for building secure web applications",
+    "__name__": "my-app",
+    "__port__": 4567,
+    "__version__": "1.0.0"
   }
 }
 ```
@@ -373,6 +376,7 @@ describe("XyPriss App", () => {
 });
 ```
 
+<!--
 ## Performance Monitoring
 
 ```typescript
@@ -390,7 +394,7 @@ server.get("/cache-stats", (req, res) => {
   const stats = cache.getStats();
   res.json(stats);
 });
-```
+``` -->
 
 ## Next Steps
 

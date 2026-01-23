@@ -2,14 +2,10 @@ import { notFound } from "next/navigation";
 
 export const revalidate = 14400; // 4 hours
 import { getAllDocs, getDocBySlug } from "@/lib/doc-helper";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
-import "highlight.js/styles/tokyo-night-dark.css";
 import { Metadata } from "next";
 import { Pager } from "@/components/pager";
-import Link from "next/link";
 import { SearchHighlight } from "@/components/search-highlight";
+import { CodeBlock } from "@/components/ui/code-block";
 
 interface DocPageProps {
   params: Promise<{
@@ -60,9 +56,11 @@ export default async function DocPage({ params }: DocPageProps) {
 }
 
 function renderDoc(doc: any, slugPath: string) {
-  // Robust Link Sanitization for Internal Links
-  // This physically replaces text in the markdown before rendering
-  const sanitizedContent = doc.content.replace(
+  // 0. Remove HTML comments
+  let sanitizedContent = doc.content.replace(/<!--[\s\S]*?-->/g, "");
+
+  // 1. Robust Link Sanitization for Internal Links
+  sanitizedContent = sanitizedContent.replace(
     /\[(.*?)\]\((.*?)\)/g,
     (match: string, text: string, href: string) => {
       if (
@@ -73,14 +71,9 @@ function renderDoc(doc: any, slugPath: string) {
         return match;
       }
 
-      // 1. Remove .md or .mdx
       let target = href.replace(/\.mdx?$/, "");
-
-      // 2. Remove relative symbols like ../ or ./ and normalize leading slashes
       target = target.replace(/^(\.\.?\/)+/, "");
       target = target.replace(/^\/+/, "");
-
-      // 3. Ensure it starts with /docs/ exactly once
       const cleanHref = `/docs/${target.replace(/^docs\//, "")}`;
 
       return `[${text}](${cleanHref})`;
@@ -89,39 +82,12 @@ function renderDoc(doc: any, slugPath: string) {
 
   return (
     <article className="prose prose-zinc dark:prose-invert max-w-none pb-12 documentation-article">
-      {/* <div className="space-y-2 mb-6">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {doc.frontmatter.title ||
-            doc.slug.split("/").pop().replace(/_/g, " ")}
-        </h1>
-        {doc.frontmatter.description && (
-          <p className="text-xl text-muted-foreground">
-            {doc.frontmatter.description}
-          </p>
-        )}
-        <hr className="my-6 border-zinc-800" />
-      </div> */}
-
       <SearchHighlight />
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeHighlight]}
-        components={{
-          // Simple link component mapping for Next.js routing
-          a: ({ href, children }) => {
-            const isExternal = href?.startsWith("http");
-            if (isExternal)
-              return (
-                <a href={href} target="_blank" rel="noopener">
-                  {children}
-                </a>
-              );
-            return <Link href={href || "#"}>{children}</Link>;
-          },
-        }}
-      >
-        {sanitizedContent}
-      </ReactMarkdown>
+      {/* 
+          All documentation rendering (Markdown, Highlighting, Code Blocks) 
+          is now encapsulated in the CodeBlock component. 
+      */}
+      <CodeBlock code={sanitizedContent} isMarkdown />
 
       <Pager slug={slugPath} />
     </article>

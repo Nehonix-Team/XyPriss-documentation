@@ -371,6 +371,24 @@
     box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
     animation: kw-pulse 12s infinite alternate;
   }
+
+  /* Internal Comments - Hidden from copy and styling */
+  .internal-comment {
+    user-select: none !important;
+    pointer-events: none !important;
+    color: var(--doc-text-muted) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    font-style: italic !important;
+    font-size: 0.85em !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin: 0 6px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    opacity: 0.8;
+  }
 }
 
 @keyframes kw-pulse {

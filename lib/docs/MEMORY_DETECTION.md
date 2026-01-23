@@ -6,24 +6,24 @@ XyPriss uses a sophisticated cross-platform memory detection system to provide a
 
 ### 1. **MCLI (Memory CLI) Binary** (Primary Method)
 
--   **Location**: Downloaded to `bin/` directory during installation
--   **Accuracy**: Highest - uses native OS APIs
--   **Platforms**: Linux, macOS, Windows (x64 and ARM64)
--   **Size**: ~3MB per binary
+- **Location**: Downloaded to `bin/` directory during installation
+- **Accuracy**: Highest - uses native OS APIs
+- **Platforms**: Linux, macOS, Windows (x64 and ARM64)
+- **Size**: ~3MB per binary
 
 ### 2. **Node.js Fallback** (Secondary Method)
 
--   **Trigger**: When Go CLI is unavailable
--   **Accuracy**: Good on Linux (uses `/proc/meminfo`), limited on other platforms
--   **Platforms**: All Node.js supported platforms
--   **Size**: No additional overhead
+- **Trigger**: When Go CLI is unavailable
+- **Accuracy**: Good on Linux (uses `/proc/meminfo`), limited on other platforms
+- **Platforms**: All Node.js supported platforms
+- **Size**: No additional overhead
 
 ## Installation Process
 
 ### Automatic Installation (Recommended)
 
 ```bash
-npm install xypriss
+xfpm i xypriss
 # Automatically downloads platform-specific binary during postinstall
 ```
 
@@ -47,13 +47,13 @@ SKIP_BINARY_DOWNLOAD=true npm install
 
 ### CDN Hosting
 
--   **Base URL**: `https://dll.nehonix.com/dl/mds/xypriss/bin/`
--   **Binaries**:
-    -   [memory-cli-linux-x64](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
-    -   [memory-cli-darwin-x64](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
-    -   [memory-cli-darwin-arm64](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
-    -   [memory-cli-windows-x64.exe](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
-    -   [memory-cli-windows-arm64.exe](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
+- **Base URL**: `https://dll.nehonix.com/dl/mds/xypriss/bin/`
+- **Binaries**:
+  - [memory-cli-linux-x64](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
+  - [memory-cli-darwin-x64](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
+  - [memory-cli-darwin-arm64](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
+  - [memory-cli-windows-x64.exe](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
+  - [memory-cli-windows-arm64.exe](https://dll.nehonix.com/dl/mds/xypriss/bin/memory-cli-linux-x64)
 
 ### Platform Detection
 
@@ -70,17 +70,17 @@ This is the output based on our test, results may be different based on your sys
 
 ```json
 {
-    "platform": "linux", // your plateforme type
-    "totalMemory": 8080842752,
-    "availableMemory": 2674950144, // Available for applications
-    "freeMemory": 610963456, // Truly free memory
-    "usedMemory": 5405892608,
-    "usagePercentage": 66.9,
-    "buffersMemory": 72757248, // Linux/Unix only
-    "cachedMemory": 3027869696, // Linux/Unix only
-    "swapTotal": 8334077952,
-    "swapUsed": 1614811136,
-    "swapFree": 6719266816
+  "platform": "linux", // your plateforme type
+  "totalMemory": 8080842752,
+  "availableMemory": 2674950144, // Available for applications
+  "freeMemory": 610963456, // Truly free memory
+  "usedMemory": 5405892608,
+  "usagePercentage": 66.9,
+  "buffersMemory": 72757248, // Linux/Unix only
+  "cachedMemory": 3027869696, // Linux/Unix only
+  "swapTotal": 8334077952,
+  "swapUsed": 1614811136,
+  "swapFree": 6719266816
 }
 ```
 
@@ -88,21 +88,21 @@ This is the output based on our test, results may be different based on your sys
 
 #### Linux
 
--   **Source**: `/proc/meminfo`
--   **Key Metric**: `MemAvailable` (includes freeable buffers/cache)
--   **Accuracy**: Excellent
+- **Source**: `/proc/meminfo`
+- **Key Metric**: `MemAvailable` (includes freeable buffers/cache)
+- **Accuracy**: Excellent
 
 #### macOS
 
--   **Source**: `vm_stat` + `sysctl`
--   **Key Metric**: Free + Inactive + Speculative pages
--   **Accuracy**: Very Good
+- **Source**: `vm_stat` + `sysctl`
+- **Key Metric**: Free + Inactive + Speculative pages
+- **Accuracy**: Very Good
 
 #### Windows
 
--   **Source**: `wmic` + Performance Counters
--   **Key Metric**: Available Bytes counter
--   **Accuracy**: Very Good
+- **Source**: `wmic` + Performance Counters
+- **Key Metric**: Available Bytes counter
+- **Accuracy**: Very Good
 
 ## Usage in Code
 
@@ -115,7 +115,7 @@ const memory = new CPM(true); // Enable fallback
 const info = await memory.getMemoryInfo();
 
 console.log(
-    `Available: ${CrossPlatformMemory.formatMemory(info.availableMemory)}`
+  `Available: ${CrossPlatformMemory.formatMemory(info.availableMemory)}`,
 );
 ```
 
@@ -203,4 +203,3 @@ GOOS=windows GOARCH=arm64 go build -o memory-cli-windows-arm64.exe
 2. **Compression**: Reduce binary sizes with UPX
 3. **Caching**: Local cache for repeated downloads
 4. **Auto-Updates**: Automatic binary updates
-

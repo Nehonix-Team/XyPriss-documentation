@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "XyPriss - Hybrid Rust + TypeScript Web Framework",
   keywords: keywords,
   authors,
+  publisher: "NEHONIX",
   description:
     "Hybrid Rust + TypeScript framework bridging the power of Rust with the flexibility of Node.js. Built for performance, security, and scale.",
   icons: {
@@ -64,8 +65,8 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
           {children}

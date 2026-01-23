@@ -63,7 +63,7 @@ To work on XyPriss locally, you'll need:
 xfpm install
 
 # Run in development mode
-npm run dev
+xfpm dev
 ```
 
 ## Community

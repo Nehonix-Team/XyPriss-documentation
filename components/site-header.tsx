@@ -72,7 +72,7 @@ export function SiteHeader() {
             </a>
           </Button>
           <Button size="sm" asChild>
-            <Link href="#quickstart">Get Started</Link>
+            <Link href="/docs/QUICK_START">Get Started</Link>
           </Button>
         </div>
       </div>

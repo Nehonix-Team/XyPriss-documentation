@@ -43,7 +43,7 @@ _Note: The installer automatically detects your platform and downloads the appro
 ### Initialize a project
 
 ```bash
-xfpm init
+xfpm init --name my-app --port 4567 --author Nehonix-Team --desc 'A starter XyPriss server for building secure web applications'
 ```
 
 ### Install dependencies

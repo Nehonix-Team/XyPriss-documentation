@@ -17,10 +17,10 @@ import compression from "xypriss-compression-pluging";
 
 // Named exports
 import {
-    shouldCompress, // Filter function
-    CompressionOptions, // Type for options
-    CompressionResponse, // Type for response
-    CompressionPlugin, // XyPriss plugin class
+  shouldCompress, // Filter function
+  CompressionOptions, // Type for options
+  CompressionResponse, // Type for response
+  CompressionPlugin, // XyPriss plugin class
 } from "xypriss-compression-pluging";
 ```
 
@@ -30,13 +30,13 @@ import {
 
 **File**: `.xypriss-compression-dev/src/compression.ts`
 
--   ✅ Exported `CompressionOptions` interface
--   ✅ Exported `CompressionResponse` interface
+- ✅ Exported `CompressionOptions` interface
+- ✅ Exported `CompressionResponse` interface
 
 **File**: `.xypriss-compression-dev/src/index.ts`
 
--   ✅ Exported types properly
--   ✅ Exported `shouldCompress` as named export
+- ✅ Exported types properly
+- ✅ Exported `shouldCompress` as named export
 
 ### 2. XyPriss Integration
 
@@ -66,7 +66,7 @@ return shouldCompress(req, res);
 
 ```bash
 # Install the package
-npm install xypriss-compression-pluging@1.0.1
+xfpm i xypriss-compression-pluging@1.0.1
 
 # Test compression
 curl -H "Accept-Encoding: gzip" -v http://localhost:PORT/endpoint
@@ -112,4 +112,3 @@ pluginManager.registerRoutes(app); // Routes are now wrapped
 **Status**: COMPLETE ✅  
 **Version**: xypriss-compression-pluging@1.0.1  
 **Date**: 2025-12-11
-

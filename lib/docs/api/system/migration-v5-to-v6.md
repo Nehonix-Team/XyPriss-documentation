@@ -22,9 +22,9 @@ const usage = __sys__.$diskUsage("/");
 // Use $disks instead
 const disk = __sys__.$disks("/") as DiskInfo;
 const usage = {
-    total: disk.total_space,
-    used: disk.used_space,
-    available: disk.available_space,
+  total: disk.total_space,
+  used: disk.used_space,
+  available: disk.available_space,
 };
 ```
 
@@ -36,9 +36,9 @@ const usage = {
 
 ```typescript
 interface FileStats {
-    modified: string; // ISO string
-    created: string; // ISO string
-    accessed: string; // ISO string
+  modified: string; // ISO string
+  created: string; // ISO string
+  accessed: string; // ISO string
 }
 ```
 
@@ -46,9 +46,9 @@ interface FileStats {
 
 ```typescript
 interface FileStats {
-    modified: number; // Unix timestamp (seconds)
-    created: number; // Unix timestamp (seconds)
-    accessed: number; // Unix timestamp (seconds)
+  modified: number; // Unix timestamp (seconds)
+  created: number; // Unix timestamp (seconds)
+  accessed: number; // Unix timestamp (seconds)
 }
 ```
 
@@ -211,7 +211,7 @@ const apiKey = __sys__.__ENV__.get("API_KEY");
 
 // With validation
 if (!__sys__.__ENV__.has("API_KEY")) {
-    throw new Error("API_KEY required");
+  throw new Error("API_KEY required");
 }
 ```
 
@@ -221,8 +221,8 @@ if (!__sys__.__ENV__.has("API_KEY")) {
 
 ```typescript
 if (__sys__.$exists("file.txt")) {
-    const content = __sys__.$read("file.txt");
-    const lines = content.split("\n");
+  const content = __sys__.$read("file.txt");
+  const lines = content.split("\n");
 }
 ```
 
@@ -231,7 +231,7 @@ if (__sys__.$exists("file.txt")) {
 ```typescript
 // More concise
 if (__sys__.$exists("file.txt")) {
-    const lines = __sys__.$readLines("file.txt");
+  const lines = __sys__.$readLines("file.txt");
 }
 
 // Or even simpler for non-empty lines
@@ -244,9 +244,9 @@ const lines = __sys__.$readNonEmptyLines("file.txt");
 
 ```typescript
 try {
-    __sys__.$mkdir("dir");
+  __sys__.$mkdir("dir");
 } catch (error) {
-    // Directory might already exist
+  // Directory might already exist
 }
 ```
 
@@ -258,7 +258,7 @@ __sys__.$ensureDir("dir");
 
 // Or check first
 if (!__sys__.$exists("dir")) {
-    __sys__.$mkdir("dir");
+  __sys__.$mkdir("dir");
 }
 ```
 
@@ -305,14 +305,14 @@ console.log(`Download: ${network.download_speed} bytes/sec`);
 ```typescript
 // v6 provides comprehensive type definitions
 import type {
-    SystemInfo,
-    CpuUsage,
-    MemoryInfo,
-    DiskInfo,
-    NetworkStats,
-    ProcessInfo,
-    FileStats,
-    SearchMatch,
+  SystemInfo,
+  CpuUsage,
+  MemoryInfo,
+  DiskInfo,
+  NetworkStats,
+  ProcessInfo,
+  FileStats,
+  SearchMatch,
 } from "xypriss";
 ```
 
@@ -393,7 +393,7 @@ console.assert(typeof network.upload_speed === "number");
 console.assert(Array.isArray(network.interfaces));
 
 network.interfaces.forEach((iface) => {
-    console.assert(Array.isArray(iface.ip_addresses));
+  console.assert(Array.isArray(iface.ip_addresses));
 });
 ```
 
@@ -470,7 +470,7 @@ console.log(network.download_speed); // Accurate value
 ### Phase 1: Update Dependencies
 
 ```bash
-npm install xypriss@^6.0.0
+xfpm i xypriss@^6.0.0
 # or
 bun add xypriss@^6.0.0
 ```
@@ -497,11 +497,10 @@ bun add xypriss@^6.0.0
 
 For migration assistance:
 
--   GitHub Issues: [XyPriss Issues](https://github.com/Nehonix-Team/XyPriss/issues)
--   Documentation: [System API Docs](./README.md)
+- GitHub Issues: [XyPriss Issues](https://github.com/Nehonix-Team/XyPriss/issues)
+- Documentation: [System API Docs](./README.md)
 
 ---
 
 **Version:** XyPriss v6.0.0+  
 **Last Updated:** 2026-01-12
-

@@ -33,7 +33,6 @@ At its core, XyPriss is engineered for universal high-performance. We provide na
 | **macOS**   | x86_64 (Intel)          | 🛠️ Source-only\* |
 | **macOS**   | aarch64 (Apple Silicon) | 🛠️ Source-only\* |
 
-
 _We are committed to future-proofing our engine for emerging architectures like RISC-V._
 
 At its heart lies **XHSC (XyPriss Hybrid Server Core)**, a high-performance Rust engine that handles low-level networking, advanced routing, and system telemetry. This unique hybrid architecture allows developers to build secure, scalable applications using TypeScript while benefiting from Rust's raw performance and multi-core efficiency.
@@ -72,8 +71,7 @@ Alternatively, using standard package managers:
 
 ```bash
 xfpm i xypriss
-# or
-yarn add xypriss
+
 ```
 
 For additional security features:
@@ -89,7 +87,7 @@ xfpm install xypriss-security
 ### Using CLI
 
 ```bash
-xfpm init
+xfpm init --name my-app --port 4567 --author Nehonix-Team --desc 'A starter XyPriss server for building secure web applications'
 cd my-app
 xyp dev
 ```
@@ -100,12 +98,12 @@ xyp dev
 import { createServer } from "xypriss";
 
 const app = createServer({
-    server: { port: 3000 },
-    security: { enabled: true },
+  server: { port: 3000 },
+  security: { enabled: true },
 });
 
 app.get("/", (req, res) => {
-    res.json({ message: "Hello from XyPriss" });
+  res.json({ message: "Hello from XyPriss" });
 });
 
 app.start();
@@ -237,4 +235,3 @@ XyPriss is maintained by [Nehonix](https://github.com/Nehonix-Team) and its [con
 [![GitHub](https://img.shields.io/badge/GitHub-Nehonix--Team-black?style=for-the-badge&logo=github)](https://github.com/Nehonix-Team)
 
 </div>
-

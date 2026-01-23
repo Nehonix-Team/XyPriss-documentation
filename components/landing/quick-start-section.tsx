@@ -59,7 +59,7 @@ export function QuickStartSection() {
                     <p className="mb-2 text-sm font-medium">
                       2. Create a new project
                     </p>
-                    <CodeBlock code="xfpm init" />
+                    <CodeBlock code="xfpm init --name my-app --port 4567 --author Nehonix-Team --desc 'A starter XyPriss server for building secure web applications'" />
                   </div>
                   <div>
                     <p className="mb-2 text-sm font-medium">

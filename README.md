@@ -59,7 +59,7 @@ To run the documentation locally:
 3. **Start the development server**:
 
    ```bash
-   npm run dev
+   xfpm dev
    ```
 
 4. **Visit the site**:

@@ -1,0 +1,22 @@
+{
+  "$internal": {
+    "$plg": {
+      "__meta__": {
+        "path": "#$./plugin/directory" [#! Ce commentaire est interne et ne sera pas copié !#]
+
+      },
+      "__xfs__": {
+        "path": "$#./path/to/xfs/directory"
+      }
+    }
+  },
+  "__sys__": {
+    "__PORT__": 4567,
+    "__alias__": "my-app",
+    "__author__": "Nehonix-Team",
+    "__description__": "A starter XyPriss server for building secure web applications",
+    "__name__": "my-app",
+    "__port__": 4567,
+    "__version__": "1.0.0"
+  }
+}
