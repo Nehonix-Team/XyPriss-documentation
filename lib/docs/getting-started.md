@@ -176,11 +176,12 @@ const server = createServer({
   // Security middleware is enabled by default
 });
 
-// XyPriss automatically includes:
-// - Helmet for security headers
-// - CORS support
-// - Rate limiting
-// - Input validation
+// Security notice [!#securityNotice::
+XyPriss automatically includes:
+ - Helmet for security headers
+ - CORS support
+ - Rate limiting
+ - Input validation /!]
 ```
 
 ### With XyPriss Security Module

@@ -69,21 +69,27 @@ To run the documentation locally:
 
 ## Interactive Documentation Syntax
 
-To create interactive code blocks with floating details and flux connectors, use the following syntax inside your markdown code blocks:
+To create interactive code blocks with floating details and flux connectors, use the following syntax inside your markdown code blocks. **Tags can be placed anywhere (inline, beginning of line, or as comments).**
 
 ### 1. Master Trigger (Zap Icon)
 
 Defines the main explanation for a piece of code.
 
-- **Syntax**: `[!#id::Your detail content here]`
-- **Example**: `workers: "auto", // [!#cluster::Detects available CPU cores]`
+- **Single-line Syntax**: `[!#id::Your detail content here]`
+- **Multi-line Syntax**:
+  ```text
+  [!#id::
+  Line 1
+  Line 2 /!]
+  ```
+- **Example**: `workers: "auto", [!#cluster::Detects available CPU cores]`
 
 ### 2. Secondary Trigger (Branch Icon)
 
 Connects another line of code to an existing Master explanation using the same `id`.
 
 - **Syntax**: `[!^id::]`
-- **Example**: `strategy: "least-conn", // [!^cluster::]`
+- **Example**: `strategy: "least-conn", [!^cluster::]`
 
 ### 3. Rich Links
 
@@ -92,7 +98,7 @@ You can add interactive links inside the detail content.
 - **Syntax**: `<link to="URL">Label</link>`
 - **Example**: `[!#api::See our <link to="/docs/api">Full API</link>]`
 
-_Note: These markers are automatically stripped when a user clicks the "Copy" button, ensuring the code remains clean._
+_Note: These markers and their content are automatically stripped when a user clicks the "Copy" button, ensuring the code remains clean and functional._
 
 ---
 

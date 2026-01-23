@@ -7,10 +7,27 @@ import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import js from "react-syntax-highlighter/dist/esm/languages/hljs/javascript";
+import ts from "react-syntax-highlighter/dist/esm/languages/hljs/typescript";
+import json from "react-syntax-highlighter/dist/esm/languages/hljs/json";
+import bash from "react-syntax-highlighter/dist/esm/languages/hljs/bash";
+import python from "react-syntax-highlighter/dist/esm/languages/hljs/python";
+import css from "react-syntax-highlighter/dist/esm/languages/hljs/css";
+import xml from "react-syntax-highlighter/dist/esm/languages/hljs/xml";
 import "highlight.js/styles/tokyo-night-dark.css";
+
+// Register languages for the light highlighter
+SyntaxHighlighter.registerLanguage("javascript", js);
+SyntaxHighlighter.registerLanguage("typescript", ts);
+SyntaxHighlighter.registerLanguage("json", json);
+SyntaxHighlighter.registerLanguage("bash", bash);
+SyntaxHighlighter.registerLanguage("python", python);
+SyntaxHighlighter.registerLanguage("css", css);
+SyntaxHighlighter.registerLanguage("xml", xml);
+SyntaxHighlighter.registerLanguage("html", xml);
 
 // --- Types ---
 
@@ -188,7 +205,7 @@ const CommentOverlay = ({
                     <X className="w-4 h-4 text-zinc-500 hover:text-white" />
                   </button>
                 </div>
-                <div className="text-sm font-semibold leading-relaxed text-zinc-100/90">
+                <div className="text-sm font-semibold leading-relaxed text-zinc-100/90 whitespace-pre-line">
                   {parseCommentContent(content)}
                 </div>
               </div>
@@ -226,7 +243,11 @@ class CommentStore {
   registerTrigger(id: string, triggerId: string, rect: DOMRect) {
     if (!this.triggers[id]) this.triggers[id] = new Map();
     const existing = this.triggers[id].get(triggerId);
-    if (!existing || existing.top !== rect.top || existing.left !== rect.left) {
+    if (
+      !existing ||
+      Math.abs(existing.top - rect.top) > 1 ||
+      Math.abs(existing.left - rect.left) > 1
+    ) {
       this.triggers[id].set(triggerId, rect);
       if (this.isOpen[id]) this.notify();
     }
@@ -279,7 +300,6 @@ function CommentTrigger({
     const unsub = store.subscribe(() => {
       forceUpdate();
     });
-    // Register content immediately if master trigger
     if (!isSecondary && content) {
       store.registerContent(id, content);
     }
@@ -350,44 +370,79 @@ function CommentTrigger({
   );
 }
 
-/**
- * Recursive Parser for Internal Tags
- */
-function processInternalComments(children: React.ReactNode): React.ReactNode {
-  return React.Children.map(children, (child) => {
-    if (!child) return child;
-    if (
-      typeof child === "string" &&
-      (child.includes("[!#") || child.includes("[!^"))
-    ) {
-      const parts = child.split(/(\[!#[\w-]+::.*?\]|\[!\^[\w-]+::\])/g);
-      return parts.map((part, i) => {
-        if (part.startsWith("[!#")) {
-          const match = part.match(/\[!#([\w-]+)::(.*?)\]/);
-          if (match)
-            return (
-              <CommentTrigger key={i} id={match[1]} content={match[2].trim()} />
-            );
-        }
-        if (part.startsWith("[!^")) {
-          const match = part.match(/\[!\^([\w-]+)::\]/);
-          if (match)
-            return <CommentTrigger key={i} id={match[1]} isSecondary />;
-        }
-        return part;
+// --- Internal Parsing Logic ---
+
+const TAG_REGEX =
+  /(\[!#[\w-]+::[\s\S]*?\/!\]|\[!#[\w-]+::.*?\]|\[!\^[\w-]+::\])/g;
+
+function splitByTags(text: string) {
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = TAG_REGEX.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push({
+        type: "code",
+        content: text.substring(lastIndex, match.index),
       });
     }
-    if (
-      React.isValidElement(child) &&
-      child.props &&
-      (child.props as any).children
-    ) {
-      return React.cloneElement(child, {
-        children: processInternalComments((child.props as any).children),
-      } as any);
+    const fullTag = match[0];
+    if (fullTag.startsWith("[!#") && fullTag.endsWith("/!]")) {
+      const g = fullTag.match(/\[!#([\w-]+)::([\s\S]*?)\/!\]/);
+      if (g) parts.push({ type: "master", id: g[1], content: g[2].trim() });
+    } else if (fullTag.startsWith("[!#")) {
+      const g = fullTag.match(/\[!#([\w-]+)::(.*?)\]/);
+      if (g) parts.push({ type: "master", id: g[1], content: g[2].trim() });
+    } else if (fullTag.startsWith("[!^")) {
+      const g = fullTag.match(/\[!\^([\w-]+)::\]/);
+      if (g) parts.push({ type: "secondary", id: g[1] });
     }
-    return child;
-  });
+    lastIndex = TAG_REGEX.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push({ type: "code", content: text.substring(lastIndex) });
+  }
+
+  return parts;
+}
+
+/**
+ * Custom Code Highlighting with Annotations
+ */
+function AnnotatedCode({ code, language }: { code: string; language: string }) {
+  const parts = React.useMemo(() => splitByTags(code), [code]);
+
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.type === "code") {
+          return (
+            <SyntaxHighlighter
+              key={i}
+              language={language === "html" ? "xml" : language}
+              PreTag="span"
+              CodeTag="span"
+              useInlineStyles={false}
+              style={{}} // We use CSS classes
+            >
+              {part.content || ""}
+            </SyntaxHighlighter>
+          );
+        }
+        if (part.type === "master") {
+          return (
+            <CommentTrigger key={i} id={part.id!} content={part.content} />
+          );
+        }
+        if (part.type === "secondary") {
+          return <CommentTrigger key={i} id={part.id!} isSecondary />;
+        }
+        return null;
+      })}
+    </>
+  );
 }
 
 /**
@@ -414,7 +469,6 @@ export function CodeBlock({
         <div className={cn("documentation-article relative", className)}>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight]}
             components={{
               a: ({ href, children }) => {
                 const isExternal = href?.startsWith("http");
@@ -454,9 +508,19 @@ export function CodeBlock({
                   </CodeBlockWrapper>
                 );
               },
-              code: ({ children, ...props }) => {
+              code: ({ children, className, ...props }) => {
+                const lang = className?.replace("language-", "") || "bash";
+                if (typeof children === "string") {
+                  return (
+                    <code {...props} className={className}>
+                      <AnnotatedCode code={children} language={lang} />
+                    </code>
+                  );
+                }
                 return (
-                  <code {...props}>{processInternalComments(children)}</code>
+                  <code {...props} className={className}>
+                    {children}
+                  </code>
                 );
               },
             }}
@@ -501,14 +565,17 @@ function CodeBlockWrapper({
 
   const cleanCode = React.useMemo(() => {
     let result = code.replace(
-      /(?:\/\/|#|--|\/\*)\s*\[![#^].*?::.*?\](?:\n|$)/g,
-      (match) => {
-        return match.endsWith("\n") ? "\n" : "";
-      },
+      /(?:\/\/|#|--|\/\*)\s*\[!#[\w-]+::[\s\S]*?\/!\](?:\n|$)/g,
+      "",
     );
-    result = result.replace(/\[![#^].*?::.*?\](?:\n|$)/g, (match) => {
-      return match.endsWith("\n") ? "\n" : "";
-    });
+    result = result.replace(/\[!#[\w-]+::[\s\S]*?\/!\](?:\n|$)/g, "");
+    result = result.replace(
+      /(?:\/\/|#|--|\/\*)\s*\[![#^].*?::.*?\](?:\n|$)/g,
+      (match) => (match.endsWith("\n") ? "\n" : ""),
+    );
+    result = result.replace(/\[![#^].*?::.*?\](?:\n|$)/g, (match) =>
+      match.endsWith("\n") ? "\n" : "",
+    );
     return result.trim();
   }, [code]);
 
