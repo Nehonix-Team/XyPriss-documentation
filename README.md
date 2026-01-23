@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="https://dll.nehonix.com/assets/xypriss/file_0000000083bc71f4998cbc2f4f0c9629.png" width="128" height="128" alt="XyPriss Logo" />
+  
+  # XyPriss Documentation
+  
+  ### *Hybrid Rust + TypeScript Web Framework*
+  
+  [![License: NOSL](https://img.shields.io/badge/License-NOSL-blue.svg)](https://dll.nehonix.com/licenses/NOSL)
+  [![Version](https://img.shields.io/badge/version-1.0.0--beta.2-green.svg)](https://github.com/Nehonix-Team/XyPriss)
+  [![Documentation](https://img.shields.io/badge/docs-live-orange.svg)](https://xypriss.nehonix.com)
+  
+  [Official Site](https://nehonix.com) • [Main Repository](https://github.com/Nehonix-Team/XyPriss) • [Documentation](https://xypriss.nehonix.com)
+</div>
 
-## Getting Started
+---
 
-First, run the development server:
+## Welcome to XyPriss
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**XyPriss** is an enterprise-grade web framework designed to bridge the raw performance of **Rust** with the flexibility and developer experience of **Node.js**. This repository hosts the official documentation, built with **Next.js 15** and a custom-engineered cosmic visual engine.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Key Pillars
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Hybrid Core (XHSC)**: An independent Rust server engine handling routing and hardware monitoring at microsecond latency.
+- **XFPM (XyPriss Package Manager)**: A dedicated, ultra-fast package manager optimized for the XyPriss ecosystem.
+- **Security First**: 12+ built-in security modules (CSRF, XSS, Rate Limiting) designed for production environments.
+- **Unified DX**: Write business logic in TypeScript while benefiting from a Rust-powered high-speed gateway.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Technological Stack
 
-To learn more about Next.js, take a look at the following resources:
+This documentation site is a showcase of modern web engineering:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) & [Sass/SCSS](https://sass-lang.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Visuals**: Future-classic video background and "typing-style" entrance animations.
+- **Content**: Markdown-driven documentation with automatic SEO revalidation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Local Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To run the documentation locally:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/Nehonix-Team/XyPriss-documentation.git
+   cd XyPriss-documentation
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Visit the site**:
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Contributing
+
+Contributions are welcome! If you find any errors in the documentation or want to add a guide:
+
+1. Fork the project.
+2. Create your branch (`git checkout -b feature/AmazingGuide`).
+3. Commit your changes (`git commit -m 'Add: New Guide for XFPM'`).
+4. Push to the branch (`git push origin feature/AmazingGuide`).
+5. Open a Pull Request.
+
+---
+
+<div align="center">
+  <p>Licensed under <b>NOSL</b> (Nehonix Open Source License)</p>
+</div>
