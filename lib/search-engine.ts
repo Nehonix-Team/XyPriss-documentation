@@ -53,16 +53,14 @@ export function searchDocs(query: string): SearchResult[] {
 
   const results = fuse.search(query);
 
-  return results.map((res: Fuse.FuseResult<any>) => {
+  return results.map((res: any) => {
     // Generate a snippet from the content match
     const content = res.item.content;
     let snippet = "";
 
     // 1. Try to get snippet from Fuse matches
     if (res.matches && res.matches.length > 0) {
-      const match = res.matches.find(
-        (m: Fuse.FuseResultMatch) => m.key === "content",
-      );
+      const match = res.matches.find((m: any) => m.key === "content");
       if (match && match.indices.length > 0) {
         const [start, end] = match.indices[0];
         const snippetStart = Math.max(0, start - 60);
