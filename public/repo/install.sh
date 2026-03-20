@@ -20,7 +20,8 @@ fi
 
 INSTALL_DIR="/usr/local/bin"
 BINS=("xfpm" "xyp" "xypcli")
-BRIDGE_URL="https://dll.nehonix.com/repo/n/xypriss/xfpm/scripts/bridge.js"
+# BRIDGE_URL="https://dll.nehonix.com/repo/n/xypriss/xfpm/scripts/bridge.js"
+BRIDGE_URL="https://xypriss.nehonix.com/repo/bridge.js"
 
 log() { echo -e "${CYAN}[*] $1${NC}"; }
 success() { echo -e "${GREEN}[+] $1${NC}"; }
