@@ -1,32 +1,40 @@
 {
+  "name": "xyprissnextjsdocumentation",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 5442",
+    "lint": "eslint",
+    "start": "next start"
+  },
   "dependencies": {
-    "@next/env": "^16.1.4",
-    "@tailwindcss/postcss": "^4.1.18",
+    "@next/env": "^16.1.6",
+    "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^25.1.0",
-    "@types/react": "^19.2.10",
+    "@types/node": "^25.3.3",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-syntax-highlighter": "^15.5.13",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.2",
     "eslint-config-next": "^16.1.2",
-    "framer-motion": "^12.28.1",
+    "framer-motion": "^12.34.3",
     "fuse.js": "^7.1.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.562.0",
-    "next": "^16.1.2",
+    "next": "^16.1.6",
     "next-themes": "^0.4.6",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.3.0-canary-fd524fe0-20251121",
+    "react-dom": "^19.3.0-canary-fd524fe0-20251121",
     "react-markdown": "^10.1.0",
-    "react-syntax-highlighter": "^16.1.0",
+    "react-syntax-highlighter": "^16.1.1",
     "rehype-highlight": "^7.0.2",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
     "sass": "^1.97.3",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
@@ -39,14 +47,5 @@
     "eslint-config-next": "16.1.2",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "name": "xyprissnextjsdocumentation",
-  "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 5442",
-    "lint": "eslint",
-    "start": "next start"
-  },
-  "version": "0.1.0"
+  }
 }
