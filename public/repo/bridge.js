@@ -11,7 +11,7 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 
-const REPO = "Nehonix-Team/XFMP";
+const REPO = "Nehonix-Team/XFPM";
 const SDK_BASE_URL = `https://github.com/${REPO}/releases/latest/download`;
 
 const COLORS = {
