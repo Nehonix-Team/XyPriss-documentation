@@ -70,7 +70,9 @@ function Install {
         
         $Confirm = $null
         if ($Host.UI.RawUI -ne $null) {
-            $Confirm = Read-Host "    Do you want to update/overwrite them? (y/N)"
+            # $Confirm = Read-Host "    Do you want to update/overwrite them? (y/N)"
+            $Confirm = "y"
+            
         } else {
             Write-Log "Non-interactive environment detected. Proceeding with clean update..."
             $Confirm = "y"
