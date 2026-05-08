@@ -28,8 +28,8 @@ const COLORS = {
   magenta: "\x1b[35m",
 };
 
-// const BASE_URL = "https://dll.nehonix.com/repo/n/xypriss/xfpm/scripts";
-const BASE_URL = "https://xypriss.nehonix.com/repo";
+const BASE_URL = "https://dll.nehonix.com/repo/xypriss/xfpm/scripts";
+// const BASE_URL = "https://xypriss.nehonix.com/repo";
 
 function log(msg, color = COLORS.reset) {
   console.log(`${color}${msg}${COLORS.reset}`);
