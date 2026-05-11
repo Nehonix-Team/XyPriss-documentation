@@ -2,14 +2,6 @@
 
 This repository contains the source code for the official XyPriss documentation. It is an enterprise-grade documentation engine designed to provide a premium, high-performance developer experience through a component-based React architecture.
 
-## Architectural Overview
-
-Unlike traditional documentation systems that rely on static markdown parsing, the XyPriss Documentation Engine is built using a "React-First" methodology. This allows for:
-
-- **High-Fidelity UI**: Direct control over animations, glassmorphism effects, and responsive layouts via Tailwind CSS v4 and Framer Motion.
-- **Dynamic Interactivity**: Native integration of stateful components, such as the VS Code-inspired CodeBlock and dynamic Table of Contents.
-- **Verification Integrity**: Manual implementation of documentation pages ensures a rigorous review process for all technical content and examples.
-
 ## Technology Stack
 
 - **Framework**: Next.js 15 (App Router)
