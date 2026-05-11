@@ -1,21 +1,35 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { DocsHeader } from "@/components/docs/DocsHeader";
 import { DocSidebar } from "@/components/docs/DocSidebar";
 import { OnThisPage } from "@/components/docs/OnThisPage";
+import { cn } from "@/lib/utils";
 
 export default function DocsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(false);
+  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
       <DocsHeader />
       <div className="container mx-auto flex-1 px-4 lg:px-8">
         <div className="flex flex-1 gap-10">
           {/* Sidebar */}
-          <aside className="hidden lg:block w-64 shrink-0 border-r border-border pr-4 sticky top-16 h-[calc(100vh-4rem)]">
-            <DocSidebar />
+          <aside 
+            className={cn(
+              "hidden lg:block shrink-0 border-r border-border pr-4 sticky top-16 h-[calc(100vh-4rem)] transition-all duration-300",
+              leftSidebarCollapsed ? "w-16" : "w-64"
+            )}
+          >
+            <DocSidebar 
+              isCollapsed={leftSidebarCollapsed} 
+              onToggle={() => setLeftSidebarCollapsed(!leftSidebarCollapsed)} 
+            />
           </aside>
 
           {/* Main Content */}
@@ -26,8 +40,16 @@ export default function DocsLayout({
           </main>
 
           {/* On This Page (TOC) */}
-          <aside className="hidden xl:block w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)]">
-            <OnThisPage />
+          <aside 
+            className={cn(
+              "hidden xl:block shrink-0 sticky top-16 h-[calc(100vh-4rem)] transition-all duration-300",
+              rightSidebarCollapsed ? "w-16" : "w-64"
+            )}
+          >
+            <OnThisPage 
+              isCollapsed={rightSidebarCollapsed} 
+              onToggle={() => setRightSidebarCollapsed(!rightSidebarCollapsed)} 
+            />
           </aside>
         </div>
       </div>

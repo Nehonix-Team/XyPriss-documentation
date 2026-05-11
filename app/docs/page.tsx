@@ -1,3 +1,7 @@
+import { Callout } from "@/components/docs/Callout";
+import { CodeBlock } from "@/components/docs/CodeBlock";
+import { SectionHeading } from "@/components/docs/SectionHeading";
+import { stableVersion } from "@/lib/stableVersion";
 import { Rocket, Shield, Zap, Server, Cpu, Lock, Globe, Package, Layers, ChevronRight, AlertCircle, Terminal, Settings } from "lucide-react";
 import Link from "next/link";
 
@@ -15,8 +19,8 @@ export default function IntroductionPage() {
         </p>
       </div>
 
-      <Callout type="warning" title="Beta Software">
-        XyPriss is in active development. APIs, configurations, and behaviors may change without notice. Use in production at your own risk.
+      <Callout type="info" title="Stability Note">
+        XyPriss has officially left its beta phase. This documentation is up-to-date for the stable <strong>v{stableVersion}</strong> release.
       </Callout>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
@@ -67,7 +71,7 @@ export default function IntroductionPage() {
 
       <SectionHeading level={2} id="requirements">Mandatory Requirements</SectionHeading>
       <p>
-        Using alternative package managers (npm, yarn, pnpm) or runtimes (node) to execute XyPriss projects will break the security chain.
+        Using alternative package managers (npm, yarn, pnpm) or runtimes (node) to execute XyPriss projects may cause unexpected behavior and is not supported.
       </p>
 
       <div className="overflow-x-auto my-6">
@@ -117,8 +121,12 @@ export default function IntroductionPage() {
              Proceed to the full installation guide to configure your development environment.
            </p>
          </div>
-         <Link href="/docs/installation" className="bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/80 transition-all flex items-center gap-2 shrink-0">
-           Installation Guide <ChevronRight size={18} />
+         <Link 
+           href="/docs/installation" 
+           className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all flex items-center gap-3 shrink-0 relative z-10 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0"
+         >
+           <span className="tracking-tight">Installation Guide</span>
+           <ChevronRight size={20} />
          </Link>
       </div>
     </div>

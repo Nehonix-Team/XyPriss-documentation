@@ -37,9 +37,9 @@ export default function QuickStartPage() {
           </p>
           <CodeBlock language="bash" code="xfpm init" />
         </Step>
-        <Step title="Navigate and install">
+        <Step title="Verification and Install">
           <p className="mb-4">
-            Enter your project directory and install the required dependencies:
+            Navigate to your project directory. While <code>xfpm init</code> usually handles dependency installation, you can run this manually if the process was interrupted (network failure, crash, etc.):
           </p>
           <CodeBlock language="bash" code="cd my-app && xfpm install" />
         </Step>
@@ -145,10 +145,9 @@ app.start();`}
         Running your app
       </SectionHeading>
       <p>
-        Always use `xfpm run` or `bun` to execute your scripts to ensure the
-        security chain is maintained.
+        Always use <code>xfpm run</code> to execute your scripts and entry points.
       </p>
-      <CodeBlock language="bash" code="xfpm run start" />
+      <CodeBlock language="bash" code="xfpm dev" />
 
       <Callout type="danger" title="Unsupported Runtimes">
         Using `npm run` or `node` directly is not supported and will cause

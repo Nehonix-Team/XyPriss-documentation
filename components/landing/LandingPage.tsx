@@ -18,6 +18,7 @@ import {
   Copy,
   Layers,
 } from "lucide-react";
+import { stableVersion } from "@/lib/stableVersion";
 
 const FeatureCard = ({
   icon: Icon,
@@ -69,8 +70,6 @@ const SecurityPoint = ({
 );
 
 export default function Landing() {
-  const stableVersion = "9.10.15";
-
   return (
     <div className="min-h-screen bg-black text-slate-200 selection:bg-xy-blue/30 overflow-x-hidden">
       {/* Navigation */}
@@ -110,7 +109,7 @@ export default function Landing() {
             >
               <Github className="w-5 h-5" />
             </a>
-            <Link 
+            <Link
               href="/docs/installation"
               className="bg-transparent border border-xy-blue/50 text-xy-blue hover:bg-xy-blue hover:text-white px-5 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all"
             >
@@ -168,7 +167,7 @@ export default function Landing() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 items-center">
-              <Link 
+              <Link
                 href="/docs/quick-start"
                 className="w-full sm:w-auto bg-xy-deep-blue border border-xy-blue/50 text-white px-10 py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-xy-blue transition-all group"
               >
