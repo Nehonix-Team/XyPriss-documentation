@@ -28,19 +28,19 @@ const icons = {
 };
 
 const styles = {
-  info: "border-blue-500/20 bg-blue-500/5 text-blue-200",
-  warning: "border-yellow-500/20 bg-yellow-500/5 text-yellow-200",
-  success: "border-green-500/20 bg-green-500/5 text-green-200",
-  danger: "border-red-500/20 bg-red-500/5 text-red-200",
-  tip: "border-purple-500/20 bg-purple-500/5 text-purple-200",
+  info: "border-blue-500/20 bg-blue-50 dark:bg-blue-500/5 text-blue-900 dark:text-blue-200",
+  warning: "border-yellow-500/20 bg-yellow-50 dark:bg-yellow-500/5 text-yellow-900 dark:text-yellow-200",
+  success: "border-green-500/20 bg-green-50 dark:bg-green-500/5 text-green-900 dark:text-green-200",
+  danger: "border-red-500/20 bg-red-50 dark:bg-red-500/5 text-red-900 dark:text-red-200",
+  tip: "border-purple-500/20 bg-purple-50 dark:bg-purple-500/5 text-purple-900 dark:text-purple-200",
 };
 
 const iconColors = {
-  info: "text-blue-400",
-  warning: "text-yellow-400",
-  success: "text-green-400",
-  danger: "text-red-400",
-  tip: "text-purple-400",
+  info: "text-blue-600 dark:text-blue-400",
+  warning: "text-yellow-600 dark:text-yellow-400",
+  success: "text-green-600 dark:text-green-400",
+  danger: "text-red-600 dark:text-red-400",
+  tip: "text-purple-600 dark:text-purple-400",
 };
 
 export const Callout: React.FC<CalloutProps> = ({

@@ -30,7 +30,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       className={cn(
         "group relative flex items-center gap-2 scroll-mt-24",
         level === 1 && "text-4xl font-extrabold mb-8",
-        level === 2 && "text-3xl font-bold mt-12 mb-6 pb-2 border-b border-white/10",
+        level === 2 && "text-3xl font-bold mt-12 mb-6 pb-2 border-b border-border",
         level === 3 && "text-2xl font-semibold mt-8 mb-4",
         level === 4 && "text-xl font-medium mt-6 mb-2",
         className

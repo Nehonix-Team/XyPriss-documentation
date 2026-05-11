@@ -28,8 +28,8 @@ export const DocSidebar = () => {
                     className={cn(
                       "group flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all relative overflow-hidden",
                       isActive 
-                        ? "bg-primary/10 text-primary font-medium" 
-                        : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                        ? "bg-primary/10 text-primary font-bold" 
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     )}
                   >
                     {isActive && (

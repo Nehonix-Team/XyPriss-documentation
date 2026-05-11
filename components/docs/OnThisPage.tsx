@@ -41,7 +41,7 @@ export const OnThisPage = () => {
   if (headings.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-4 py-8 pl-4 border-l border-white/5 h-full overflow-y-auto custom-scrollbar">
+    <div className="flex flex-col gap-4 py-8 pl-4 border-l border-border h-full overflow-y-auto custom-scrollbar">
       <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 px-2">
         On this page
       </h4>
@@ -54,8 +54,8 @@ export const OnThisPage = () => {
               "px-3 py-1.5 text-sm transition-all rounded-lg",
               heading.level === 3 && "pl-6",
               activeId === heading.id
-                ? "text-primary font-medium bg-primary/5"
-                : "text-muted-foreground hover:text-white hover:bg-white/5"
+                ? "text-primary font-bold bg-primary/10"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
             )}
           >
             {heading.text}
