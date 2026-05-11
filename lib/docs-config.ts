@@ -1,93 +1,58 @@
-export const docsConfig = [
+// lib/docs-config.ts
+export type DocItem = { title: string; href: string; badge?: "new" | "beta" };
+export type DocGroup = { title: string; items: DocItem[] };
+
+export const docsConfig: DocGroup[] = [
   {
-    title: "Start Here",
+    title: "Getting Started",
     items: [
-      { title: "Introduction", href: "/docs" },
-      { title: "Getting Started", href: "/docs/getting-started" },
-      { title: "Quick Start", href: "/docs/quick_start" },
-      { title: "Examples", href: "/docs/examples" },
+      { title: "Introduction", href: "/docs/introduction" },
+      { title: "Installation", href: "/docs/installation" },
+      { title: "Quick Start", href: "/docs/quick-start" },
     ],
   },
   {
-    title: "Core Concepts",
+    title: "Core Architecture",
     items: [
-      { title: "Features Overview", href: "/docs/features_overview" },
-      { title: "Server Architecture", href: "/docs/server_core_architecture" },
-      {
-        title: "Middleware Architecture",
-        href: "/docs/middleware_architecture",
-      },
-      { title: "XHSC Engine", href: "/docs/xhsc_core" },
-      { title: "Multi-Server", href: "/docs/multi_server" },
-      { title: "Routing System", href: "/docs/routing" },
-      { title: "Workspace System", href: "/docs/workspace_system" },
-    ],
-  },
-  {
-    title: "Configuration",
-    items: [
-      { title: "Configuration Guide", href: "/docs/configuration" },
-      { title: "Config API", href: "/docs/configs_api" },
-      { title: "Quick Reference", href: "/docs/configs_quick_reference" },
-      { title: "Network Config", href: "/docs/network_config_guide" },
-      { title: "Meta Config", href: "/docs/meta_config" },
-      { title: "Cluster Config", href: "/docs/cluster-configuration-guide" },
-    ],
-  },
-  {
-    title: "Plugins System",
-    items: [
-      { title: "Plugin System Guide", href: "/docs/plugin_system_guide" },
-      { title: "Development Guide", href: "/docs/plugin_development_guide" },
-      { title: "API Implementation", href: "/docs/plugin_api_implementation" },
-      { title: "Management API", href: "/docs/plugin_management_api" },
-      { title: "Permissions", href: "/docs/plugin_permissions" },
-      { title: "Core Hooks", href: "/docs/plugin_core_hooks" },
-      { title: "Error Handling", href: "/docs/plugin_error_handling" },
-      { title: "Stability", href: "/docs/plugin_stability" },
-      { title: "Data Masking", href: "/docs/plugin_data_masking" },
+      { title: "XHSC Core", href: "/docs/core/xhsc" },
+      { title: "XStatic Engine", href: "/docs/core/xstatic" },
+      { title: "Workspace System", href: "/docs/core/workspace" },
+      { title: "Global APIs", href: "/docs/core/global-apis" },
+      { title: "Constants Reference", href: "/docs/core/const-api" },
     ],
   },
   {
     title: "Security",
     items: [
-      { title: "Security Overview", href: "/docs/security" },
-      { title: "Route Security", href: "/docs/route_based_security" },
-      { title: "Access Control", href: "/docs/access-control-middleware" },
-      { title: "Trust Proxy", href: "/docs/trust_proxy" },
-      { title: "CORS", href: "/docs/wildcard_cors" },
-      { title: "Request Signature", href: "/docs/request-signature-auth" },
-      { title: "CSP Configuration", href: "/docs/enhanced-csp-configuration" },
-      { title: "Memory Detection", href: "/docs/memory_detection" },
+      { title: "Security Overview", href: "/docs/security/overview" },
+      { title: "XEMS Security", href: "/docs/security/xems" },
+      { title: "Environment Shield", href: "/docs/security/environment-shield" },
+      { title: "Honeypot Logic", href: "/docs/security/honeypot" },
+    ],
+  },
+  {
+    title: "Plugin System",
+    items: [
+      { title: "Overview", href: "/docs/plugins/overview" },
+      { title: "Plugin Hooks", href: "/docs/plugins/api-reference" },
+      { title: "Permission Sets", href: "/docs/plugins/permissions" },
     ],
   },
   {
     title: "API Reference",
     items: [
-      { title: "API Reference", href: "/docs/api-reference" },
-      { title: "Global APIs", href: "/docs/global_apis" },
-      { title: "Filesystem API", href: "/docs/filesystem-api" },
-      { title: "XJSON API", href: "/docs/xjson_api" },
-      { title: "Constants", href: "/docs/const_api" },
-      { title: "Compression", href: "/docs/compression_package_integration" },
+      { title: "Overview", href: "/docs/api-reference" },
+      { title: "Response Object", href: "/docs/api-reference/response" },
     ],
-  },
-  {
-    title: "Platform Features",
-    items: [
-      { title: "File Upload", href: "/docs/file_upload_guide" },
-      {
-        title: "Console Interception",
-        href: "/docs/console_interception_guide",
-      },
-      { title: "Browser Terminal", href: "/docs/browser-terminal-control" },
-      { title: "System Intelligence", href: "/docs/system_intelligence" },
-      { title: "Memory Management", href: "/docs/memory-management" },
-      { title: "XFPM", href: "/docs/xfpm" },
-    ],
-  },
-  {
-    title: "Community",
-    items: [{ title: "Contributing", href: "/docs/contributing" }],
   },
 ];
+
+export const flatDocs: DocItem[] = docsConfig.flatMap((g) => g.items);
+
+export function getPagerLinks(href: string) {
+  const idx = flatDocs.findIndex((d) => d.href === href);
+  return {
+    prev: idx > 0 ? flatDocs[idx - 1] : null,
+    next: idx < flatDocs.length - 1 ? flatDocs[idx + 1] : null,
+  };
+}

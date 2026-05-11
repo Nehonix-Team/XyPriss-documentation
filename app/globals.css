@@ -1,222 +1,71 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"); */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 :root {
-  /* Modern, Professional Color Palette */
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
+  /* XyPriss Stable Design System - Cyberpunk / Enterprise */
+  --xp-bg: #0a0a0f;
+  --xp-surface: #11111a;
+  --xp-border: rgba(99, 102, 241, 0.15);
+  --xp-primary: #6366f1;
+  --xp-accent: #06b6d4;
+  --xp-text: #e2e8f0;
+  --xp-muted: #64748b;
+  --xp-code-bg: #0d1117;
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
-
-  /* Primary: Elegant Blue */
-  --primary: 217 91% 60%;
-  --primary-foreground: 0 0% 100%;
-
-  /* Secondary: Refined Gray-Blue */
-  --secondary: 214 32% 91%;
-  --secondary-foreground: 222 47% 11%;
-
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
-
-  /* Accent: Vibrant Teal */
-  --accent: 173 80% 40%;
-  --accent-foreground: 0 0% 100%;
-
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 217 91% 60%;
-
-  --radius: 0.5rem;
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", "Menlo", "Monaco", "Courier New", monospace;
-  --font-heading: "Inter", sans-serif;
-}
-
-.dark {
-  /* Bun-style Deep Black Theme */
-  --background: 240 10% 2%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 4%;
-  --card-foreground: 0 0% 98%;
-  --primary: 217 91% 65%;
-  --primary-foreground: 222 47% 11%;
-  --muted: 240 5% 10%;
-  --muted-foreground: 240 5% 65%;
-  --border: 240 5% 12%;
-  --ring: 217 91% 65%;
+  /* Tailwind compat variables */
+  --background: var(--xp-bg);
+  --foreground: var(--xp-text);
+  --primary: var(--xp-primary);
+  --border: var(--xp-border);
 }
 
 @theme inline {
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --color-xp-bg: var(--xp-bg);
+  --color-xp-surface: var(--xp-surface);
+  --color-xp-border: var(--xp-border);
+  --color-xp-primary: var(--xp-primary);
+  --color-xp-accent: var(--xp-accent);
+  --color-xp-text: var(--xp-text);
+  --color-xp-muted: var(--xp-muted);
+  --color-xp-code-bg: var(--xp-code-bg);
+
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-  --font-heading: "Inter", sans-serif;
-
-  /* Custom Animations */
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-
-    to {
-      height: 0;
-    }
-  }
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: var(--xp-bg);
+  color: var(--xp-text);
   font-family: var(--font-sans);
-  font-feature-settings:
-    "rlig" 1,
-    "calt" 1;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Premium Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--xp-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.2);
-  border-radius: 5px;
-  border: 2px solid transparent;
-  background-clip: content-box;
+  background: var(--xp-border);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.3);
-  background-clip: content-box;
+  background: var(--xp-primary);
+  opacity: 0.5;
 }
 
-/* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Enhanced Prose Styles for Documentation */
-.prose {
-  --tw-prose-body: hsl(var(--foreground) / 0.9);
-  --tw-prose-headings: hsl(var(--foreground));
-  --tw-prose-links: hsl(var(--primary));
-  --tw-prose-bold: hsl(var(--foreground));
-  --tw-prose-code: hsl(var(--primary));
-  --tw-prose-pre-code: hsl(var(--muted-foreground));
-  --tw-prose-pre-bg: transparent;
-  --tw-prose-borders: hsl(var(--border) / 0.4);
-  --tw-prose-quotes: hsl(var(--muted-foreground));
-  font-size: 1rem;
-  line-height: 1.75;
-}
-
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
-  scroll-margin-top: 100px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.prose h2 {
-  margin-top: 3em;
-  margin-bottom: 1.5em;
-}
-
-.prose code {
-  font-family: var(--font-mono);
-  font-weight: 600;
-}
-
-.prose pre {
-  background-color: transparent !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Hide default pre/code if needed, but we rely on components */
-.prose :where(pre):not(:where([class~="not-prose"] *)) {
-  background-color: transparent;
-}
-
-/* Background Grid Pattern - Subtler */
-.bg-grid-pattern {
-  background-image:
-    linear-gradient(
-      to right,
-      hsl(var(--foreground) / 0.03) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      hsl(var(--foreground) / 0.03) 1px,
-      transparent 1px
-    );
-  background-size: 3rem 3rem;
-}
-
 /* Selection */
 ::selection {
-  background-color: hsl(var(--primary) / 0.2);
-  color: hsl(var(--foreground));
+  background-color: rgba(99, 102, 241, 0.3);
+  color: #fff;
 }

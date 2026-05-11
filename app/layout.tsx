@@ -1,27 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./animations.scss";
-import "./documentation-modern.scss";
 import { ThemeProvider } from "next-themes";
-import { keywords } from "@/lib/keywords";
-import authors from "./authors";
 
 export const metadata: Metadata = {
-  title: "XyPriss - Hybrid Rust + TypeScript Web Framework",
-  keywords: keywords,
-  authors,
-  publisher: "NEHONIX",
+  title: "XyPriss — Enterprise-Grade Node.js Web Framework",
   description:
-    "Hybrid Rust + TypeScript framework bridging the power of Rust with the flexibility of Node.js. Built for performance, security, and scale.",
+    "XyPriss combine la puissance d'un moteur natif écrit en Go avec la flexibilité de TypeScript pour créer des applications web ultra-performantes.",
   icons: {
     icon: "/xypriss-logo.png",
-    shortcut: "/xypriss-logo.png",
-    apple: "/xypriss-logo.png",
   },
   openGraph: {
     title: "XyPriss Framework",
-    description:
-      "The Hybrid Rust + TypeScript Framework for High-Performance Web Apps",
+    description: "The Enterprise-Grade Web Framework for Node.js.",
     url: "https://xypriss.nehonix.com",
     siteName: "XyPriss Documentation",
     images: [
@@ -31,25 +21,14 @@ export const metadata: Metadata = {
         height: 630,
       },
     ],
-    locale: "en_US",
+    locale: "fr_FR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "XyPriss Framework",
-    description: "Enterprise-Grade Node.js Web Framework powered by Rust.",
+    description: "Enterprise-Grade Node.js Web Framework powered by Go.",
     images: ["https://dll.nehonix.com/assets/xypriss/xypriss-og.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
   },
 };
 
@@ -59,8 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+    <html lang="fr" suppressHydrationWarning className="scroll-smooth">
+      <body className="antialiased bg-xp-bg text-xp-text">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

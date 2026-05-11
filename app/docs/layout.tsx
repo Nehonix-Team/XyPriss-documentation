@@ -1,6 +1,5 @@
-import { Sidebar } from "@/components/sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SearchResultsSidebar } from "@/components/search-results-sidebar";
+import { DocsSidebar } from "@/components/layout/DocsSidebar";
+import { DocsHeader } from "@/components/layout/DocsHeader";
 import { Suspense } from "react";
 
 interface DocsLayoutProps {
@@ -9,26 +8,23 @@ interface DocsLayoutProps {
 
 export default function DocsLayout({ children }: DocsLayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10 px-4 md:px-8 max-w-screen-2xl">
-        <Sidebar />
-        <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
-          <div className="mx-auto w-full min-w-0">
+    <div className="min-h-screen bg-xp-bg text-xp-text selection:bg-xp-primary/30 selection:text-xp-primary">
+      <DocsHeader />
+      
+      <div className="container flex items-start max-w-screen-2xl mx-auto">
+        <DocsSidebar />
+        
+        <main className="flex-1 min-w-0">
+          <Suspense fallback={<div className="p-10 animate-pulse text-xp-muted">Chargement...</div>}>
             {children}
-            <div className="xl:hidden">
-              <Suspense fallback={null}>
-                <SearchResultsSidebar />
-              </Suspense>
-            </div>
-          </div>
-          {/* The right sidebar for search results */}
-          <aside className="hidden xl:block">
-            <Suspense fallback={null}>
-              <SearchResultsSidebar />
-            </Suspense>
-          </aside>
+          </Suspense>
         </main>
+      </div>
+      
+      {/* Background Decor */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-xp-primary/5 blur-[120px] rounded-full -mr-64 -mt-64" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-xp-accent/5 blur-[100px] rounded-full -ml-48 -mb-48" />
       </div>
     </div>
   );
