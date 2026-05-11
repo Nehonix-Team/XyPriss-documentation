@@ -1,7 +1,7 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 interface HeadingItem {
   id: string;
@@ -12,6 +12,7 @@ interface HeadingItem {
 export const OnThisPage = () => {
   const [headings, setHeadings] = useState<HeadingItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
+  const pathname = usePathname();
 
   useEffect(() => {
     // Find all h2 and h3 headings with IDs
@@ -36,7 +37,7 @@ export const OnThisPage = () => {
 
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   if (headings.length === 0) return null;
 
