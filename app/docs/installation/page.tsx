@@ -1,5 +1,6 @@
 import { Callout } from "@/components/docs/Callout";
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocsFooter } from "@/components/docs/DocsFooter";
 import { SectionHeading } from "@/components/docs/SectionHeading";
 import {
   Download,
@@ -172,25 +173,13 @@ export default function InstallationPage() {
         />
       </Callout>
 
-      <div className="mt-12 p-8 rounded-2xl border border-primary/10 bg-primary/5 flex items-center justify-between gap-6">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 text-primary mb-2">
-            <AlertCircle size={20} />
-            <span className="font-bold">Ready to code?</span>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Now that your environment is configured, you can initialize a new
-            project from a template.
-          </p>
-        </div>
-         <Link
-           href="/docs/quick-start"
-           className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all flex items-center gap-3 shrink-0 relative z-10 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0"
-         >
-           <span className="tracking-tight">Quick Start</span>
-           <ChevronRight size={20} />
-         </Link>
-      </div>
+      <DocsFooter 
+        title="Ready to code?"
+        description="Now that your environment is configured, you can initialize a new project from a template and start building."
+        buttonText="Quick Start"
+        href="/docs/quick-start"
+        iconName="AlertCircle"
+      />
     </div>
   );
 }

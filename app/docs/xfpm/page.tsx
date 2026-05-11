@@ -1,9 +1,7 @@
-"use client";
-
-import React from "react";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { CodeBlock } from "@/components/docs/CodeBlock";
 import { Callout } from "@/components/docs/Callout";
+import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocsFooter } from "@/components/docs/DocsFooter";
+import { SectionHeading } from "@/components/docs/SectionHeading";
 import { 
   Package, 
   Zap, 
@@ -151,7 +149,7 @@ export default function XFPMPage() {
         <div>
           <h4 className="font-bold text-white mb-2">CAS (Content Addressable Storage)</h4>
           <p className="text-sm text-muted-foreground">
-            Every file is hashed and stored once in <code>~/.xpm/storage</code>, 
+            Every file is hashed and stored once in <code>~/.xfpm/storage</code>, 
             eliminating duplicates and ensuring deterministic installations 
             across multiple projects.
           </p>
@@ -160,7 +158,7 @@ export default function XFPMPage() {
         <div>
           <h4 className="font-bold text-white mb-2">The Virtual Store</h4>
           <p className="text-sm text-muted-foreground">
-            Dependencies are stored by exact version in <code>node_modules/.xpm/vstore</code>. 
+            Dependencies are stored by exact version in <code>node_modules/.xfpm/vstore</code>. 
             This "Ancestor Hoisting" architecture prevents dependency leakage 
             and resolves ghost dependency issues.
           </p>
@@ -176,20 +174,13 @@ export default function XFPMPage() {
         </div>
       </div>
 
-      <div className="mt-12 p-8 rounded-2xl border border-primary/10 bg-primary/5 flex items-center justify-between gap-6">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 text-primary mb-2">
-            <Zap size={20} />
-            <span className="font-bold">Ready to scale?</span>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Master project orchestration with XFPM multi-server (XMS) configurations.
-          </p>
-        </div>
-        <button className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
-          Advanced Orchestration
-        </button>
-      </div>
+      <DocsFooter 
+        title="Ready to scale?"
+        description="Master project orchestration with XFPM multi-server (XMS) configurations and Zero-Trust plugin ecosystems."
+        buttonText="Advanced Orchestration"
+        href="/docs/quick-start#advanced"
+        iconName="Zap"
+      />
     </div>
   );
 }

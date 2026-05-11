@@ -25,8 +25,9 @@ When implementing a new documentation page, use the following standardized struc
 import React from "react";
 import { SectionHeading } from "@/components/docs/SectionHeading";
 import { CodeBlock } from "@/components/docs/CodeBlock";
-import { Callout } from "@/components/docs/Callout";
+import { DocsFooter } from "@/components/docs/DocsFooter";
 import { Steps, Step } from "@/components/docs/Steps";
+import { Rocket } from "lucide-react";
 
 export default function DocumentationPage() {
   return (
@@ -47,6 +48,14 @@ export default function DocumentationPage() {
           <CodeBlock language="bash" code="xfpm run command" />
         </Step>
       </Steps>
+
+      <DocsFooter 
+        title="Next Topic"
+        description="Brief description of the next logical documentation page."
+        buttonText="Read More"
+        href="/docs/next-topic"
+        icon={Rocket}
+      />
     </div>
   );
 }
@@ -64,6 +73,7 @@ The following components must be used to maintain architectural integrity:
 - **CodeBlock**: Mandatory for all code snippets. Implements the VS Code Dark Plus theme.
 - **Callout**: Used for highlighting important information (types: info, warning, success, danger, tip).
 - **Steps / Step**: Mandatory for sequential tutorials or installation flows.
+- **DocsFooter**: Mandatory at the end of every page to provide a clear Call-to-Action (CTA) and navigation to the next logical topic.
 
 ## Submission Guidelines
 

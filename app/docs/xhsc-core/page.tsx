@@ -1,9 +1,7 @@
-"use client";
-
-import React from "react";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { CodeBlock } from "@/components/docs/CodeBlock";
 import { Callout } from "@/components/docs/Callout";
+import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocsFooter } from "@/components/docs/DocsFooter";
+import { SectionHeading } from "@/components/docs/SectionHeading";
 import { Steps, Step } from "@/components/docs/Steps";
 import { 
   Cpu, 
@@ -12,7 +10,8 @@ import {
   Activity, 
   GitBranch, 
   MessageSquare,
-  Server
+  Server,
+  Package
 } from "lucide-react";
 
 export default function XHSCPage() {
@@ -220,6 +219,13 @@ export default function XHSCPage() {
           <span className="font-mono text-sm">JSON-IPC over Unix Sockets</span>
         </div>
       </div>
+      <DocsFooter 
+        title="Master the CLI"
+        description="Learn how XFPM manages high-performance dependency resolution and Zero-Trust G3 security."
+        buttonText="XFPM Documentation"
+        href="/docs/xfpm"
+        iconName="Package"
+      />
     </div>
   );
 }

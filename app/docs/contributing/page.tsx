@@ -48,6 +48,8 @@ const Card = ({
 );
 
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocsFooter } from "@/components/docs/DocsFooter";
+import { HelpCircle } from "lucide-react";
 
 export default function ContributingPage() {
   return (
@@ -168,7 +170,7 @@ export default function ContributingPage() {
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2 text-sm text-slate-400">
               <li className="flex gap-2">
                 {" "}
-                Maintain a professional and serious tone.
+                Maintain a professional and serious tone in comments.
               </li>
               <li className="flex gap-2 text-red-400">
                 <strong>No emojis</strong> permitted in code or docs.
@@ -179,7 +181,7 @@ export default function ContributingPage() {
                 <code className="text-primary px-1 bg-white/5 rounded">
                   lucide-react
                 </code>{" "}
-                for frontend icons.
+                for frontend icons if applicable.
               </li>
               <li className="flex gap-2 font-bold">
                 {" "}
@@ -352,6 +354,14 @@ export default function ContributingPage() {
           </div>
         </div>
       </Section>
+
+      <DocsFooter 
+        title="Need clarification?"
+        description="If you have questions about specific implementation patterns or architectural decisions, please contact our core maintainers."
+        buttonText="Contact Support"
+        href="mailto:support@team.nehonix.com"
+        iconName="HelpCircle"
+      />
 
       <footer className="mt-32 pt-12 border-t border-white/5 text-center text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em]">
         © 2026 NEHONIX. ALL RIGHTS RESERVED.

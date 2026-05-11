@@ -5,7 +5,8 @@ import { SectionHeading } from "@/components/docs/SectionHeading";
 import { CodeBlock } from "@/components/docs/CodeBlock";
 import { Callout } from "@/components/docs/Callout";
 import { Steps, Step } from "@/components/docs/Steps";
-import { Zap, Terminal, Code2, Rocket, Globe, Shield } from "lucide-react";
+import { DocsFooter } from "@/components/docs/DocsFooter";
+import { Zap, Terminal, Code2, Rocket, Globe, Shield, Cpu } from "lucide-react";
 
 export default function QuickStartPage() {
   return (
@@ -153,6 +154,14 @@ app.start();`}
         Using `npm run` or `node` directly is not supported and will cause
         undefined behavior due to the native engine requirements.
       </Callout>
+
+      <DocsFooter 
+        title="Deep Dive into XHSC"
+        description="Learn how the native Go-core handles routing, security, and performance at the lowest level."
+        buttonText="Explore XHSC Core"
+        href="/docs/xhsc-core"
+        iconName="Cpu"
+      />
     </div>
   );
 }
