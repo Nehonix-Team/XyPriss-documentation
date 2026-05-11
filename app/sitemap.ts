@@ -1,15 +1,17 @@
-import { flatDocs } from "@/lib/docs-config";
+import { docsConfig } from "@/lib/docs-config";
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://xypriss.nehonix.com";
-
-  const docEntries = flatDocs.map((doc) => ({
-    url: `${baseUrl}${doc.href}`,
-    lastModified: new Date(),
-    changeFrequency: "hourly" as const,
-    priority: 0.8,
-  }));
+  
+  const docEntries = docsConfig.flatMap(section => 
+    section.items.map((item) => ({
+      url: `${baseUrl}${item.href}`,
+      lastModified: new Date(),
+      changeFrequency: "hourly" as const,
+      priority: 0.8,
+    }))
+  );
 
   return [
     {

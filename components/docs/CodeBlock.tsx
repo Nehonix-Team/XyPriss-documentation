@@ -1,96 +1,111 @@
 "use client";
 
 import React, { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Copy, Check } from "lucide-react";
+import { Check, Copy, Terminal } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-interface CodeTab {
-  label: string;
-  lang: string;
-  code: string;
-}
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface CodeBlockProps {
-  lang?: string;
-  code?: string;
-  tabs?: CodeTab[];
-  filename?: string;
+  code: string;
+  language?: string;
+  title?: string;
+  className?: string;
 }
 
-export function CodeBlock({ lang = "bash", code = "", tabs, filename }: CodeBlockProps) {
-  const [activeTab, setActiveTab] = useState(0);
+export const CodeBlock: React.FC<CodeBlockProps> = ({
+  code,
+  language = "typescript",
+  title,
+  className,
+}) => {
   const [copied, setCopied] = useState(false);
 
-  const currentCode = tabs ? tabs[activeTab].code : code;
-  const currentLang = tabs ? tabs[activeTab].lang : lang;
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(currentCode);
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="my-6 rounded-xl overflow-hidden border border-xp-border bg-xp-code-bg group">
-      {(tabs || filename) && (
-        <div className="flex items-center justify-between px-4 py-2 bg-xp-surface/50 border-b border-xp-border">
-          <div className="flex gap-2">
-            {tabs ? (
-              tabs.map((tab, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveTab(idx)}
-                  className={`text-xs font-medium px-2 py-1 rounded-md transition-colors ${
-                    activeTab === idx 
-                      ? "bg-xp-primary/20 text-xp-primary" 
-                      : "text-xp-muted hover:text-xp-text"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))
-            ) : (
-              <span className="text-xs font-mono text-xp-muted">{filename || currentLang}</span>
-            )}
+    <div
+      className={cn(
+        "my-6 rounded-xl overflow-hidden border border-white/10 bg-[#1e1e1e] shadow-2xl",
+        className
+      )}
+    >
+      {(title || language) && (
+        <div className="flex items-center justify-between px-4 py-2 bg-[#252526] border-b border-white/5">
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-400 uppercase tracking-wider">
+            <Terminal size={14} className="text-primary" />
+            {title || language}
           </div>
           <button
             onClick={copyToClipboard}
-            className="text-xp-muted hover:text-xp-text transition-colors p-1"
-            title="Copy to clipboard"
+            className="p-1.5 hover:bg-white/10 rounded-md transition-colors text-slate-400 hover:text-white"
+            title="Copy code"
           >
-            {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+            <AnimatePresence mode="wait" initial={false}>
+              {copied ? (
+                <motion.div
+                  key="check"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                >
+                  <Check size={14} className="text-green-500" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="copy"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                >
+                  <Copy size={14} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       )}
-      
-      {!tabs && !filename && (
-        <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-           <button
-            onClick={copyToClipboard}
-            className="text-xp-muted hover:text-xp-text transition-colors p-1.5 bg-xp-surface/80 rounded-md border border-xp-border"
-            title="Copy to clipboard"
-          >
-            {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-          </button>
-        </div>
-      )}
-
-      <div className="relative">
+      <div className="relative group">
         <SyntaxHighlighter
-          language={currentLang}
-          style={atomDark}
+          language={language}
+          style={vscDarkPlus}
+          className="custom-scrollbar"
           customStyle={{
             margin: 0,
-            padding: "1.25rem",
+            padding: "1.5rem",
             background: "transparent",
-            fontSize: "0.9rem",
-            lineHeight: "1.5",
+            fontSize: "0.875rem",
+            lineHeight: "1.7",
+            fontFamily: "var(--font-mono)",
+          }}
+          codeTagProps={{
+            style: {
+              fontFamily: "inherit",
+            },
           }}
         >
-          {currentCode.trim()}
+          {code.trim()}
         </SyntaxHighlighter>
+        {!title && (
+          <button
+            onClick={copyToClipboard}
+            className="absolute top-4 right-4 p-1.5 bg-black/50 opacity-0 group-hover:opacity-100 backdrop-blur-md border border-white/10 rounded-md transition-all text-slate-400 hover:text-white"
+            title="Copy code"
+          >
+            {copied ? (
+              <Check size={14} className="text-green-500" />
+            ) : (
+              <Copy size={14} />
+            )}
+          </button>
+        )}
       </div>
     </div>
   );
-}
+};

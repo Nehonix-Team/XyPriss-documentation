@@ -1,43 +1,41 @@
+"use client";
+
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface StepProps {
   title: string;
   children: React.ReactNode;
 }
 
-export function Step({ title, children }: StepProps) {
+export const Step: React.FC<StepProps> = ({ title, children }) => {
   return (
-    <div className="relative pl-10 pb-10 last:pb-0 group">
-      <div className="absolute left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full border border-xp-primary bg-xp-primary/10 text-xp-primary text-sm font-bold transition-all group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]">
-        {/* The number will be injected by the Steps container or we can use CSS counters */}
-      </div>
-      <div className="absolute left-4 top-8 w-px h-full bg-xp-border group-last:hidden" />
+    <div className="relative pl-8 pb-8 last:pb-0 group">
+      {/* Line connecting steps */}
+      <div className="absolute left-[11px] top-8 bottom-0 w-[2px] bg-white/5 group-last:hidden" />
       
-      <h3 className="text-xl font-bold text-xp-text mb-2">{title}</h3>
-      <div className="text-xp-text/80">{children}</div>
+      {/* Step circle */}
+      <div className="absolute left-0 top-0 w-[24px] h-[24px] rounded-full bg-black border-2 border-primary/50 flex items-center justify-center text-[10px] font-bold text-primary group-hover:border-primary transition-colors shadow-[0_0_10px_rgba(59,130,246,0.3)]" />
+      
+      <div className="flex flex-col gap-2 pt-0.5">
+        <h3 className="text-lg font-bold text-white leading-none mb-2">{title}</h3>
+        <div className="text-muted-foreground text-sm leading-relaxed">
+          {children}
+        </div>
+      </div>
     </div>
   );
+};
+
+interface StepsProps {
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function Steps({ children }: { children: React.ReactNode }) {
+export const Steps: React.FC<StepsProps> = ({ children, className }) => {
   return (
-    <div className="my-10 [counter-reset:step]">
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return (
-            <div className="relative pl-10 pb-10 last:pb-0 group [counter-increment:step]">
-              <div className="absolute left-0 top-0 flex items-center justify-center w-8 h-8 rounded-full border border-xp-primary bg-xp-primary/10 text-xp-primary text-sm font-bold transition-all group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] after:content-[counter(step)]">
-              </div>
-              <div className="absolute left-4 top-8 w-px h-full bg-xp-border group-last:hidden" />
-              
-              {/* @ts-ignore */}
-              <h3 className="text-xl font-bold text-xp-text mb-2">{child.props.title}</h3>
-              <div className="text-xp-text/80">{child.props.children}</div>
-            </div>
-          );
-        }
-        return child;
-      })}
+    <div className={cn("my-8", className)}>
+      {children}
     </div>
   );
-}
+};

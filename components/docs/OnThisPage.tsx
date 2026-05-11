@@ -1,79 +1,67 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
-interface TOCEntry {
+interface HeadingItem {
   id: string;
-  label: string;
-  level?: 2 | 3;
+  text: string;
+  level: number;
 }
 
-interface OnThisPageProps {
-  toc: TOCEntry[];
-}
-
-export function OnThisPage({ toc }: OnThisPageProps) {
+export const OnThisPage = () => {
+  const [headings, setHeadings] = useState<HeadingItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
+    // Find all h2 and h3 headings with IDs
+    const elements = Array.from(document.querySelectorAll("h2[id], h3[id]"));
+    const items = elements.map((el) => ({
+      id: el.id,
+      text: el.textContent || "",
+      level: parseInt(el.tagName.substring(1)),
+    }));
+    setHeadings(items);
+
+    // Intersection Observer to highlight active heading
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry) {
+          setActiveId(visibleEntry.target.id);
+        }
       },
-      { rootMargin: "-100px 0% -80% 0%" }
+      { rootMargin: "-100px 0px -66%" }
     );
 
-    toc.forEach((item) => {
-      const element = document.getElementById(item.id);
-      if (element) observer.observe(element);
-    });
-
+    elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [toc]);
+  }, []);
 
-  if (toc.length === 0) return null;
+  if (headings.length === 0) return null;
 
   return (
-    <div className="hidden xl:block w-64 flex-shrink-0 sticky top-24 self-start pl-8 border-l border-xp-border/30">
-      <h4 className="text-sm font-bold text-xp-text uppercase tracking-wider mb-4">
-        On This Page
+    <div className="flex flex-col gap-4 py-8 pl-4 border-l border-white/5 h-full overflow-y-auto custom-scrollbar">
+      <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 px-2">
+        On this page
       </h4>
-      <nav className="flex flex-col gap-3">
-        {toc.map((item) => (
+      <nav className="flex flex-col gap-1">
+        {headings.map((heading) => (
           <a
-            key={item.id}
-            href={`#${item.id}`}
-            className={`text-sm transition-colors hover:text-xp-primary ${
-              activeId === item.id 
-                ? "text-xp-primary font-medium" 
-                : "text-xp-muted"
-            } ${item.level === 3 ? "pl-4" : ""}`}
+            key={heading.id}
+            href={`#${heading.id}`}
+            className={cn(
+              "px-3 py-1.5 text-sm transition-all rounded-lg",
+              heading.level === 3 && "pl-6",
+              activeId === heading.id
+                ? "text-primary font-medium bg-primary/5"
+                : "text-muted-foreground hover:text-white hover:bg-white/5"
+            )}
           >
-            {item.label}
+            {heading.text}
           </a>
         ))}
       </nav>
-      
-      <div className="mt-8 pt-8 border-t border-xp-border/30">
-        <h4 className="text-xs font-bold text-xp-text uppercase tracking-wider mb-4">
-          Besoin d&apos;aide ?
-        </h4>
-        <p className="text-xs text-xp-muted leading-relaxed mb-4">
-          Rejoignez notre communauté ou posez vos questions sur GitHub Discussions.
-        </p>
-        <a 
-          href="https://github.com/nehonix/xypriss/discussions"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs font-semibold text-xp-primary hover:underline flex items-center gap-1"
-        >
-          Nous rejoindre →
-        </a>
-      </div>
     </div>
   );
-}
+};

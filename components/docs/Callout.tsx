@@ -1,46 +1,73 @@
+"use client";
+
 import React from "react";
-import { Info, AlertTriangle, AlertCircle, Lightbulb } from "lucide-react";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { 
+  Info, 
+  AlertTriangle, 
+  CheckCircle2, 
+  AlertCircle,
+  Lightbulb
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-type CalloutType = "note" | "warning" | "caution" | "tip";
+type CalloutType = "info" | "warning" | "success" | "danger" | "tip";
 
 interface CalloutProps {
-  type: CalloutType;
-  title?: string;
   children: React.ReactNode;
+  type?: CalloutType;
+  title?: string;
+  className?: string;
 }
 
 const icons = {
-  note: Info,
-  warning: AlertTriangle,
-  caution: AlertCircle,
-  tip: Lightbulb,
+  info: <Info size={20} />,
+  warning: <AlertTriangle size={20} />,
+  success: <CheckCircle2 size={20} />,
+  danger: <AlertCircle size={20} />,
+  tip: <Lightbulb size={20} />,
 };
 
 const styles = {
-  note: "bg-blue-500/10 border-blue-500/20 text-blue-200",
-  warning: "bg-yellow-500/10 border-yellow-500/20 text-yellow-200",
-  caution: "bg-red-500/10 border-red-500/20 text-red-200",
-  tip: "bg-emerald-500/10 border-emerald-500/20 text-emerald-200",
+  info: "border-blue-500/20 bg-blue-500/5 text-blue-200",
+  warning: "border-yellow-500/20 bg-yellow-500/5 text-yellow-200",
+  success: "border-green-500/20 bg-green-500/5 text-green-200",
+  danger: "border-red-500/20 bg-red-500/5 text-red-200",
+  tip: "border-purple-500/20 bg-purple-500/5 text-purple-200",
 };
 
-export function Callout({ type, title, children }: CalloutProps) {
-  const Icon = icons[type];
+const iconColors = {
+  info: "text-blue-400",
+  warning: "text-yellow-400",
+  success: "text-green-400",
+  danger: "text-red-400",
+  tip: "text-purple-400",
+};
 
+export const Callout: React.FC<CalloutProps> = ({
+  children,
+  type = "info",
+  title,
+  className,
+}) => {
   return (
-    <div className={cn("my-6 flex gap-4 rounded-lg border p-4", styles[type])}>
-      <div className="mt-1 flex-shrink-0">
-        <Icon size={20} />
+    <div className={cn(
+      "my-6 flex gap-4 p-4 rounded-xl border backdrop-blur-md transition-all",
+      styles[type],
+      className
+    )}>
+      <div className={cn("shrink-0 mt-0.5", iconColors[type])}>
+        {icons[type]}
       </div>
       <div className="flex flex-col gap-1">
-        {title && <div className="font-bold uppercase tracking-wide text-sm">{title}</div>}
-        <div className="text-[15px] leading-relaxed opacity-90">{children}</div>
+        {title && (
+          <div className="font-bold text-sm uppercase tracking-wider mb-1">
+            {title}
+          </div>
+        )}
+        <div className="text-sm leading-relaxed opacity-90">
+          {children}
+        </div>
       </div>
     </div>
   );
-}
+};

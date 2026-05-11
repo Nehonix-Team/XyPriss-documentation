@@ -1,71 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
 :root {
-  /* XyPriss Stable Design System - Cyberpunk / Enterprise */
-  --xp-bg: #0a0a0f;
-  --xp-surface: #11111a;
-  --xp-border: rgba(99, 102, 241, 0.15);
-  --xp-primary: #6366f1;
-  --xp-accent: #06b6d4;
-  --xp-text: #e2e8f0;
-  --xp-muted: #64748b;
-  --xp-code-bg: #0d1117;
-
-  /* Tailwind compat variables */
-  --background: var(--xp-bg);
-  --foreground: var(--xp-text);
-  --primary: var(--xp-primary);
-  --border: var(--xp-border);
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --primary: #3b82f6;
+  --border: #e2e8f0;
 }
 
-@theme inline {
-  --color-xp-bg: var(--xp-bg);
-  --color-xp-surface: var(--xp-surface);
-  --color-xp-border: var(--xp-border);
-  --color-xp-primary: var(--xp-primary);
-  --color-xp-accent: var(--xp-accent);
-  --color-xp-text: var(--xp-text);
-  --color-xp-muted: var(--xp-muted);
-  --color-xp-code-bg: var(--xp-code-bg);
-
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+.dark {
+  --background: #000000;
+  --foreground: #f8fafc;
+  --muted: #0f172a;
+  --muted-foreground: #94a3b8;
+  --primary: #3b82f6;
+  --border: #1e293b;
 }
 
-body {
-  background-color: var(--xp-bg);
-  color: var(--xp-text);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-xy-bg: var(--background);
+  --color-xy-blue: var(--primary);
+  --color-xy-silver: var(--muted-foreground);
+  --color-xy-border: var(--border);
+
+  /* Map standard variables for component compatibility */
+  --color-primary: var(--primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
 }
 
-/* Premium Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Re-enable typography for documentation */
+@utility prose {
+  @apply max-w-none text-muted-foreground leading-relaxed;
+  & h1, & h2, & h3, & h4 { @apply text-foreground font-bold tracking-tight; }
+  & a { @apply text-primary hover:underline; }
+  & :not(pre) > code { 
+    @apply text-primary bg-muted border border-border px-1.5 py-0.5 rounded-md font-mono text-[0.9em]; 
+    font-weight: 500;
+  }
+  & strong { @apply text-foreground font-bold; }
+  & ul { @apply list-disc list-inside space-y-2; }
 }
 
-::-webkit-scrollbar-track {
-  background: var(--xp-bg);
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/30;
+  }
+}
+@layer utilities {
+  .text-glow-blue {
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  }
+  .glass-card {
+    @apply bg-slate-900/40 border border-slate-800 backdrop-blur-sm;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--xp-border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--xp-primary);
-  opacity: 0.5;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* Selection */
-::selection {
-  background-color: rgba(99, 102, 241, 0.3);
-  color: #fff;
+button{
+  cursor: pointer;
 }

@@ -1,25 +1,29 @@
-import { flatDocs } from "./docs-config";
+import { docsConfig } from "./docs-config";
 import Fuse from "fuse.js";
 
 export interface SearchResult {
   title: string;
-  href: string;
+  slug: string;
   description: string;
   snippet: string;
   score: number;
 }
 
 export function searchDocs(query: string): SearchResult[] {
-  // Use flatDocs for search
-  const searchData = flatDocs.map((doc) => ({
-    title: doc.title,
-    href: doc.href,
-    description: "", // We could add descriptions to docsConfig if needed
-  }));
+  // Flatten docs from config
+  const searchData = docsConfig.flatMap(section => 
+    section.items.map(item => ({
+      title: item.title,
+      slug: item.href.replace("/docs", ""),
+      description: `Documentation for ${item.title}`,
+      content: item.title // Placeholder: in the future, index the actual page content
+    }))
+  );
 
   const fuse = new Fuse(searchData, {
     keys: [
-      { name: "title", weight: 1.0 },
+      { name: "title", weight: 0.7 },
+      { name: "content", weight: 0.3 },
     ],
     threshold: 0.4,
   });
@@ -28,9 +32,9 @@ export function searchDocs(query: string): SearchResult[] {
 
   return results.map((res: any) => ({
     title: res.item.title,
-    href: res.item.href,
+    slug: res.item.slug,
     description: res.item.description,
-    snippet: res.item.title, // No content snippet available for React components yet
+    snippet: `Learn more about ${res.item.title} in the XyPriss documentation.`,
     score: res.score || 0,
   }));
 }
