@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { keywords } from "./keywords";
 
-
 export const metadata: Metadata = {
   title: "XyPriss - Enterprise-Grade Hybrid Web Framework",
   keywords,
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
     siteName: "XyPriss Documentation",
     images: [
       {
-        url: "https://dll.nehonix.com/assets/xypriss/xypriss-og.png",
+        url: "https://dll.nehonix.com/assets/XyPriss/xypriss-og.png",
         width: 1200,
         height: 630,
       },
@@ -33,8 +32,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "XyPriss - Enterprise-Grade Web Framework",
     description: "Hybrid Node.js Web Framework powered by XHSC Native Engine.",
-    images: ["https://dll.nehonix.com/assets/xypriss/xypriss-og.png"],
+    images: ["https://dll.nehonix.com/assets/XyPriss/xypriss-og.png"],
   },
+
   robots: {
     index: true,
     follow: true,

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { motion } from "motion/react";
 import {
   Shield,
@@ -78,10 +80,10 @@ export default function Landing() {
             <img
               src="https://dll.nehonix.com/assets/XyPriss/XLanding-decor-xhead.png"
               alt="Logo"
-              className="w-10 h-10 object-contain"
+              className="w-12 h-12 object-contain"
             />
             <span className="font-bold text-2xl tracking-tighter text-white">
-              XyPriss
+              <span className="text-primary">Xy</span>Priss
             </span>
           </div>
           <div className="hidden md:flex items-center gap-10 text-sm font-medium text-slate-400">
@@ -108,9 +110,12 @@ export default function Landing() {
             >
               <Github className="w-5 h-5" />
             </a>
-            <button className="bg-transparent border border-xy-blue/50 text-xy-blue hover:bg-xy-blue hover:text-white px-5 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all">
+            <Link 
+              href="/docs/installation"
+              className="bg-transparent border border-xy-blue/50 text-xy-blue hover:bg-xy-blue hover:text-white px-5 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all"
+            >
               Get Started
-            </button>
+            </Link>
           </div>
         </div>
       </nav>
@@ -163,10 +168,13 @@ export default function Landing() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 items-center">
-              <button className="w-full sm:w-auto bg-xy-deep-blue border border-xy-blue/50 text-white px-10 py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-xy-blue transition-all group">
+              <Link 
+                href="/docs/quick-start"
+                className="w-full sm:w-auto bg-xy-deep-blue border border-xy-blue/50 text-white px-10 py-4 rounded-lg font-bold flex items-center justify-center gap-3 hover:bg-xy-blue transition-all group"
+              >
                 Quick Start{" "}
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </Link>
               <div className="w-full sm:w-auto px-5 py-4 rounded-lg bg-white/5 border border-white/10 font-mono text-sm flex items-center gap-4 group hover:border-white/20 transition-all">
                 <span className="text-slate-500 font-bold">$</span>
                 <span className="text-slate-300">xfpm init my-app</span>

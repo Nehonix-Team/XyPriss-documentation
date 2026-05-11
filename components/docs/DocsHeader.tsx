@@ -44,10 +44,10 @@ export const DocsHeader = () => {
             <img
               src="https://dll.nehonix.com/assets/XyPriss/XLanding-decor-xhead.png"
               alt="Logo"
-              className="w-10 h-10 object-contain group-hover:scale-105 transition-transform"
+              className="w-12 h-12 object-contain group-hover:scale-105 transition-transform"
             />
             <span className="hidden font-bold text-2xl tracking-tighter sm:inline-block">
-              XyPriss <span className="text-primary font-medium">Docs</span>
+              <span className="text-primary">Xy</span>Priss <span className="text-primary font-medium">Docs</span>
             </span>
           </Link>
 
