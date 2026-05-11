@@ -1,11 +1,7 @@
-"use client";
-
-import React from "react";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { CodeBlock } from "@/components/docs/CodeBlock";
 import { Callout } from "@/components/docs/Callout";
-import { Steps, Step } from "@/components/docs/Steps";
-import { Download, Terminal, Settings, AlertCircle } from "lucide-react";
+import { CodeBlock } from "@/components/docs/CodeBlock";
+import { SectionHeading } from "@/components/docs/SectionHeading";
+import { Download, Terminal, Settings, AlertCircle, Shield, Package, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export default function InstallationPage() {
@@ -18,20 +14,38 @@ export default function InstallationPage() {
         </div>
         <SectionHeading level={1}>Installation Guide</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Get started with XyPriss by installing the command-line interface and setting up your environment.
+          Prepare your system for XyPriss development by installing the mandatory ecosystem tools.
         </p>
       </div>
 
+      <SectionHeading level={2} id="requirements">System Requirements</SectionHeading>
       <p>
-        XyPriss uses a specialized package manager called **XFPM** (XyPriss Fast Package Manager). It is designed to be ultra-fast and secure, providing a virtual store for your dependencies.
+        Before running a XyPriss project, ensure the following tools are installed. They are <strong>mandatory</strong> — using alternative package managers (npm, yarn, pnpm) or runtimes will break the framework's security chain and native integration.
       </p>
 
-      <SectionHeading level={2} id="requirements">Requirements</SectionHeading>
-      <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-        <li><strong>Node.js</strong>: Version 18 or later is required.</li>
-        <li><strong>Bun</strong>: The recommended JavaScript runtime for XyPriss.</li>
-        <li><strong>Internet connection</strong>: Required for downloading the native engine binaries.</li>
-      </ul>
+      <div className="overflow-x-auto my-6">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b border-white/10">
+              <th className="py-4 pr-6 font-bold text-white">Requirement</th>
+              <th className="py-4 pr-6 font-bold text-white">Purpose</th>
+              <th className="py-4 font-bold text-white">Install Source</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            <tr>
+              <td className="py-4 pr-6 text-primary font-bold">XFPM</td>
+              <td className="py-4 pr-6 text-muted-foreground">The exclusive package manager for the XyPriss ecosystem. Handles native core linking.</td>
+              <td className="py-4"><a href="#install-cli" className="text-primary hover:underline">See below</a></td>
+            </tr>
+            <tr>
+              <td className="py-4 pr-6 text-primary font-bold">Bun</td>
+              <td className="py-4 pr-6 text-muted-foreground">The primary JavaScript runtime used to execute XyPriss projects and high-speed scripts.</td>
+              <td className="py-4"><a href="https://bun.sh" target="_blank" className="text-primary hover:underline">bun.sh</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <SectionHeading level={2} id="install-cli">Installing the CLI</SectionHeading>
       <p>
@@ -62,6 +76,29 @@ export default function InstallationPage() {
         </div>
       </div>
 
+      <Callout type="warning" title="Runtime Restriction">
+        Using <code>npm run</code>, <code>node</code>, or other runtimes to start a XyPriss server is not supported and will produce undefined behavior. Always use <code>xfpm run</code> or <code>bun</code> to execute scripts and entry points.
+      </Callout>
+
+      <SectionHeading level={2} id="install-xypriss">Installing XyPriss Core</SectionHeading>
+      <p>
+        After configuring the CLI environment, you can add the XyPriss core engine to any project directory:
+      </p>
+      
+      <CodeBlock 
+        language="bash" 
+        code="# Install XyPriss core in your current project\nxfpm install xypriss" 
+      />
+
+      <Callout type="info" title="XyPriss Security Shield">
+        For projects requiring advanced protection, install the optional security shield:
+        <CodeBlock 
+          language="bash" 
+          className="mt-4"
+          code="xfpm install xypriss-security" 
+        />
+      </Callout>
+
       <SectionHeading level={2} id="verification">Verification</SectionHeading>
       <p>
         Once installed, verify that the CLI is available in your PATH:
@@ -83,16 +120,18 @@ export default function InstallationPage() {
         />
       </Callout>
 
-      <div className="mt-12 p-6 rounded-2xl border border-primary/10 bg-primary/5">
-         <div className="flex items-center gap-2 text-primary mb-2">
-           <AlertCircle size={20} />
-           <span className="font-bold">Next Steps</span>
+      <div className="mt-12 p-8 rounded-2xl border border-primary/10 bg-primary/5 flex items-center justify-between gap-6">
+         <div className="flex-1">
+           <div className="flex items-center gap-2 text-primary mb-2">
+             <AlertCircle size={20} />
+             <span className="font-bold">Ready to code?</span>
+           </div>
+           <p className="text-sm text-muted-foreground">
+             Now that your environment is configured, you can initialize a new project from a template.
+           </p>
          </div>
-         <p className="text-sm text-muted-foreground mb-4">
-           Now that you have the CLI installed, you can initialize your first project.
-         </p>
-         <Link href="/docs/quick-start" className="text-primary font-medium hover:underline">
-           Go to Quick Start →
+         <Link href="/docs/quick-start" className="bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/80 transition-all flex items-center gap-2 shrink-0">
+           Quick Start <ChevronRight size={18} />
          </Link>
       </div>
     </div>
