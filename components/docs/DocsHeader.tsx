@@ -7,9 +7,34 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+import { SearchDialog } from "./SearchDialog";
+
 export const DocsHeader = () => {
   const { theme, setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+      if (e.key === "/" && !isSearchOpen) {
+        // Only if not typing in another input
+        if (
+          document.activeElement?.tagName !== "INPUT" &&
+          document.activeElement?.tagName !== "TEXTAREA"
+        ) {
+          e.preventDefault();
+          setIsSearchOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isSearchOpen]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/60 backdrop-blur-xl">
@@ -35,18 +60,20 @@ export const DocsHeader = () => {
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="relative hidden md:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-            <input 
-              type="text" 
-            placeholder="Search docs..." 
-              className="h-9 w-64 rounded-full bg-white/5 border border-white/10 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-            />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] text-muted-foreground">
-              <span>⌘</span>
-              <span>K</span>
-            </div>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="relative hidden md:flex items-center group"
+            >
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-hover:text-primary transition-colors" size={16} />
+              <div className="h-9 w-64 rounded-full bg-white/5 border border-white/10 pl-10 pr-4 text-sm text-muted-foreground flex items-center justify-between group-hover:border-primary/30 transition-all">
+                <span>Search docs...</span>
+                <div className="flex items-center gap-0.5 px-1.5 py-0.5 rounded border border-white/10 bg-white/5 text-[10px]">
+                  <span>⌘</span>
+                  <span>K</span>
+                </div>
+              </div>
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -74,7 +101,6 @@ export const DocsHeader = () => {
             </button>
           </div>
         </div>
-      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -89,18 +115,24 @@ export const DocsHeader = () => {
                <Link href="/docs" className="text-lg font-medium">Documentation</Link>
                <Link href="/docs/api-reference" className="text-lg font-medium">API Reference</Link>
                <Link href="https://github.com/Nehonix-Team/XyPriss" target="_blank" className="text-lg font-medium">GitHub</Link>
-               <div className="relative mt-2">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-                <input 
-                  type="text" 
-                  placeholder="Search documentation..." 
-                  className="h-12 w-full rounded-xl bg-white/5 border border-white/10 pl-11 pr-4 text-base focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                />
-              </div>
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsSearchOpen(true);
+                  }}
+                  className="relative mt-2 w-full"
+                >
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+                  <div className="h-12 w-full rounded-xl bg-white/5 border border-white/10 pl-11 pr-4 text-base text-muted-foreground flex items-center">
+                    Search documentation...
+                  </div>
+                </button>
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 };

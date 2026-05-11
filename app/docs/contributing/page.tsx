@@ -326,7 +326,10 @@ export default function ContributingPage() {
       </Section>
 
       <Section title="Security Disclosures" icon={Lock}>
-        <div id="disclosure-policy" className="bg-red-500/5 border border-red-500/20 rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-center text-center md:text-left">
+        <div
+          id="disclosure-policy"
+          className="bg-red-500/5 border border-red-500/20 rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-center text-center md:text-left"
+        >
           <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
             <AlertTriangle className="w-8 h-8 text-red-500" />
           </div>
