@@ -31,10 +31,10 @@ xfpm install
 Start the development server:
 
 ```bash
-xfpm run dev
+xfpm dev
 ```
 
-The documentation will be available at `http://localhost:3000`.
+The documentation will be available at `http://localhost:5442`.
 
 ## Contribution Standards
 
