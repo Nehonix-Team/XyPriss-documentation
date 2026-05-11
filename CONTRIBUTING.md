@@ -97,10 +97,6 @@ The following components must be used to maintain architectural integrity:
 
 ## Submission Process
 
-1. **Maintainers**: Use the specialized deployment script to bypass branch protections for critical documentation updates:
-   ```bash
-   ./private/xpush.sh "Commit message" --bypass
-   ```
-2. **Community Contributors**: All external contributions must be submitted via a **Pull Request** targeting the `main` branch. PRs will be reviewed for technical accuracy and design consistency before merging.
+All contributions must be submitted via a **Pull Request** targeting the `main` branch. PRs will be rigorously reviewed for technical accuracy, architectural alignment, and design consistency before merging.
 
 Thank you for contributing to the XyPriss ecosystem.
