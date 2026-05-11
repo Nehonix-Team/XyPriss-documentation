@@ -11,6 +11,26 @@ XyPriss Documentation is implemented using manual React components rather than a
 3. **Manual Verification**: The process of converting markdown content into React components serves as a rigorous peer-review phase. It ensures that every technical instruction is verified and styled according to the project's design language.
 4. **Consistency**: Utilizing a unified set of documentation components ensures that the developer experience remains consistent across all documentation pages.
 
+## Design System & Aesthetics
+
+All documentation pages must adhere to the **Nehonix Premium** design language. Consistency in color and typography is non-negotiable.
+
+### 1. Color Palette (Dark Mode)
+We use a high-contrast, deep-space palette to emphasize technical precision:
+- **Primary (Nehonix Blue)**: `#3b82f6` — Used for active states, CTA buttons, and highlights.
+- **Background (Zero Black)**: `#000000` — The absolute foundation of all pages.
+- **Surface (Deep Slate)**: `#0f172a` — Used for cards, code blocks, and muted backgrounds.
+- **Border (Subtle White)**: `rgba(255, 255, 255, 0.05)` — Used for glassmorphism borders.
+
+### 2. Typography
+- **Headings & UI**: `Inter` — Clean, modern, and highly legible.
+- **Technical Content**: `JetBrains Mono` — Used for all code blocks, inline code, and terminal outputs.
+
+### 3. Visual Language
+- **Glassmorphism**: Use `bg-white/[0.02]` with `backdrop-blur-sm` and `border-white/5` for containers.
+- **Interactive States**: Hover effects should involve subtle translation (`hover:-translate-y-0.5`) and increased border opacity.
+- **Glow Effects**: Use `text-glow-blue` or `shadow-primary/20` sparingly to highlight critical technical milestones.
+
 ## Page Development Workflow
 
 ### 1. Project Structure
@@ -75,10 +95,12 @@ The following components must be used to maintain architectural integrity:
 - **Steps / Step**: Mandatory for sequential tutorials or installation flows.
 - **DocsFooter**: Mandatory at the end of every page to provide a clear Call-to-Action (CTA) and navigation to the next logical topic.
 
-## Submission Guidelines
+## Submission Process
 
-1. **Environment**: Ensure the project builds successfully using `xfpm run build`.
-2. **Design**: Validate that all components respect the project's design system in both light and dark modes.
-3. **Licensing**: All contributions are subject to the Nehonix Open Source License (NOSL) v2.0.
+1. **Maintainers**: Use the specialized deployment script to bypass branch protections for critical documentation updates:
+   ```bash
+   ./private/xpush.sh "Commit message" --bypass
+   ```
+2. **Community Contributors**: All external contributions must be submitted via a **Pull Request** targeting the `main` branch. PRs will be reviewed for technical accuracy and design consistency before merging.
 
 Thank you for contributing to the XyPriss ecosystem.
