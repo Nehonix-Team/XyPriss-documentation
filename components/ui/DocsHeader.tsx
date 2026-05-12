@@ -11,8 +11,13 @@ import { SearchDialog } from "./SearchDialog";
 
 export const DocsHeader = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -96,7 +101,15 @@ export const DocsHeader = () => {
             className="p-2 hover:bg-white/5 rounded-lg transition-colors"
             title="Changer le thème"
           >
-            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            {mounted ? (
+              theme === "dark" ? (
+                <Sun size={20} />
+              ) : (
+                <Moon size={20} />
+              )
+            ) : (
+              <div className="w-5 h-5" />
+            )}
           </button>
 
           <Link
