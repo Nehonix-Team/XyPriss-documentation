@@ -8,6 +8,14 @@ import {
   Cpu,
   Package,
   HelpCircle,
+  Shield,
+  FolderTree,
+  Navigation,
+  Type,
+  Hash,
+  Calendar,
+  Database,
+  ArrowRight,
   LucideIcon,
 } from "lucide-react";
 
@@ -18,6 +26,14 @@ const iconMap: Record<string, LucideIcon> = {
   Cpu,
   Package,
   HelpCircle,
+  Shield,
+  FolderTree,
+  Navigation,
+  Type,
+  Hash,
+  Calendar,
+  Database,
+  ArrowRight,
 };
 
 interface DocsFooterProps {

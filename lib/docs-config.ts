@@ -22,6 +22,29 @@ export const docsConfig = [
     ],
   },
   {
+    title: "System",
+    items: [
+      { title: "Overview", href: "/docs/system" },
+      { title: "Environment", href: "/docs/system/environment" },
+      { title: "Filesystem", href: "/docs/system/filesystem" },
+      { title: "Path", href: "/docs/system/path" },
+      { title: "Operating System", href: "/docs/system/os" },
+      { 
+        title: "Utilities", 
+        href: "/docs/system/utils",
+        items: [
+          { title: "Strings", href: "/docs/system/utils/strings" },
+          { title: "Numbers", href: "/docs/system/utils/numbers" },
+          { title: "Dates", href: "/docs/system/utils/dates" },
+          { title: "Data", href: "/docs/system/utils/data" },
+          { title: "Logic", href: "/docs/system/utils/logic" },
+          { title: "Primitives", href: "/docs/system/utils/primitives" },
+        ]
+      },
+      { title: "Dynamic Variables", href: "/docs/system/vars" },
+    ],
+  },
+  {
     title: "Security",
     items: [
       { title: "Environment Shield", href: "/docs/security/environment-shield" },

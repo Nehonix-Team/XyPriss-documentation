@@ -52,7 +52,8 @@ export const DocsHeader = () => {
               className="w-12 h-12 object-contain group-hover:scale-105 transition-transform"
             />
             <span className="hidden font-bold text-2xl tracking-tighter sm:inline-block">
-              <span className="text-primary">Xy</span>Priss <span className="text-primary font-medium">Docs</span>
+              <span className="text-primary">Xy</span>Priss
+              {/* <span className="text-primary font-medium">Docs</span> */}
             </span>
           </Link>
 
