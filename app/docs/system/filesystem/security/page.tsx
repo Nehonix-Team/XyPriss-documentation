@@ -15,7 +15,7 @@ export default function FsSecurityPage() {
         </div>
         <SectionHeading level={1}>Security & Advanced Ops</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Enterprise-grade security primitives and advanced data manipulation.
+          Hardened security primitives and advanced kernel-level operations. Features include AES-256-GCM encryption, hardware-bound data locking, and secure multi-pass deletion (shredding).
         </p>
       </div>
 

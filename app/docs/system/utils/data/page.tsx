@@ -2,7 +2,7 @@ import React from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
-import { Database, Box, Layers, Filter, List, GitBranch } from "lucide-react";
+import { Database, Box, Layers, Filter, List, GitBranch, Braces, UserCheck } from "lucide-react";
 
 export default function DataUtilsPage() {
   return (
@@ -29,12 +29,26 @@ export default function DataUtilsPage() {
             .deepClone(obj)
           </h4>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-            Creates a complete, recursive copy of an object. Handles circular references and complex prototypes for immutable state updates.
+            Creates a complete, recursive copy of an object. Handles circular references and complex prototypes.
           </p>
           <CodeBlock 
             language="typescript"
-            code={`const original = { api: { timeout: 5000 } };
-const cloned = __sys__.utils.obj.deepClone(original);`}
+            code={`const originalConfig = { api: { timeout: 5000 }, plugins: ["auth"] };
+const newConfig = __sys__.utils.obj.deepClone(originalConfig);`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Braces size={18} className="text-primary" />
+            .parse(json, fallback?)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            A safe alternative to <code className="text-primary">JSON.parse</code>. Returns a fallback value instead of throwing on malformed strings.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const prefs = __sys__.utils.obj.parse(raw, { theme: "light" });`}
           />
         </div>
 
@@ -63,8 +77,8 @@ const publicProfile = __sys__.utils.obj.omit(user, ["password"]); // { id: 1, em
           </p>
           <CodeBlock 
             language="typescript"
-            code={`const data = { user: { profile: { name: "John" } } };
-const flat = __sys__.utils.obj.flattenObject(data); // { "user.profile.name": "John" }`}
+            code={`const flat = __sys__.utils.obj.flattenObject({ user: { profile: { name: "John" } } });
+// → { "user.profile.name": "John" }`}
           />
         </div>
       </div>
@@ -84,8 +98,22 @@ const flat = __sys__.utils.obj.flattenObject(data); // { "user.profile.name": "J
           </p>
           <CodeBlock 
             language="typescript"
-            code={`const items = [1, 2, 3, 4, 5, 6, 7];
-const batches = __sys__.utils.arr.chunk(items, 3); // [[1, 2, 3], [4, 5, 6], [7]]`}
+            code={`const batches = __sys__.utils.arr.chunk([1, 2, 3, 4, 5, 6, 7], 3);
+// → [[1, 2, 3], [4, 5, 6], [7]]`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <UserCheck size={18} className="text-primary" />
+            .unique(array)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Removes duplicate elements while preserving the original order of the first occurrence.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const uniqueIds = __sys__.utils.arr.unique(["A", "B", "A", "C"]); // → ["A", "B", "C"]`}
           />
         </div>
 
@@ -99,28 +127,9 @@ const batches = __sys__.utils.arr.chunk(items, 3); // [[1, 2, 3], [4, 5, 6], [7]
           </p>
           <CodeBlock 
             language="typescript"
-            code={`const items = [{ cat: "A" }, { cat: "B" }, { cat: "A" }];
-const grouped = __sys__.utils.arr.groupBy(items, i => i.cat);`}
+            code={`const categorized = __sys__.utils.arr.groupBy(products, (p) => p.category);`}
           />
         </div>
-      </div>
-
-      <SectionHeading level={2} id="other-data-utils">
-        More Utilities
-      </SectionHeading>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-        {[
-          { name: "obj.parse(json, fallback)", desc: "Safe JSON.parse alternative" },
-          { name: "obj.merge(target, ...sources)", desc: "Deep recursive object merging" },
-          { name: "arr.unique(array)", desc: "Deduplicates while preserving order" },
-          { name: "arr.shuffle(array)", desc: "Fisher-Yates randomization" },
-        ].map((util, i) => (
-          <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-colors group">
-            <div className="text-primary font-mono text-xs font-bold mb-1 group-hover:text-white transition-colors">{util.name}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-widest">{util.desc}</div>
-          </div>
-        ))}
       </div>
 
       <DocsFooter 

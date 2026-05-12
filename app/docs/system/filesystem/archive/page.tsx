@@ -14,7 +14,7 @@ export default function FsArchivePage() {
         </div>
         <SectionHeading level={1}>Archive & Compression</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Zero-copy archiving and lossless compression executing inside the XHSC core.
+          Enterprise-grade compression and archiving executing entirely within the XHSC core. These operations eliminate Node.js buffer overhead, providing zero-copy performance for massive data structures.
         </p>
       </div>
 

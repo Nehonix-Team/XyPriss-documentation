@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Calendar, Clock, RotateCcw, Plus, Minus, CheckCircle2 } from "lucide-react";
+import { Calendar, Clock, RotateCcw, Plus, Minus, CheckCircle2, History, CalendarDays, Timer } from "lucide-react";
 
 export default function DateUtilsPage() {
   return (
@@ -28,6 +28,21 @@ export default function DateUtilsPage() {
         <div>
           <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
             <Clock size={18} className="text-primary" />
+            .now() / .nowMs()
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Helpers to get the current system time in the preferred unit (seconds or milliseconds).
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const sec = __sys__.utils.date.now();
+const ms = __sys__.utils.date.nowMs();`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Calendar size={18} className="text-primary" />
             .format(date, locale?, options?)
           </h4>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
@@ -35,7 +50,7 @@ export default function DateUtilsPage() {
           </p>
           <CodeBlock 
             language="typescript"
-            code={`// From a Go-native timestamp (seconds)
+            code={`// From a XHSC timestamp (seconds)
 __sys__.utils.date.format(1776287197, "fr-FR", { dateStyle: "long" });
 // → "15 avril 2026"`}
           />
@@ -43,7 +58,7 @@ __sys__.utils.date.format(1776287197, "fr-FR", { dateStyle: "long" });
 
         <div>
           <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-            <RotateCcw size={18} className="text-primary" />
+            <History size={18} className="text-primary" />
             .timeAgo(date, locale?)
           </h4>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
@@ -59,7 +74,7 @@ __sys__.utils.date.timeAgo(lastAction); // → "15 minutes ago"`}
         <div>
           <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
             <Plus size={18} className="text-primary" />
-            .add() / .subtract()
+            .add(date, value, unit)
           </h4>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
             Performs calendar-aware arithmetic. Correctly handles month-length variations and leap years.
@@ -74,37 +89,45 @@ const nextBilling = __sys__.utils.date.add(subDate, 1, "mo");
 
         <div>
           <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-            <CheckCircle2 size={18} className="text-primary" />
-            .formatDuration(value, unit?)
+            <Timer size={18} className="text-primary" />
+            .diff(dateA, dateB, unit?)
           </h4>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-            Converts raw durations into component-based strings. Zero-value components are omitted.
+            Returns the signed integer difference between two dates in the requested unit.
           </p>
           <CodeBlock 
             language="typescript"
-            code={`__sys__.utils.date.formatDuration(93661, "s"); // → "1d 2h 1m 1s"`}
+            code={`const days = __sys__.utils.date.diff("2026-12-25", "2026-12-20", "d"); // → 5`}
           />
         </div>
-      </div>
 
-      <SectionHeading level={2} id="calendar-queries">
-        Calendar & Validation
-      </SectionHeading>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-        {[
-          { name: ".weekNumber(date?)", desc: "ISO 8601 week number (1-53)" },
-          { name: ".isLeapYear(year?)", desc: "Check for 366-day years" },
-          { name: ".isWeekend(date?)", desc: "Day-of-week classification" },
-          { name: ".isValid(value)", desc: "Parseable, non-NaN date check" },
-          { name: ".diff(a, b, unit?)", desc: "Signed integer difference" },
-          { name: ".dateRange(start, end)", desc: "Array of Dates between points" },
-        ].map((util, i) => (
-          <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-colors group">
-            <div className="text-primary font-mono text-xs font-bold mb-1 group-hover:text-white transition-colors">{util.name}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-widest">{util.desc}</div>
-          </div>
-        ))}
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <CalendarDays size={18} className="text-primary" />
+            .dateRange(start, end)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Generates an array of Date objects for every calendar day between start and end. Capped at 3,650 days.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const week = __sys__.utils.date.dateRange("2026-01-01", "2026-01-07");`}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { n: ".today()", d: "Current Date instance" },
+            { n: ".weekNumber()", d: "ISO 8601 week" },
+            { n: ".isLeapYear()", d: "Check for 366 days" },
+            { n: ".isValid()", d: "Finite date check" },
+          ].map((u, i) => (
+            <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+              <div className="font-mono text-primary text-[10px] font-bold mb-1">{u.n}</div>
+              <p className="text-[9px] text-muted-foreground uppercase">{u.d}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <DocsFooter 

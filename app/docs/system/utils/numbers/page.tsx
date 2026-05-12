@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Hash, Activity, Zap, HardDrive, Globe } from "lucide-react";
+import { Hash, Activity, Zap, HardDrive, Globe, Dice5 } from "lucide-react";
 
 export default function NumberUtilsPage() {
   return (
@@ -51,6 +51,20 @@ health = __sys__.utils.num.clamp(health, 0, 100); // → 100`}
 
         <div>
           <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Dice5 size={18} className="text-primary" />
+            .randomInt(min, max)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Returns a pseudo-random integer within the inclusive range [min, max].
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const roll = __sys__.utils.num.randomInt(1, 6); // Dice roll`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
             <HardDrive size={18} className="text-primary" />
             .formatBytes(bytes, decimals?)
           </h4>
@@ -79,24 +93,6 @@ health = __sys__.utils.num.clamp(health, 0, 100); // → 100`}
 }); // → "$1,250.50"`}
           />
         </div>
-      </div>
-
-      <SectionHeading level={2} id="math-utilities">
-        Math Utilities
-      </SectionHeading>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-        {[
-          { name: ".randomInt(min, max)", desc: "Pseudo-random inclusive integer" },
-          { name: ".toRange(val, min, max)", desc: "Maps value to new range" },
-          { name: ".round(val, decimals)", desc: "Precision-based rounding" },
-          { name: ".isEven(val) / .isOdd(val)", desc: "Parity validation" },
-        ].map((util, i) => (
-          <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-colors group">
-            <div className="text-primary font-mono text-xs font-bold mb-1 group-hover:text-white transition-colors">{util.name}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-widest">{util.desc}</div>
-          </div>
-        ))}
       </div>
 
       <DocsFooter 

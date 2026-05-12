@@ -58,51 +58,53 @@ export default function UtilsOverviewPage() {
         </div>
         <SectionHeading level={1}>System Utilities (utils)</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          High-performance suite for string manipulation, async control, and data validation.
+          High-performance suite for string manipulation, async control, and
+          data validation.
+        </p>
+        <p className="leading-relaxed">
+          The <code className="text-primary">utils</code> module provides a
+          comprehensive collection of optimized functions globally accessible
+          via the <code className="text-primary">__sys__.utils</code> namespace.
         </p>
       </div>
 
-      <p className="leading-relaxed">
-        The <code className="text-primary">utils</code> module provides a comprehensive collection of optimized functions globally accessible via the <code className="text-primary">__sys__.utils</code> namespace.
-      </p>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-        <UtilCard 
+        <UtilCard
           title="Strings"
           description="Normalization, slugs, random strings, and formatting."
           href="/docs/system/utils/strings"
           icon={Type}
           badge="str"
         />
-        <UtilCard 
+        <UtilCard
           title="Numbers"
           description="Math operations, byte formatting, and clamping."
           href="/docs/system/utils/numbers"
           icon={Hash}
           badge="num"
         />
-        <UtilCard 
+        <UtilCard
           title="Dates"
           description="Calendar arithmetic, relative time, and smart parsing."
           href="/docs/system/utils/dates"
           icon={Calendar}
           badge="date"
         />
-        <UtilCard 
+        <UtilCard
           title="Data"
           description="Deep object cloning and advanced array management."
           href="/docs/system/utils/data"
           icon={Database}
           badge="obj / arr"
         />
-        <UtilCard 
+        <UtilCard
           title="Logic"
           description="Asynchronous control flow and validation guards."
           href="/docs/system/utils/logic"
           icon={Activity}
           badge="async / is"
         />
-        <UtilCard 
+        <UtilCard
           title="Primitives"
           description="Core identity (UUID) and functional helpers (Memoize)."
           href="/docs/system/utils/primitives"
@@ -115,17 +117,18 @@ export default function UtilsOverviewPage() {
         Global Access
       </SectionHeading>
       <p className="mb-6">
-        All utilities are organized into sub-namespaces for better discoverability and clean syntax:
+        All utilities are organized into sub-namespaces for better
+        discoverability and clean syntax:
       </p>
 
-      <CodeBlock 
+      <CodeBlock
         language="typescript"
         code={`const id = __sys__.utils.id.uuid();
 const bytes = __sys__.utils.num.formatBytes(1234567);
 const date = __sys__.utils.date.format(Date.now());`}
       />
 
-      <DocsFooter 
+      <DocsFooter
         title="String Utilities"
         description="Learn how to manipulate and format strings with the native str module."
         buttonText="Explore API"

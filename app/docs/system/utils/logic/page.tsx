@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Activity, Clock, RotateCcw, Timer, Zap, CheckCircle2, ShieldCheck, Mail, Globe } from "lucide-react";
+import { Activity, Clock, RotateCcw, Timer, Zap, CheckCircle2, ShieldCheck, Mail, Globe, Repeat, ListOrdered, FastForward, PlayCircle, Gauge } from "lucide-react";
 
 export default function LogicUtilsPage() {
   return (
@@ -75,12 +75,83 @@ export default function LogicUtilsPage() {
 
         <div>
           <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <PlayCircle size={18} className="text-primary" />
+            .attempt(fn)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Executes an async function and returns a discriminated result object. Simplifies flow control by avoiding global try/catch blocks.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const { ok, value, error } = await __sys__.utils.async.attempt(() => apiCall());`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Repeat size={18} className="text-primary" />
+            .repeat(fn, ms, signal?)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Executes a function repeatedly with a fixed interval and automatic drift correction.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`__sys__.utils.async.repeat(() => console.log("Tick"), 1000);`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <ListOrdered size={18} className="text-primary" />
+            .queue()
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Creates a sequential task queue where jobs are executed one by one in the order they were added.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const q = __sys__.utils.async.queue();
+q.add(async () => { /* job 1 */ });`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <FastForward size={18} className="text-primary" />
+            .memoize(fn, ttl?)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Caches the results of an async function. Supports request collapsing for identical concurrent calls.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const cachedFetch = __sys__.utils.async.memoize(fetchData, 5000);`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
             <Clock size={18} className="text-primary" />
             .sleep(ms, signal?)
           </h4>
           <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
             Suspends execution for a specific duration. Supports <code className="text-primary">AbortSignal</code> for clean cancellation.
           </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { n: ".poll(fn, pred)", d: "Repeated condition check" },
+            { n: ".debounce(fn, ms)", d: "Burst prevention" },
+            { n: ".throttle(fn, ms)", d: "Frequency limiting" },
+            { n: ".once(fn)", d: "Single execution guard" },
+          ].map((u, i) => (
+            <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+              <div className="font-mono text-primary text-[10px] font-bold mb-1">{u.n}</div>
+              <p className="text-[9px] text-muted-foreground uppercase">{u.d}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -110,26 +181,6 @@ export default function LogicUtilsPage() {
             <div className="text-[10px] text-muted-foreground uppercase tracking-widest">Type Guard</div>
           </div>
         </div>
-      </div>
-
-      <SectionHeading level={2} id="advanced-flow">
-        Advanced Flow Control
-      </SectionHeading>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-        {[
-          { name: ".memoize(fn, ttl?)", desc: "Request collapsing & caching" },
-          { name: ".attempt(fn)", desc: "Error-as-value { ok, value } pattern" },
-          { name: ".repeat(fn, ms, signal?)", desc: "Drift-corrected intervals" },
-          { name: ".queue()", desc: "Sequential task execution" },
-          { name: ".debounce(fn, wait)", desc: "Burst prevention" },
-          { name: ".poll(fn, predicate)", desc: "Repeated condition checking" },
-        ].map((util, i) => (
-          <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-colors group">
-            <div className="text-primary font-mono text-xs font-bold mb-1 group-hover:text-white transition-colors">{util.name}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-widest">{util.desc}</div>
-          </div>
-        ))}
       </div>
 
       <DocsFooter 

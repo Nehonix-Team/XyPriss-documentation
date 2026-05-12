@@ -15,7 +15,7 @@ export default function FsWatchPage() {
         </div>
         <SectionHeading level={1}>File Watching</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Reactive filesystem monitoring powered by the native XHSC event system.
+          Real-time filesystem telemetry and reactive monitoring. Powered by the native XHSC event system, this module provides low-latency notification for file mutations, content deltas, and automated processing.
         </p>
       </div>
 

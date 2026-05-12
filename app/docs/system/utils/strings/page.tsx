@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Type, Link as LinkIcon, Hash, Scissors, Sparkles } from "lucide-react";
+import { Type, Link as LinkIcon, Hash, Scissors, Sparkles, CaseSensitive, AlignLeft, Search, Braces } from "lucide-react";
 
 export default function StringUtilsPage() {
   return (
@@ -48,7 +48,7 @@ export default function StringUtilsPage() {
           <CodeBlock 
             language="typescript"
             code={`const slug = __sys__.utils.str.slugify("Implementing XyPriss Utilities!");
-// → "implementing-xypriss-utilities"`}
+// → "implementing-xypriss-utilities-a-deep-dive"`}
           />
         </div>
 
@@ -62,7 +62,8 @@ export default function StringUtilsPage() {
           </p>
           <CodeBlock 
             language="typescript"
-            code={`const short = __sys__.utils.str.truncate(longText, 30);`}
+            code={`const short = __sys__.utils.str.truncate("This is a very long description", 30);
+// → "This is a very long descri..."`}
           />
         </div>
 
@@ -79,24 +80,63 @@ export default function StringUtilsPage() {
             code={`const key = __sys__.utils.str.toCamelCase("first_name"); // → "firstName"`}
           />
         </div>
-      </div>
 
-      <SectionHeading level={2} id="other-utilities">
-        Other Utilities
-      </SectionHeading>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-        {[
-          { name: ".capitalize(text)", desc: "Uppercases first character" },
-          { name: ".pad(text, len, char, pos)", desc: "Pads string to length" },
-          { name: ".countOccurrences(text, word)", desc: "Analyzes text occurrences" },
-          { name: ".toQueryString(params)", desc: "Serializes record to URL params" },
-        ].map((util, i) => (
-          <div key={i} className="p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-colors group">
-            <div className="text-primary font-mono text-xs font-bold mb-1 group-hover:text-white transition-colors">{util.name}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-widest">{util.desc}</div>
-          </div>
-        ))}
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <CaseSensitive size={18} className="text-primary" />
+            .capitalize(text)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Ensures the first character of the input string is uppercase.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`__sys__.utils.str.capitalize("john_doe"); // → "John_doe"`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <AlignLeft size={18} className="text-primary" />
+            .pad(text, length, char?, position?)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Pads the input string to a target length using a specific character at the start or end.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`__sys__.utils.str.pad("42", 5, "0"); // → "00042"`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Search size={18} className="text-primary" />
+            .countOccurrences(text, word, caseSensitive?)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Analyzes a text body to count how many times a specific substring appeared.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`__sys__.utils.str.countOccurrences("ERROR: Failed. ERROR: Timeout.", "error"); // → 2`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Braces size={18} className="text-primary" />
+            .toQueryString(params)
+          </h4>
+          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+            Serializes a flat record into a URL-encoded query string format.
+          </p>
+          <CodeBlock 
+            language="typescript"
+            code={`const qs = __sys__.utils.str.toQueryString({ search: "query string", page: 1 });
+// → "search=query%20string&page=1"`}
+          />
+        </div>
       </div>
 
       <DocsFooter 
