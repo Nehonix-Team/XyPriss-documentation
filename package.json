@@ -1,0 +1,53 @@
+{
+  "name": "xdoc",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 5442",
+    "lint": "eslint",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@next/env": "^16.2.6",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^25.7.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.1.2",
+    "framer-motion": "^12.38.0",
+    "fuse.js": "^7.3.0",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.562.0",
+    "motion": "^12.38.0",
+    "next": "^16.2.6",
+    "next-themes": "^0.4.6",
+    "postcss": "^8.5.14",
+    "react": "^19.3.0-canary-fef12a01-20260413",
+    "react-dom": "^19.3.0-canary-fef12a01-20260413",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.1",
+    "rehype-highlight": "^7.0.2",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
+    "sass": "^1.99.0",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^25.0.9",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
