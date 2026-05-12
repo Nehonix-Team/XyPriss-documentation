@@ -257,7 +257,7 @@ xfpm init my-app --mode xms --force`}
         {[
           {
             title: "Guided Interactive Mode",
-            body: "Running xfpm init without arguments launches an interactive wizard for Name, Version, Description, Author, and Port — with sane defaults to get you started in seconds.",
+            body: "Running xfpm init without arguments launches an interactive wizard for Name, Version, Description, Author, and Port - with sane defaults to get you started in seconds.",
           },
           {
             title: "Dynamic Orchestration Variables",
@@ -298,7 +298,7 @@ xfpm add <package>
 xfpm add -D <package>
 
 # Install from a local path
-xfpm add file:./path/to/my-plugin
+xfpm add -P ./path/to/my-plugin
 
 # Remove a package
 xfpm rm <package>
@@ -333,7 +333,7 @@ xfpm audit fix
 xfpm audit --tree
 
 # Open premium interactive XFPML dashboard
-xfpm audit --html
+xfpm audit --html # or using the "-w" flag
 
 # Fully automated mode for CI environments
 xfpm audit fix --yes --force-remove`}
