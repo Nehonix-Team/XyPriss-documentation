@@ -22,6 +22,28 @@ export const docsConfig = [
     ],
   },
   {
+    title: "HTTP Server",
+    items: [
+      { title: "Request & Response", href: "/docs/server/request-response" },
+      { title: "XJSON API", href: "/docs/features/xjson" },
+      { title: "Client IP Detection", href: "/docs/server/get-ip" },
+      { title: "File Streaming", href: "/docs/server/send-file" },
+      { title: "Static Files (XStatic)", href: "/docs/server/static-files" },
+      { title: "File Uploads", href: "/docs/server/file-uploads" },
+      { title: "Response Control", href: "/docs/server/response-control" },
+    ],
+  },
+  {
+    title: "Configuration",
+    items: [
+      { title: "Guide & Structure", href: "/docs/config/guide" },
+      { title: "Network Engine", href: "/docs/config/network" },
+      { title: "Configs API", href: "/docs/config/api" },
+      { title: "Multi-Server Setup", href: "/docs/config/multi-server" },
+      { title: "Meta Config (+meta)", href: "/docs/config/meta" },
+    ],
+  },
+  {
     title: "System",
     items: [
       { title: "Overview", href: "/docs/system" },
@@ -65,6 +87,7 @@ export const docsConfig = [
     title: "Plugins",
     items: [
       { title: "Overview", href: "/docs/plugins" },
+      { title: "Workspace System", href: "/docs/plugins/workspace" },
       { title: "System Guide", href: "/docs/plugins/system-guide" },
       { title: "Development Guide", href: "/docs/plugins/development-guide" },
       { 
