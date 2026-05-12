@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef } from "react";
 import { Search, X, FileText, CornerDownLeft, Command, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Fuse from "fuse.js";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useFlow } from "fractostate";
+import { SearchFlow } from "@/store/search";
 
 interface SearchDialogProps {
   isOpen: boolean;
@@ -15,7 +16,9 @@ interface SearchDialogProps {
 const Highlight = ({ text, query }: { text: string; query: string }) => {
   if (!query) return <span>{text}</span>;
   
-  const parts = text.split(new RegExp(`(${query})`, "gi"));
+  // Escape regex special characters to prevent crashes
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parts = text.split(new RegExp(`(${escapedQuery})`, "gi"));
   return (
     <span>
       {parts.map((part, i) => 
@@ -32,62 +35,23 @@ const Highlight = ({ text, query }: { text: string; query: string }) => {
 };
 
 export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose }) => {
-  const [query, setQuery] = useState("");
-  const [data, setData] = useState<any[]>([]);
-  const [results, setResults] = useState<any[]>([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [
+    { query, results, selectedIndex, isLoading },
+    { actions }
+  ] = useFlow(SearchFlow);
+  
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch("/api/search");
-        const json = await res.json();
-        setData(json);
-      } catch (e) {
-        console.error("Search fetch error:", e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const fuse = useMemo(() => new Fuse(data, {
-    keys: [
-      { name: "title", weight: 2 },
-      { name: "content", weight: 1 },
-      { name: "category", weight: 0.5 }
-    ],
-    threshold: 0.4,
-    includeMatches: true,
-    minMatchCharLength: 1,
-    ignoreLocation: true,
-    distance: 100,
-    useExtendedSearch: true,
-  }), [data]);
+  const wasOpen = useRef(false);
 
   useEffect(() => {
-    if (isOpen) {
-      inputRef.current?.focus();
-      setQuery("");
-      setResults([]);
-      setSelectedIndex(0);
+    if (isOpen && !wasOpen.current) {
+      setTimeout(() => inputRef.current?.focus(), 10);
+      actions.reset();
     }
+    wasOpen.current = isOpen;
   }, [isOpen]);
-
-  useEffect(() => {
-    if (query.trim() === "") {
-      setResults([]);
-    } else {
-      const searchResults = fuse.search(query);
-      setResults(searchResults.slice(0, 6));
-      setSelectedIndex(0);
-    }
-  }, [query, fuse]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -95,10 +59,10 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose }) =
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+        actions.nextResult();
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+        actions.prevResult();
       } else if (e.key === "Enter") {
         e.preventDefault();
         if (results[selectedIndex]) {
@@ -163,13 +127,13 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose }) =
                 ref={inputRef}
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => actions.setQuery(e.target.value)}
                 placeholder="Search documentation (Semantic search enabled)..."
                 className="flex-1 bg-transparent border-none outline-none text-white placeholder-slate-500 text-lg"
               />
               {query && (
                 <button 
-                  onClick={() => setQuery("")}
+                  onClick={() => actions.setQuery("")}
                   className="p-1 hover:bg-white/5 rounded-md text-slate-500 mr-2"
                 >
                   <X size={18} />
@@ -209,7 +173,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose }) =
                       <button
                         key={item.href}
                         onClick={() => handleSelect(item.href)}
-                        onMouseEnter={() => setSelectedIndex(idx)}
+                        onMouseEnter={() => actions.setSelectedIndex(idx)}
                         className={cn(
                           "w-full flex items-center justify-between p-4 rounded-xl text-left transition-all group relative overflow-hidden",
                           idx === selectedIndex 

@@ -7,27 +7,24 @@ import { docsConfig } from "@/lib/docs-config";
 import { cn } from "@/lib/utils";
 import { ChevronRight, ChevronDown, PanelLeftClose, PanelLeftOpen, Layers } from "lucide-react";
 
+import { useFlow } from "fractostate";
+import { NavigationFlow } from "@/store/navigation";
+
 export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; onToggle: () => void }) => {
   const pathname = usePathname();
-  const [collapsedSections, setCollapsedSections] = useState<string[]>([]);
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [
+    { collapsedSections, expandedItems },
+    { actions }
+  ] = useFlow(NavigationFlow);
 
   const toggleSection = (title: string) => {
-    setCollapsedSections(prev => 
-      prev.includes(title) 
-        ? prev.filter(t => t !== title) 
-        : [...prev, title]
-    );
+    actions.toggleSection(title);
   };
 
   const toggleItem = (title: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setExpandedItems(prev => 
-      prev.includes(title) 
-        ? prev.filter(t => t !== title) 
-        : [...prev, title]
-    );
+    actions.toggleItem(title);
   };
 
   const [isMounted, setIsMounted] = useState(false);
@@ -66,11 +63,11 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
     });
     
     if (itemsToExpand.length > 0) {
-      setExpandedItems(prev => Array.from(new Set([...prev, ...itemsToExpand])));
+      actions.setExpandedItems(Array.from(new Set([...expandedItems, ...itemsToExpand])));
     }
     
     if (sectionsToExpand.length > 0) {
-      setCollapsedSections(prev => prev.filter(t => !sectionsToExpand.includes(t)));
+      actions.expandSections(sectionsToExpand);
     }
   }, [pathname, isMounted]);
 

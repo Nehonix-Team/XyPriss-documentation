@@ -19,6 +19,7 @@
     "date-fns": "^4.1.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.1.2",
+    "fractostate": "^4.8.6",
     "framer-motion": "^12.38.0",
     "fuse.js": "^7.3.0",
     "gray-matter": "^4.0.3",

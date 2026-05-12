@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   distDir: ".next",
   experimental: {
     // Helps with filesystem watching on some network/virtual drives
-    useWatchman: true,
   },
   images: {
     remotePatterns: [

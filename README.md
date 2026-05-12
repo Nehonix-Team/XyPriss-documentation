@@ -7,6 +7,7 @@ This repository contains the source code for the official XyPriss documentation.
 - **Framework**: Next.js 15 (App Router)
 - **Styling**: Tailwind CSS v4
 - **Animations**: Framer Motion
+- **State Management**: [FractoState](https://fractostate.nehonix.com/) (Atomic & Decentralized)
 - **Icons**: Lucide React
 - **Package Management**: XFPM (XyPriss Package Manager)
 

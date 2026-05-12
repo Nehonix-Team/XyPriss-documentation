@@ -7,13 +7,18 @@ import { OnThisPage } from "@/components/ui/OnThisPage";
 import { SearchHighlighter } from "@/components/ui/SearchHighlighter";
 import { cn } from "@/lib/utils";
 
+import { useFlow } from "fractostate";
+import { NavigationFlow } from "@/store/navigation";
+
 export default function DocsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(false);
-  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
+  const [
+    { isLeftSidebarCollapsed, isRightSidebarCollapsed },
+    { actions }
+  ] = useFlow(NavigationFlow);
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
@@ -24,12 +29,12 @@ export default function DocsLayout({
           <aside
             className={cn(
               "hidden lg:block shrink-0 border-r border-border pr-4 sticky top-16 h-[calc(100vh-4rem)] transition-all duration-300",
-              leftSidebarCollapsed ? "w-16" : "w-64",
+              isLeftSidebarCollapsed ? "w-16" : "w-64",
             )}
           >
             <DocSidebar
-              isCollapsed={leftSidebarCollapsed}
-              onToggle={() => setLeftSidebarCollapsed(!leftSidebarCollapsed)}
+              isCollapsed={isLeftSidebarCollapsed}
+              onToggle={() => actions.toggleLeftSidebar()}
             />
           </aside>
 
@@ -49,12 +54,12 @@ export default function DocsLayout({
           <aside
             className={cn(
               "hidden xl:block shrink-0 sticky top-16 h-[calc(100vh-4rem)] transition-all duration-300",
-              rightSidebarCollapsed ? "w-16" : "w-64",
+              isRightSidebarCollapsed ? "w-16" : "w-64",
             )}
           >
             <OnThisPage
-              isCollapsed={rightSidebarCollapsed}
-              onToggle={() => setRightSidebarCollapsed(!rightSidebarCollapsed)}
+              isCollapsed={isRightSidebarCollapsed}
+              onToggle={() => actions.toggleRightSidebar()}
             />
           </aside>
         </div>
