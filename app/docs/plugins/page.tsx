@@ -132,6 +132,27 @@ export default function PluginsOverviewPage() {
         silently.
       </Callout>
 
+      <SectionHeading level={2} id="usage-lifecycle">
+        Plugin Usage Lifecycle
+      </SectionHeading>
+      <p>
+        XyPriss enforces a strict sequence of steps to ensure that every plugin you use is verified, authorized, and audited.
+      </p>
+
+      <div className="flex flex-col gap-3 my-6">
+        {[
+          { step: "1. Install & Trust", desc: "Use XFPM to install and verify the author's Public Key (TOFU Flow)." },
+          { step: "2. Authorize", desc: "Configure the $internal block with pinned signatures and capabilities." },
+          { step: "3. Register", desc: "Add the plugin to your server configuration or programmatic execution." },
+          { step: "4. Audit", desc: "The XHSC core performs a deep startup audit to verify file integrity." }
+        ].map((item, i) => (
+          <div key={i} className="p-4 rounded-xl border border-white/5 bg-white/[0.01] flex items-center gap-4">
+            <span className="text-primary font-bold font-mono text-xs w-24 shrink-0 uppercase tracking-tighter">{item.step}</span>
+            <p className="text-xs text-muted-foreground">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
       <SectionHeading level={2} id="getting-started">
         Next Steps
       </SectionHeading>

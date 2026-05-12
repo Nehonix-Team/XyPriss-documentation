@@ -126,23 +126,115 @@ export default function PluginPermissionsPage() {
         Certain hooks (e.g., <code>SECURITY.CONFIGS</code>, <code>SENSITIVE_DATA</code>) are <strong>never</strong> granted via wildcards. They must be explicitly declared as strings for intentional authorization.
       </Callout>
 
-      <SectionHeading level={2} id="violations">Security Violations</SectionHeading>
+      <SectionHeading level={2} id="data-masking">Request Data Masking</SectionHeading>
       <p>
-        XyPriss handles unauthorized attempts gracefully. If a plugin attempts to use a restricted hook without permission:
+        To protect PII (Personally Identifiable Information), XyPriss automatically masks sensitive request fields before passing them to plugin hooks.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-        <div className="p-4 rounded-lg bg-white/5 border border-white/10 text-center">
-          <p className="text-xs font-bold text-white mb-1 uppercase tracking-widest">1. Block</p>
-          <p className="text-[10px] text-muted-foreground">Operation is blocked by proxy.</p>
+
+      <div className="my-6 p-6 rounded-2xl border border-white/5 bg-white/[0.02] space-y-4">
+        <div className="flex flex-wrap gap-2">
+          {["req.body", "req.query", "req.cookies", "req.headers", "req.params"].map(field => (
+            <code key={field} className="text-[10px] bg-red-500/10 text-red-400 px-2 py-1 rounded border border-red-500/20">{field}</code>
+          ))}
         </div>
-        <div className="p-4 rounded-lg bg-white/5 border border-white/10 text-center">
-          <p className="text-xs font-bold text-white mb-1 uppercase tracking-widest">2. Log</p>
-          <p className="text-[10px] text-muted-foreground">Security warning is recorded.</p>
+        <p className="text-xs text-muted-foreground italic">
+          Unauthorized access returns: "Access to sensitive request data is restricted... Requires XHS.PERM.SECURITY.SENSITIVE_DATA"
+        </p>
+      </div>
+
+      <SectionHeading level={2} id="signatures">Zero-Trust Signatures (G3)</SectionHeading>
+      <p>
+        The G3 architecture ensures plugin integrity via the <code>xypriss.plugin.xsig</code> manifest. This Ed25519-signed block prevents post-installation tampering.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
+          <Key size={18} className="text-primary shrink-0 mt-1" />
+          <div>
+            <h5 className="font-bold text-white text-xs mb-1">Author Pinning (TOFU)</h5>
+            <p className="text-[10px] text-muted-foreground">The author's public key is pinned upon first installation. Updates must be signed by the same key.</p>
+          </div>
         </div>
-        <div className="p-4 rounded-lg bg-white/5 border border-white/10 text-center">
-          <p className="text-xs font-bold text-white mb-1 uppercase tracking-widest">3. Skip</p>
-          <p className="text-[10px] text-muted-foreground">Process continues without crash.</p>
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
+          <ShieldCheck size={18} className="text-green-400 shrink-0 mt-1" />
+          <div>
+            <h5 className="font-bold text-white text-xs mb-1">Deep Audit</h5>
+            <p className="text-[10px] text-muted-foreground">The XHSC engine re-calculates the SHA-256 fingerprint of every plugin file during server startup.</p>
+          </div>
         </div>
+      </div>
+
+      <SectionHeading level={2} id="data-masking">Request Data Masking</SectionHeading>
+      <p>
+        To protect PII (Personally Identifiable Information), XyPriss automatically masks sensitive request fields before passing them to plugin hooks.
+      </p>
+
+      <div className="my-6 p-6 rounded-2xl border border-white/5 bg-white/[0.02] space-y-4">
+        <div className="flex flex-wrap gap-2">
+          {["req.body", "req.query", "req.cookies", "req.headers", "req.params"].map(field => (
+            <code key={field} className="text-[10px] bg-red-500/10 text-red-400 px-2 py-1 rounded border border-red-500/20">{field}</code>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground italic leading-relaxed">
+          When restricted, these fields return a standard security warning. Access requires the <code>XHS.PERM.SECURITY.SENSITIVE_DATA</code> permission.
+        </p>
+      </div>
+
+      <SectionHeading level={2} id="signatures">Zero-Trust Signatures (G3)</SectionHeading>
+      <p>
+        The G3 architecture ensures plugin integrity via the <code>xypriss.plugin.xsig</code> manifest. This Ed25519-signed block prevents post-installation tampering.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
+          <Key size={18} className="text-primary shrink-0 mt-1" />
+          <div>
+            <h5 className="font-bold text-white text-xs mb-1">Author Pinning (TOFU)</h5>
+            <p className="text-[10px] text-muted-foreground">The author's public key is pinned upon first installation. Updates must be signed by the same key.</p>
+          </div>
+        </div>
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
+          <ShieldCheck size={18} className="text-green-400 shrink-0 mt-1" />
+          <div>
+            <h5 className="font-bold text-white text-xs mb-1">Deep Audit</h5>
+            <p className="text-[10px] text-muted-foreground">The XHSC engine re-calculates the SHA-256 fingerprint of every plugin file during server startup.</p>
+          </div>
+        </div>
+      </div>
+
+      <SectionHeading level={2} id="denials">Sticky Denials</SectionHeading>
+      <p>
+        XyPriss supports immutable "Sticky Denials" via the <code>deniedHooks</code> array. These always take precedence over the <code>allowedHooks</code> whitelist, including the <code>*</code> wildcard.
+      </p>
+      
+      <div className="my-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5">
+        <p className="text-xs text-red-400 font-bold mb-2 flex items-center gap-2">
+          <ShieldAlert size={14} />
+          Enforcement Logic
+        </p>
+        <p className="text-[10px] text-red-300/70 leading-relaxed">
+          Once a hook is denied in the static configuration, it cannot be overridden at runtime by any plugin management logic or dynamic permission updates.
+        </p>
+      </div>
+
+      <SectionHeading level={2} id="high-privilege">High-Privilege Restrictions</SectionHeading>
+      <p>
+        Certain capabilities are classified as <strong>High-Privilege</strong>. To prevent accidental elevation, these are <u>never</u> granted via the <code>*</code> wildcard and must be explicitly declared.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
+        {[
+          "XHS.PERM.SECURITY.CONFIGS",
+          "XHS.PERM.SECURITY.SENSITIVE_DATA",
+          "XHS.PERM.ROUTING.BYPASS_NAMESPACE",
+          "XHS.PERM.ROUTING.OVERWRITE_PROTECTED",
+          "XHS.PERM.HTTP.GLOBAL_MIDDLEWARE",
+          "XHS.PERM.OPS.AUXILIARY_SERVER"
+        ].map(perm => (
+          <div key={perm} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 font-mono text-[9px] text-orange-400">
+            {perm}
+          </div>
+        ))}
       </div>
 
       <DocsFooter 

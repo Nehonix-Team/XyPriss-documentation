@@ -108,6 +108,60 @@ app.start();`}
         </Step>
       </Steps>
 
+      <SectionHeading level={2} id="patterns">Authoring Patterns</SectionHeading>
+      <p>
+        XyPriss encourages the <strong>Plugin Factory</strong> pattern to allow users to pass configuration options during registration.
+      </p>
+
+      <div className="my-6">
+        <CodeBlock 
+          language="typescript"
+          code={`export function myPlugin(options: MyOptions = {}) {
+  // Retrieve manifest metadata from package.json automatically
+  const pkg = Plugin.manifest(import.meta.url);
+
+  return Plugin.create({
+    name: pkg.name,
+    version: pkg.version,
+    onServerStart(server) {
+      console.log(\`[\${pkg.name}] Initializing with options:\`, options);
+    }
+  });
+}`}
+        />
+      </div>
+
+      <SectionHeading level={2} id="permissions-discovery">Permission Discovery</SectionHeading>
+      <p>
+        Use the <code>Plugin.inspect()</code> tool to identify the exact permission IDs required by your hooks.
+      </p>
+      
+      <div className="my-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+        <CodeBlock 
+          language="bash"
+          code={`xfpm run inspect.ts # Runs Plugin.inspect(myPlugin())`}
+        />
+        <p className="mt-2 text-[10px] text-muted-foreground italic">
+          Output: Found 2 required permissions: XHS.HOOK.HTTP.REQUEST, XHS.HOOK.HTTP.RESPONSE.
+        </p>
+      </div>
+
+      <SectionHeading level={2} id="signing">Security Identity & Signing</SectionHeading>
+      <p>
+        All G3 plugins must be cryptographically signed. This prevents code tampering and ensures non-repudiation.
+      </p>
+
+      <Steps>
+        <Step title="Generate Identity">
+          <p className="text-xs text-muted-foreground mb-2">Create your Ed25519 developer identity key.</p>
+          <CodeBlock language="bash" code="xfpm gen-key" />
+        </Step>
+        <Step title="Sign Assets">
+          <p className="text-xs text-muted-foreground mb-2">Generate the <code>xypriss.plugin.xsig</code> manifest.</p>
+          <CodeBlock language="bash" code="xfpm sign ./ --min-version 1.0.0 --fix" />
+        </Step>
+      </Steps>
+
       <SectionHeading level={2} id="best-practices">Best Practices</SectionHeading>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col gap-3">
@@ -135,11 +189,11 @@ app.start();`}
       </Callout>
 
       <DocsFooter 
-        title="Plugin API Reference"
-        description="Explore the complete list of hook signatures, interface definitions, and prioritized execution levels."
-        buttonText="View API Reference"
-        href="/docs/plugins/api-reference"
-        iconName="Terminal"
+        title="Built-in Plugins"
+        description="Explore the production-grade official plugins provided by the XyPriss core."
+        buttonText="View Official Plugins"
+        href="/docs/plugins/built-in"
+        iconName="Box"
       />
     </div>
   );

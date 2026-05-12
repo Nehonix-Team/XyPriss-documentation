@@ -4,7 +4,7 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Callout } from "@/components/ui/Callout";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { TechGraph } from "@/components/ui/TechGraph";
-import { Cpu, ShieldCheck, Activity, Layers, Lock, Key, CheckCircle } from "lucide-react";
+import { Cpu, ShieldCheck, Activity, Layers, Lock, Key, CheckCircle, Zap } from "lucide-react";
 
 export default function PluginSystemGuidePage() {
   return (
@@ -125,12 +125,36 @@ export default function PluginSystemGuidePage() {
           <div>
             <h4 className="font-bold text-white text-sm mb-1">Hook Runner</h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Orchestrates the execution of lifecycle and functional hooks
-              across registered plugins.
+              Orchestrates the execution of lifecycle and functional hooks across registered plugins.
+            </p>
+          </div>
+        </div>
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-4">
+          <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-400 shrink-0">
+            <Zap size={20} />
+          </div>
+          <div>
+            <h4 className="font-bold text-white text-sm mb-1">Plugin Interceptor</h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Powers the custom middleware and request/response interception logic within the pipeline.
             </p>
           </div>
         </div>
       </div>
+
+      <SectionHeading level={2} id="contract-verification">
+        Contract Security Verification
+      </SectionHeading>
+      <p>
+        Every plugin is subject to automated contract verification. XyPriss detects the origin of every loading request to prevent unauthorized or hidden module activation.
+      </p>
+
+      <SectionHeading level={2} id="optimization">
+        Performance Optimization
+      </SectionHeading>
+      <p>
+        The system uses <strong>Phase-Based Execution</strong> to categorize plugins by their functional intent (e.g., <code>SECURITY</code>, <code>NETWORK</code>, <code>CACHE</code>), ensuring microsecond-level overhead.
+      </p>
 
       <SectionHeading level={2} id="restricted-server">
         Security Model: The Restricted Server

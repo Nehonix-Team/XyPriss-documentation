@@ -37,6 +37,7 @@ export const docsConfig = [
           { title: "System Guide", href: "/docs/plugins/system-guide" },
           { title: "Development Guide", href: "/docs/plugins/development-guide" },
           { title: "Permissions", href: "/docs/plugins/permissions" },
+          { title: "Built-in Plugins", href: "/docs/plugins/built-in" },
           { title: "API Reference", href: "/docs/plugins/api-reference" },
         ]
       },

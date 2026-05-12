@@ -4,7 +4,7 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Callout } from "@/components/ui/Callout";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { TechGraph } from "@/components/ui/TechGraph";
-import { Terminal, Cpu, Zap, Activity, ShieldCheck, Box, List } from "lucide-react";
+import { Terminal, Cpu, Zap, Activity, ShieldCheck, Box, List, ShieldAlert, Lock } from "lucide-react";
 
 export default function PluginAPIReferencePage() {
   return (
@@ -37,9 +37,9 @@ export default function PluginAPIReferencePage() {
         ]}
       />
 
-      <SectionHeading level={2} id="interface">XyPrissPlugin Interface Specification</SectionHeading>
+      <SectionHeading level={2} id="interface">XyPriss Plugin Interface Specification</SectionHeading>
       <p>
-        The <code>XyPrissPlugin</code> interface defines the contract between the core engine and external modules. Plugins must adhere to this structure for pipeline compatibility.
+        The <code>XyPriss Plugin</code> interface defines the contract between the core engine and external modules. Plugins must adhere to this structure for pipeline compatibility.
       </p>
 
       <div className="my-6">
@@ -74,9 +74,9 @@ export default function PluginAPIReferencePage() {
         />
       </div>
 
-      <SectionHeading level={2} id="priority">Execution Priority Protocols</SectionHeading>
+      <SectionHeading level={2} id="priority">Middleware Priority Protocols</SectionHeading>
       <p>
-        Priority levels dictate the relative execution order within the hook pipeline. Use lower levels for fundamental logic.
+        Developers can control the relative execution order of their plugin middleware within the pipeline using the <code>middlewarePriority</code> property.
       </p>
 
       <div className="my-6 overflow-hidden rounded-xl border border-white/10 bg-white/5">
@@ -84,36 +84,66 @@ export default function PluginAPIReferencePage() {
           <thead className="bg-white/10 text-xs uppercase font-bold text-muted-foreground tracking-widest">
             <tr>
               <th className="px-4 py-3">Level</th>
-              <th className="px-4 py-3">Priority</th>
-              <th className="px-4 py-3">Latency Target</th>
+              <th className="px-4 py-3">ID</th>
+              <th className="px-4 py-3">Description</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5 text-xs">
+            <tr>
+              <td className="px-4 py-3 font-mono text-primary">First</td>
+              <td className="px-4 py-3 font-mono">"first"</td>
+              <td className="px-4 py-3 text-muted-foreground">Executes before all other registered plugin middleware.</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-primary">Normal</td>
+              <td className="px-4 py-3 font-mono">"normal"</td>
+              <td className="px-4 py-3 text-muted-foreground">Default priority. Executes in registration order.</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-mono text-primary">Last</td>
+              <td className="px-4 py-3 font-mono">"last"</td>
+              <td className="px-4 py-3 text-muted-foreground">Executes after all other registered plugin middleware.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <SectionHeading level={2} id="registry">Unified Hook Registry</SectionHeading>
+      <p>
+        The following hooks and permissions are available for XyPriss plugins, categorized by their functional domain.
+      </p>
+
+      <div className="my-6 overflow-hidden rounded-xl border border-white/10 bg-white/5">
+        <table className="w-full text-[10px] text-left">
+          <thead className="bg-white/10 uppercase font-bold text-muted-foreground tracking-widest">
+            <tr>
+              <th className="px-4 py-3">Category</th>
+              <th className="px-4 py-3">Hook/Property</th>
+              <th className="px-4 py-3">Permission ID</th>
               <th className="px-4 py-3">Description</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
-            <tr>
-              <td className="px-4 py-3 font-mono">0</td>
-              <td className="px-4 py-3 text-red-400 font-bold uppercase tracking-tighter text-xs">Critical</td>
-              <td className="px-4 py-3 text-muted-foreground">{"< 0.1ms"}</td>
-              <td className="px-4 py-3 text-muted-foreground italic text-xs">Fundamental system & security logic.</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-3 font-mono">1</td>
-              <td className="px-4 py-3 text-orange-400 font-bold uppercase tracking-tighter text-xs">High</td>
-              <td className="px-4 py-3 text-muted-foreground">{"< 0.5ms"}</td>
-              <td className="px-4 py-3 text-muted-foreground italic text-xs">Security infra and primary routing.</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-3 font-mono">2</td>
-              <td className="px-4 py-3 text-primary font-bold uppercase tracking-tighter text-xs">Normal</td>
-              <td className="px-4 py-3 text-muted-foreground">{"< 2.0ms"}</td>
-              <td className="px-4 py-3 text-muted-foreground italic text-xs">Standard feature implementations (Default).</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-3 font-mono">3</td>
-              <td className="px-4 py-3 text-muted-foreground font-bold uppercase tracking-tighter text-xs">Background</td>
-              <td className="px-4 py-3 text-muted-foreground">Async</td>
-              <td className="px-4 py-3 text-muted-foreground italic text-xs">Non-critical telemetry and heavy tasks.</td>
-            </tr>
+            {[
+              { cat: "Lifecycle", hook: "onRegister", id: "XHS.HOOK.LIFECYCLE.REGISTER", desc: "Executed during initial instantiation." },
+              { cat: "Lifecycle", hook: "onServerStart", id: "XHS.HOOK.LIFECYCLE.SERVER_START", desc: "Restricted: Server bootstrap phase." },
+              { cat: "Lifecycle", hook: "onServerReady", id: "XHS.HOOK.LIFECYCLE.SERVER_READY", desc: "Restricted: Server is listening." },
+              { cat: "Lifecycle", hook: "onServerStop", id: "XHS.HOOK.LIFECYCLE.SERVER_STOP", desc: "Restricted: Graceful shutdown sequence." },
+              { cat: "HTTP", hook: "onRequest", id: "XHS.HOOK.HTTP.REQUEST", desc: "Executed for every incoming request." },
+              { cat: "HTTP", hook: "onResponse", id: "XHS.HOOK.HTTP.RESPONSE", desc: "Executed prior to response transmission." },
+              { cat: "HTTP", hook: "onError", id: "XHS.HOOK.HTTP.ERROR", desc: "Triggered during unhandled exceptions." },
+              { cat: "Routing", hook: "registerRoutes", id: "XHS.PERM.ROUTING.REGISTER_ROUTES", desc: "Programmatic registration of routes." },
+              { cat: "Logging", hook: "onConsoleIntercept", id: "XHS.PERM.LOGGING.CONSOLE_INTERCEPT", desc: "Privileged: Capture native console activity." },
+              { cat: "Management", hook: "managePlugins", id: "PLG.MANAGEMENT.MANAGE_PLUGINS", desc: "Restricted: Runtime plugin auditing and control." },
+              { cat: "Security", hook: "sensitiveData", id: "XHS.PERM.SECURITY.SENSITIVE_DATA", desc: "Privileged: Access unmasked payloads." }
+            ].map((item, i) => (
+              <tr key={i}>
+                <td className="px-4 py-3 font-bold text-white/40">{item.cat}</td>
+                <td className="px-4 py-3 font-mono text-primary">{item.hook}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">{item.id}</td>
+                <td className="px-4 py-3 text-muted-foreground italic">{item.desc}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -133,6 +163,32 @@ export default function PluginAPIReferencePage() {
             <h5 className="font-bold text-white text-sm">onRequest/onResponse</h5>
           </div>
           <p className="text-xs text-muted-foreground">Must execute in sub-millisecond durations. Used for validation, transformation, and header injection.</p>
+        </div>
+      </div>
+
+      <SectionHeading level={2} id="stability">Error Handling & Stability</SectionHeading>
+      <p>
+        XyPriss implements a "Fail-Safe" execution model. Errors in plugin hooks are isolated to prevent cascading failures that could destabilize the core engine.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3">
+          <div className="flex items-center gap-2 text-red-400">
+            <ShieldAlert size={18} />
+            <h4 className="font-bold text-sm">Hook Isolation</h4>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Every hook execution is wrapped in a dedicated error boundary. Synchronous and asynchronous exceptions are caught, logged with the plugin ID, and bypassed to allow the pipeline to continue.
+          </p>
+        </div>
+        <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3">
+          <div className="flex items-center gap-2 text-orange-400">
+            <Lock size={18} />
+            <h4 className="font-bold text-sm">Conflict Prevention</h4>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            The engine detects "Double-Finalization" (calling <code>next()</code> after <code>res.send()</code>). If detected, it halts the middleware chain for that request to prevent illegal write attempts.
+          </p>
         </div>
       </div>
 
