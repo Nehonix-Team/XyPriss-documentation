@@ -416,9 +416,23 @@ export default function Landing() {
                 fortresses. Built for those who demand absolute control.
               </p>
               <div className="flex gap-6">
-                <Github className="w-6 h-6 text-slate-500 hover:text-white cursor-pointer transition-all" />
-                <Globe className="w-6 h-6 text-slate-500 hover:text-white cursor-pointer transition-all" />
-                <Activity className="w-6 h-6 text-slate-500 hover:text-white cursor-pointer transition-all" />
+                <button
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/Nehonix-Team/XyPriss",
+                      "_blank",
+                    )
+                  }
+                >
+                  <Github className="w-6 h-6 text-slate-500 hover:text-white cursor-pointer transition-all" />
+                </button>
+                <button
+                  onClick={() =>
+                    window.open("https://dll.nehonix.com/", "_blank")
+                  }
+                >
+                  <Globe className="w-6 h-6 text-slate-500 hover:text-white cursor-pointer transition-all" />
+                </button>
               </div>
             </div>
             <div>
