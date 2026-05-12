@@ -68,7 +68,7 @@ export default function SystemOverviewPage() {
           XyPriss applications.
         </p>
         <p className="leading-relaxed">
-          The XyPriss Hyper-System API (
+          The <strong>XyPriss Hyper-System API</strong> (
           <code className="text-primary">__sys__</code>) serves as the
           centralized, high-performance gateway for all native operations. It
           provides a modular architecture that inherits native capabilities to

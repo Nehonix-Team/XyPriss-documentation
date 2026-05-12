@@ -26,7 +26,18 @@ export const docsConfig = [
     items: [
       { title: "Overview", href: "/docs/system" },
       { title: "Environment", href: "/docs/system/environment" },
-      { title: "Filesystem", href: "/docs/system/filesystem" },
+      { 
+        title: "Filesystem", 
+        href: "/docs/system/filesystem",
+        items: [
+          { title: "Core Operations", href: "/docs/system/filesystem/core" },
+          { title: "Helpers & Utils", href: "/docs/system/filesystem/helpers" },
+          { title: "Search & Patterns", href: "/docs/system/filesystem/search" },
+          { title: "Archive & Compression", href: "/docs/system/filesystem/archive" },
+          { title: "File Watching", href: "/docs/system/filesystem/watch" },
+          { title: "Security & Advanced", href: "/docs/system/filesystem/security" },
+        ]
+      },
       { title: "Path", href: "/docs/system/path" },
       { title: "Operating System", href: "/docs/system/os" },
       { 

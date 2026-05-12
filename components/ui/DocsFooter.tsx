@@ -16,6 +16,12 @@ import {
   Calendar,
   Database,
   ArrowRight,
+  FileCode,
+  Search,
+  Archive,
+  Eye,
+  Lock,
+  Activity,
   LucideIcon,
 } from "lucide-react";
 
@@ -34,6 +40,12 @@ const iconMap: Record<string, LucideIcon> = {
   Calendar,
   Database,
   ArrowRight,
+  FileCode,
+  Search,
+  Archive,
+  Eye,
+  Lock,
+  Activity,
 };
 
 interface DocsFooterProps {
