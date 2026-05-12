@@ -30,6 +30,50 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
     );
   };
 
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Auto-expand active items on mount and pathname change
+  React.useEffect(() => {
+    if (!isMounted) return;
+
+    const itemsToExpand: string[] = [];
+    const sectionsToExpand: string[] = [];
+    
+    docsConfig.forEach(section => {
+      let sectionHasActive = false;
+      
+      section.items.forEach((item: any) => {
+        const hasSubItems = item.items && item.items.length > 0;
+        const isExactActive = pathname === item.href;
+        const isChildActive = hasSubItems && item.items?.some((sub: any) => pathname === sub.href);
+        
+        if (isExactActive || isChildActive) {
+          sectionHasActive = true;
+        }
+        
+        if (isChildActive && !expandedItems.includes(item.title)) {
+          itemsToExpand.push(item.title);
+        }
+      });
+      
+      if (sectionHasActive && collapsedSections.includes(section.title)) {
+        sectionsToExpand.push(section.title);
+      }
+    });
+    
+    if (itemsToExpand.length > 0) {
+      setExpandedItems(prev => Array.from(new Set([...prev, ...itemsToExpand])));
+    }
+    
+    if (sectionsToExpand.length > 0) {
+      setCollapsedSections(prev => prev.filter(t => !sectionsToExpand.includes(t)));
+    }
+  }, [pathname, isMounted]);
+
   if (isCollapsed) {
     return (
       <div className="flex flex-col items-center py-8 h-full">

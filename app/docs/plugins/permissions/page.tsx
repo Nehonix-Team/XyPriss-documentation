@@ -1,12 +1,14 @@
-import React from "react";
+"use client";
+
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { CodeBlock } from "@/components/ui/CodeBlock";
-import { Callout } from "@/components/ui/Callout";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { TechGraph } from "@/components/ui/TechGraph";
-import { ShieldCheck, Lock, Eye, AlertCircle, ShieldAlert, Key } from "lucide-react";
+import { ShieldCheck, ShieldAlert, Key, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PluginPermissionsPage() {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 mb-8">
@@ -38,39 +40,24 @@ export default function PluginPermissionsPage() {
       />
 
       <SectionHeading level={2} id="config">Configuring Permissions</SectionHeading>
-      <p>
-        Permissions are defined in the <code>xypriss.config.jsonc</code> file. This allows for granular control over what each plugin can and cannot do within your server instance.
-      </p>
-
-      <div className="my-6">
-        <CodeBlock 
-          language="json" 
-          code={`{
-  "$internal": {
-    "monitoring-plugin": {
-      "permissions": {
-        "allowedHooks": [
-          "XHS.PERM.LOGGING.CONSOLE_INTERCEPT",
-          "XHS.PERM.SECURITY.CONFIGS"
-        ],
-        "policy": "allow" // Whitelist mode
-      }
-    },
-    "external-untrusted": {
-      "permissions": {
-        "allowedHooks": ["*"],
-        "deniedHooks": ["XHS.PERM.LOGGING.CONSOLE_INTERCEPT"], // Sticky Denial
-        "policy": "allow"
-      }
-    }
-  }
-}`}
-        />
+      <div className="space-y-4">
+        <p>
+          Permissions are defined in the <code>xypriss.config.jsonc</code> file. This allows for granular control over what each plugin can and cannot do within your server instance.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          You must define an explicit whitelist of hooks for each plugin within the <code>$internal</code> block. For a detailed guide on how to structure this configuration, see our tutorial.
+        </p>
+        <button 
+          onClick={() => router.push("/docs/plugins/tutorials/usage#configuration")}
+          className="mt-4 px-4 py-2 rounded-lg bg-primary text-white !text-white text-xs font-bold hover:bg-primary/80 transition-all w-fit cursor-pointer border-none shadow-lg shadow-primary/20 flex items-center gap-2"
+        >
+          View Configuration Tutorial <ChevronRight size={14} />
+        </button>
       </div>
 
       <SectionHeading level={2} id="constants">Permission Constants</SectionHeading>
       <p>
-        XyPriss provides semantic constants to define capabilities. Certain hooks are marked as <strong>Privileged</strong> and require extra caution.
+        XyPriss provides semantic constants to define capabilities. Certain hooks are marked as <strong>Privileged</strong> and require extra caution. For a complete technical breakdown of each permission, see the <button onClick={() => router.push("/docs/plugins/api-reference/security")} className="text-primary hover:underline bg-transparent border-none p-0 cursor-pointer font-bold inline-flex items-center gap-1">Security API Reference <ChevronRight size={12} /></button>.
       </p>
 
       <div className="my-6 overflow-hidden rounded-xl border border-white/10 bg-white/5">
@@ -107,69 +94,11 @@ export default function PluginPermissionsPage() {
         </table>
       </div>
 
-      <SectionHeading level={2} id="sticky-denials">Sticky Denials</SectionHeading>
-      <p>
-        Sticky Denials via the <code>deniedHooks</code> array are the strongest form of protection in XyPriss.
-      </p>
-      <ul className="space-y-4 my-6">
-        <li className="flex gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
-          <ShieldAlert size={20} className="text-orange-400 shrink-0" />
-          <p className="text-sm text-muted-foreground"><strong>Absolute Priority</strong>: Denied hooks always override allowed hooks, even if the <code>*</code> wildcard is used.</p>
-        </li>
-        <li className="flex gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
-          <Lock size={20} className="text-primary shrink-0" />
-          <p className="text-sm text-muted-foreground"><strong>Static Enforcement</strong>: Denials are enforced at the engine level and cannot be bypassed at runtime by any plugin logic.</p>
-        </li>
-      </ul>
-
-      <Callout type="warning" title="High-Privilege Restriction">
-        Certain hooks (e.g., <code>SECURITY.CONFIGS</code>, <code>SENSITIVE_DATA</code>) are <strong>never</strong> granted via wildcards. They must be explicitly declared as strings for intentional authorization.
-      </Callout>
-
       <SectionHeading level={2} id="data-masking">Request Data Masking</SectionHeading>
-      <p>
-        To protect PII (Personally Identifiable Information), XyPriss automatically masks sensitive request fields before passing them to plugin hooks.
-      </p>
-
-      <div className="my-6 p-6 rounded-2xl border border-white/5 bg-white/[0.02] space-y-4">
-        <div className="flex flex-wrap gap-2">
-          {["req.body", "req.query", "req.cookies", "req.headers", "req.params"].map(field => (
-            <code key={field} className="text-[10px] bg-red-500/10 text-red-400 px-2 py-1 rounded border border-red-500/20">{field}</code>
-          ))}
-        </div>
-        <p className="text-xs text-muted-foreground italic">
-          Unauthorized access returns: "Access to sensitive request data is restricted... Requires XHS.PERM.SECURITY.SENSITIVE_DATA"
+      <div className="space-y-4">
+        <p>
+          To protect PII (Personally Identifiable Information), XyPriss automatically masks sensitive request fields before passing them to plugin hooks.
         </p>
-      </div>
-
-      <SectionHeading level={2} id="signatures">Zero-Trust Signatures (G3)</SectionHeading>
-      <p>
-        The G3 architecture ensures plugin integrity via the <code>xypriss.plugin.xsig</code> manifest. This Ed25519-signed block prevents post-installation tampering.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
-          <Key size={18} className="text-primary shrink-0 mt-1" />
-          <div>
-            <h5 className="font-bold text-white text-xs mb-1">Author Pinning (TOFU)</h5>
-            <p className="text-[10px] text-muted-foreground">The author's public key is pinned upon first installation. Updates must be signed by the same key.</p>
-          </div>
-        </div>
-        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
-          <ShieldCheck size={18} className="text-green-400 shrink-0 mt-1" />
-          <div>
-            <h5 className="font-bold text-white text-xs mb-1">Deep Audit</h5>
-            <p className="text-[10px] text-muted-foreground">The XHSC engine re-calculates the SHA-256 fingerprint of every plugin file during server startup.</p>
-          </div>
-        </div>
-      </div>
-
-      <SectionHeading level={2} id="data-masking">Request Data Masking</SectionHeading>
-      <p>
-        To protect PII (Personally Identifiable Information), XyPriss automatically masks sensitive request fields before passing them to plugin hooks.
-      </p>
-
-      <div className="my-6 p-6 rounded-2xl border border-white/5 bg-white/[0.02] space-y-4">
         <div className="flex flex-wrap gap-2">
           {["req.body", "req.query", "req.cookies", "req.headers", "req.params"].map(field => (
             <code key={field} className="text-[10px] bg-red-500/10 text-red-400 px-2 py-1 rounded border border-red-500/20">{field}</code>
@@ -181,60 +110,69 @@ export default function PluginPermissionsPage() {
       </div>
 
       <SectionHeading level={2} id="signatures">Zero-Trust Signatures (G3)</SectionHeading>
-      <p>
-        The G3 architecture ensures plugin integrity via the <code>xypriss.plugin.xsig</code> manifest. This Ed25519-signed block prevents post-installation tampering.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
-          <Key size={18} className="text-primary shrink-0 mt-1" />
-          <div>
-            <h5 className="font-bold text-white text-xs mb-1">Author Pinning (TOFU)</h5>
-            <p className="text-[10px] text-muted-foreground">The author's public key is pinned upon first installation. Updates must be signed by the same key.</p>
+      <div className="space-y-4">
+        <p>
+          The G3 architecture ensures plugin integrity via the <code>xypriss.plugin.xsig</code> manifest. This Ed25519-signed block prevents post-installation tampering.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-2">
+          <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
+            <Key size={18} className="text-primary shrink-0 mt-1" />
+            <div>
+              <h5 className="font-bold text-white text-xs mb-1">Author Pinning (TOFU)</h5>
+              <p className="text-[10px] text-muted-foreground">The author's public key is pinned upon first installation. Updates must be signed by the same key.</p>
+            </div>
+          </div>
+          <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
+            <ShieldCheck size={18} className="text-green-400 shrink-0 mt-1" />
+            <div>
+              <h5 className="font-bold text-white text-xs mb-1">Deep Audit</h5>
+              <p className="text-[10px] text-muted-foreground">The XHSC engine re-calculates the SHA-256 fingerprint of every plugin file during server startup.</p>
+            </div>
           </div>
         </div>
-        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex gap-3">
-          <ShieldCheck size={18} className="text-green-400 shrink-0 mt-1" />
-          <div>
-            <h5 className="font-bold text-white text-xs mb-1">Deep Audit</h5>
-            <p className="text-[10px] text-muted-foreground">The XHSC engine re-calculates the SHA-256 fingerprint of every plugin file during server startup.</p>
-          </div>
-        </div>
+        <button 
+          onClick={() => router.push("/docs/plugins/tutorials/usage#trust")}
+          className="mt-4 px-4 py-2 rounded-lg bg-primary text-white !text-white text-xs font-bold hover:bg-primary/80 transition-all w-fit cursor-pointer border-none shadow-lg shadow-primary/20 flex items-center gap-2"
+        >
+          Learn about the Trust Flow <ChevronRight size={14} />
+        </button>
       </div>
 
       <SectionHeading level={2} id="denials">Sticky Denials</SectionHeading>
-      <p>
-        XyPriss supports immutable "Sticky Denials" via the <code>deniedHooks</code> array. These always take precedence over the <code>allowedHooks</code> whitelist, including the <code>*</code> wildcard.
-      </p>
-      
-      <div className="my-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5">
-        <p className="text-xs text-red-400 font-bold mb-2 flex items-center gap-2">
-          <ShieldAlert size={14} />
-          Enforcement Logic
+      <div className="space-y-4">
+        <p>
+          XyPriss supports immutable "Sticky Denials" via the <code>deniedHooks</code> array. These always take precedence over the <code>allowedHooks</code> whitelist, including the <code>*</code> wildcard.
         </p>
-        <p className="text-[10px] text-red-300/70 leading-relaxed">
-          Once a hook is denied in the static configuration, it cannot be overridden at runtime by any plugin management logic or dynamic permission updates.
-        </p>
+        <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/5">
+          <p className="text-xs text-red-400 font-bold mb-2 flex items-center gap-2">
+            <ShieldAlert size={14} />
+            Enforcement Logic
+          </p>
+          <p className="text-[10px] text-red-300/70 leading-relaxed">
+            Once a hook is denied in the static configuration, it cannot be overridden at runtime by any plugin management logic or dynamic permission updates.
+          </p>
+        </div>
       </div>
 
       <SectionHeading level={2} id="high-privilege">High-Privilege Restrictions</SectionHeading>
-      <p>
-        Certain capabilities are classified as <strong>High-Privilege</strong>. To prevent accidental elevation, these are <u>never</u> granted via the <code>*</code> wildcard and must be explicitly declared.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
-        {[
-          "XHS.PERM.SECURITY.CONFIGS",
-          "XHS.PERM.SECURITY.SENSITIVE_DATA",
-          "XHS.PERM.ROUTING.BYPASS_NAMESPACE",
-          "XHS.PERM.ROUTING.OVERWRITE_PROTECTED",
-          "XHS.PERM.HTTP.GLOBAL_MIDDLEWARE",
-          "XHS.PERM.OPS.AUXILIARY_SERVER"
-        ].map(perm => (
-          <div key={perm} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 font-mono text-[9px] text-orange-400">
-            {perm}
-          </div>
-        ))}
+      <div className="space-y-4">
+        <p>
+          Certain capabilities are classified as <strong>High-Privilege</strong>. To prevent accidental elevation, these are <u>never</u> granted via the <code>*</code> wildcard and must be explicitly declared.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-2">
+          {[
+            "XHS.PERM.SECURITY.CONFIGS",
+            "XHS.PERM.SECURITY.SENSITIVE_DATA",
+            "XHS.PERM.ROUTING.BYPASS_NAMESPACE",
+            "XHS.PERM.ROUTING.OVERWRITE_PROTECTED",
+            "XHS.PERM.HTTP.GLOBAL_MIDDLEWARE",
+            "XHS.PERM.OPS.AUXILIARY_SERVER"
+          ].map(perm => (
+            <div key={perm} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 font-mono text-[9px] text-orange-400">
+              {perm}
+            </div>
+          ))}
+        </div>
       </div>
 
       <DocsFooter 

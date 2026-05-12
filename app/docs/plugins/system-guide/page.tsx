@@ -1,12 +1,17 @@
+"use client";
+
 import React from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Callout } from "@/components/ui/Callout";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { TechGraph } from "@/components/ui/TechGraph";
-import { Cpu, ShieldCheck, Activity, Layers, Lock, Key, CheckCircle, Zap } from "lucide-react";
+import { Cpu, ShieldCheck, Activity, Layers, Lock, Key, CheckCircle, Zap, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PluginSystemGuidePage() {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 mb-8">
@@ -197,10 +202,26 @@ export default function PluginSystemGuidePage() {
       <SectionHeading level={2} id="zero-trust">
         Zero-Trust Integrity Layer
       </SectionHeading>
-      <p>
-        In the G3 architecture, the security model is extended with a mandatory
-        Zero-Trust integrity layer that validates every byte of code.
-      </p>
+      <div className="flex flex-col gap-4">
+        <p>
+          In the G3 architecture, the security model is extended with a mandatory
+          Zero-Trust integrity layer that validates every byte of code. For a complete implementation guide, see the usage tutorial.
+        </p>
+        <div className="p-6 rounded-2xl border border-blue-500/20 bg-blue-500/5 flex items-center justify-between gap-4 group">
+          <div className="space-y-1">
+            <h4 className="font-bold text-white text-base">Complete Usage Tutorial</h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Learn how to install, trust, and authorize plugins using XFPM and the Capability-Based model.
+            </p>
+          </div>
+          <button 
+            onClick={() => router.push("/docs/plugins/tutorials/usage")}
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white !text-white text-xs font-bold hover:bg-blue-700 transition-all shrink-0 cursor-pointer border-none shadow-lg shadow-blue-500/20"
+          >
+            Read Tutorial
+          </button>
+        </div>
+      </div>
 
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         <li className="flex items-start gap-3 p-4 rounded-xl border border-white/5 bg-white/[0.01]">
@@ -224,7 +245,7 @@ export default function PluginSystemGuidePage() {
       </SectionHeading>
       <p>
         Plugins follow a strict, deterministic sequence of events managed by the{" "}
-        <code>PluginHookRunner</code>.
+        <code>PluginHookRunner</code>. For detailed technical specifications, see the <button onClick={() => router.push("/docs/plugins/api-reference/lifecycle")} className="text-primary hover:underline bg-transparent border-none p-0 cursor-pointer font-bold inline-flex items-center gap-1">Lifecycle Hooks Reference <ChevronRight size={12} /></button>.
       </p>
 
       <div className="flex flex-col gap-2 my-4">

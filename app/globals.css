@@ -74,6 +74,18 @@
   }
 }
 
-button{
+button {
   cursor: pointer;
 }
+/* 
+@layer base {
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+  }
+  a:hover {
+    @apply opacity-80 underline;
+  }
+}
+ */

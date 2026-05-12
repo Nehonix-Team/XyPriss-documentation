@@ -1,12 +1,16 @@
+"use client";
+
 import React from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Callout } from "@/components/ui/Callout";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { TechGraph } from "@/components/ui/TechGraph";
 import { Puzzle, Shield, Zap, Box, Lock, Code, Terminal, Rocket } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PluginsOverviewPage() {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 mb-8">
@@ -132,6 +136,45 @@ export default function PluginsOverviewPage() {
         silently.
       </Callout>
 
+      <SectionHeading level={2} id="get-started">Get Started</SectionHeading>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div className="p-6 rounded-2xl border border-primary/20 bg-primary/5 flex flex-col gap-4 group">
+          <div className="space-y-1">
+            <h4 className="font-bold text-white text-base flex items-center gap-2">
+              <Rocket size={18} className="text-primary" />
+              Usage Tutorial
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Learn how to install, trust, and authorize plugins in your server configuration.
+            </p>
+          </div>
+          <button 
+            onClick={() => router.push("/docs/plugins/tutorials/usage")}
+            className="w-full py-2 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/80 transition-all text-center cursor-pointer border-none shadow-lg shadow-primary/20"
+          >
+            Start Learning
+          </button>
+        </div>
+
+        <div className="p-6 rounded-2xl border border-purple-500/20 bg-purple-500/5 flex flex-col gap-4 group">
+          <div className="space-y-1">
+            <h4 className="font-bold text-white text-base flex items-center gap-2">
+              <Zap size={18} className="text-purple-400" />
+              Authoring Tutorial
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Build your own plugins from scratch using TypeScript and the G3 signing protocol.
+            </p>
+          </div>
+          <button 
+            onClick={() => router.push("/docs/plugins/tutorials/authoring")}
+            className="w-full py-2 rounded-lg bg-purple-500 text-white text-xs font-bold hover:bg-purple-600 transition-all text-center cursor-pointer border-none shadow-lg shadow-purple-500/20"
+          >
+            Start Building
+          </button>
+        </div>
+      </div>
+
       <SectionHeading level={2} id="usage-lifecycle">
         Plugin Usage Lifecycle
       </SectionHeading>
@@ -162,7 +205,10 @@ export default function PluginsOverviewPage() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-        <div className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors group">
+        <button 
+          onClick={() => router.push("/docs/plugins/development-guide")}
+          className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors group text-left cursor-pointer"
+        >
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10 text-primary">
               <Code size={18} />
@@ -177,8 +223,11 @@ export default function PluginsOverviewPage() {
           <div className="opacity-0 group-hover:opacity-100 transition-opacity">
             <Zap size={14} className="text-primary" />
           </div>
-        </div>
-        <div className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors group">
+        </button>
+        <button 
+          onClick={() => router.push("/docs/plugins/permissions")}
+          className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors group text-left cursor-pointer"
+        >
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400">
               <Lock size={18} />
@@ -195,7 +244,7 @@ export default function PluginsOverviewPage() {
           <div className="opacity-0 group-hover:opacity-100 transition-opacity">
             <Zap size={14} className="text-purple-400" />
           </div>
-        </div>
+        </button>
       </div>
 
       <DocsFooter
