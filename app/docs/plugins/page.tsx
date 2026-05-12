@@ -14,32 +14,68 @@ export default function PluginsOverviewPage() {
           <Puzzle size={14} />
           Extension Ecosystem
         </div>
-        <SectionHeading level={1}>
-          XyPriss Plugin Ecosystem
-        </SectionHeading>
+        <SectionHeading level={1}>XyPriss Plugin Ecosystem</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Plugins in XyPriss are fully integrated, secure modules that hook deep into the framework's lifecycle, enabling modular extensions without compromising performance.
+          <strong>Plugins in XyPriss</strong> are fully integrated, secure
+          modules that hook deep into the framework's lifecycle, enabling
+          modular extensions without compromising performance.
         </p>
       </div>
 
-      <TechGraph 
+      <TechGraph
         title="Execution Lifecycle Phases"
         badge="Performance-First Architecture"
         nodes={[
-          { iconName: "Zap", title: "Network", subtitle: "Phase 1: Ingress", color: "blue" },
-          { iconName: "Shield", title: "Security", subtitle: "Phase 2: Shielding", color: "primary", active: true },
-          { iconName: "Box", title: "Cache", subtitle: "Phase 3: Storage", color: "purple" },
-          { iconName: "Terminal", title: "Logic", subtitle: "Phase 4: Handler", color: "purple" }
+          {
+            iconName: "Zap",
+            title: "Network",
+            subtitle: "Phase 1: Ingress",
+            color: "blue",
+          },
+          {
+            iconName: "Shield",
+            title: "Security",
+            subtitle: "Phase 2: Shielding",
+            color: "primary",
+            active: true,
+          },
+          {
+            iconName: "Box",
+            title: "Cache",
+            subtitle: "Phase 3: Storage",
+            color: "purple",
+          },
+          {
+            iconName: "Terminal",
+            title: "Logic",
+            subtitle: "Phase 4: Handler",
+            color: "purple",
+          },
         ]}
         footer={[
-          { label: "Predictable Latency", description: "Plugins execute in deterministic phases to ensure microsecond overhead.", color: "blue" },
-          { label: "Isolated Context", description: "Every plugin runs in a restricted proxy to prevent global state mutation.", color: "purple" }
+          {
+            label: "Predictable Latency",
+            description:
+              "Plugins execute in deterministic phases to ensure microsecond overhead.",
+            color: "blue",
+          },
+          {
+            label: "Isolated Context",
+            description:
+              "Every plugin runs in a restricted proxy to prevent global state mutation.",
+            color: "purple",
+          },
         ]}
       />
 
-      <SectionHeading level={2} id="why-plugins">Why XyPriss Plugins?</SectionHeading>
+      <SectionHeading level={2} id="why-plugins">
+        Why XyPriss Plugins?
+      </SectionHeading>
       <p>
-        If you are wondering why you should build a plugin instead of just writing standard middleware, the answer lies in the <strong>Capability-Based Security</strong> and <strong>Deep Integration</strong>.
+        If you are wondering why you should build a plugin instead of just
+        writing standard middleware, the answer lies in the{" "}
+        <strong>Capability-Based Security</strong> and{" "}
+        <strong>Deep Integration</strong>.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -49,7 +85,8 @@ export default function PluginsOverviewPage() {
           </div>
           <h4 className="font-bold text-white">Full Lifecycle Access</h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Plugins can initialize database connections on server start, monitor real-time traffic, and handle graceful resource shutdowns.
+            Plugins can initialize database connections on server start, monitor
+            real-time traffic, and handle graceful resource shutdowns.
           </p>
         </div>
         <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col gap-3">
@@ -58,7 +95,9 @@ export default function PluginsOverviewPage() {
           </div>
           <h4 className="font-bold text-white">Zero-Trust Sandbox</h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Each plugin runs in a sandboxed <code>PluginServer</code> proxy. They cannot read sensitive environment variables or configs without explicit permission.
+            Each plugin runs in a sandboxed <code>PluginServer</code> proxy.
+            They cannot read sensitive environment variables or configs without
+            explicit permission.
           </p>
         </div>
         <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col gap-3">
@@ -67,7 +106,8 @@ export default function PluginsOverviewPage() {
           </div>
           <h4 className="font-bold text-white">Permission Control</h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Plugins must declare their intentions. You hold the final keys to their permissions via the Capability-Based security model.
+            Plugins must declare their intentions. You hold the final keys to
+            their permissions via the Capability-Based security model.
           </p>
         </div>
         <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col gap-3">
@@ -76,19 +116,28 @@ export default function PluginsOverviewPage() {
           </div>
           <h4 className="font-bold text-white">XFPM Distribution</h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            Official plugins can be published to the NPM/XFPM ecosystem and instantly integrated by the community.
+            Official plugins can be published to the NPM/XFPM ecosystem and
+            instantly integrated by the community.
           </p>
         </div>
       </div>
 
-      <SectionHeading level={2} id="philosophy">Secure by Default</SectionHeading>
+      <SectionHeading level={2} id="philosophy">
+        Secure by Default
+      </SectionHeading>
       <Callout type="info" title="Zero Compromise Policy">
-        XyPriss philosophy insists that extending your application should never mean compromising it. Plugins are <strong>prohibited</strong> from overwriting core server properties or reading hardware-local secrets silently.
+        XyPriss philosophy insists that extending your application should never
+        mean compromising it. Plugins are <strong>prohibited</strong> from
+        overwriting core server properties or reading hardware-local secrets
+        silently.
       </Callout>
 
-      <SectionHeading level={2} id="getting-started">Next Steps</SectionHeading>
+      <SectionHeading level={2} id="getting-started">
+        Next Steps
+      </SectionHeading>
       <p>
-        Explore our structured guides to integrate third-party plugins or build your own high-performance extensions.
+        Explore our structured guides to integrate third-party plugins or build
+        your own high-performance extensions.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
@@ -99,11 +148,13 @@ export default function PluginsOverviewPage() {
             </div>
             <div>
               <p className="text-sm font-bold text-white">Development Guide</p>
-              <p className="text-[10px] text-muted-foreground">Create and publish your first plugin.</p>
+              <p className="text-[10px] text-muted-foreground">
+                Create and publish your first plugin.
+              </p>
             </div>
           </div>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-             <Zap size={14} className="text-primary" />
+            <Zap size={14} className="text-primary" />
           </div>
         </div>
         <div className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors group">
@@ -112,17 +163,21 @@ export default function PluginsOverviewPage() {
               <Lock size={18} />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Security & Permissions</p>
-              <p className="text-[10px] text-muted-foreground">Manage plugin capabilities and trust.</p>
+              <p className="text-sm font-bold text-white">
+                Security & Permissions
+              </p>
+              <p className="text-[10px] text-muted-foreground">
+                Manage plugin capabilities and trust.
+              </p>
             </div>
           </div>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-             <Zap size={14} className="text-purple-400" />
+            <Zap size={14} className="text-purple-400" />
           </div>
         </div>
       </div>
 
-      <DocsFooter 
+      <DocsFooter
         title="Plugin System Guide"
         description="Deep dive into the modular core (Registries, Interceptors, and Restricted Proxies)."
         buttonText="Read System Guide"
