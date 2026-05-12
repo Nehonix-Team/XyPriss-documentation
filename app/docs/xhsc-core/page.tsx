@@ -1,17 +1,17 @@
-import { Callout } from "@/components/docs/Callout";
-import { CodeBlock } from "@/components/docs/CodeBlock";
-import { DocsFooter } from "@/components/docs/DocsFooter";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { Steps, Step } from "@/components/docs/Steps";
-import { 
-  Cpu, 
-  Zap, 
-  Shield, 
-  Activity, 
-  GitBranch, 
+import { Callout } from "@/components/ui/Callout";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { DocsFooter } from "@/components/ui/DocsFooter";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Steps, Step } from "@/components/ui/Steps";
+import {
+  Cpu,
+  Zap,
+  Shield,
+  Activity,
+  GitBranch,
   MessageSquare,
   Server,
-  Package
+  Package,
 } from "lucide-react";
 
 export default function XHSCPage() {
@@ -103,7 +103,9 @@ export default function XHSCPage() {
         Versioning & Naming Architecture
       </SectionHeading>
       <p>
-        The XHSC versioning system is built on a <strong>12-character deterministic architecture</strong>, combining a core identifier with a high-density logical payload.
+        The XHSC versioning system is built on a{" "}
+        <strong>12-character deterministic architecture</strong>, combining a
+        core identifier with a high-density logical payload.
       </p>
 
       <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 my-6">
@@ -117,9 +119,13 @@ export default function XHSCPage() {
           </thead>
           <tbody className="divide-y divide-white/5">
             <tr>
-              <td className="px-4 py-3 font-mono text-primary font-bold">XHSC</td>
+              <td className="px-4 py-3 font-mono text-primary font-bold">
+                XHSC
+              </td>
               <td className="px-4 py-3 text-muted-foreground">4</td>
-              <td className="px-4 py-3 font-semibold">XyPriss Hyper-System Core Identifier</td>
+              <td className="px-4 py-3 font-semibold">
+                XyPriss Hyper-System Core Identifier
+              </td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-mono text-primary">MMDD</td>
@@ -129,71 +135,119 @@ export default function XHSCPage() {
             <tr>
               <td className="px-4 py-3 font-mono text-primary">YY</td>
               <td className="px-4 py-3 text-muted-foreground">2</td>
-              <td className="px-4 py-3">Year of Deployment (e.g., 2026 → 26)</td>
+              <td className="px-4 py-3">
+                Year of Deployment (e.g., 2026 → 26)
+              </td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-mono text-primary">GX</td>
               <td className="px-4 py-3 text-muted-foreground">2</td>
-              <td className="px-4 py-3 font-semibold text-white">Architectural Generation (e.g., G4)</td>
+              <td className="px-4 py-3 font-semibold text-white">
+                Architectural Generation (e.g., G4)
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <SectionHeading level={3} id="zero-suppression">Zero-Suppression Logic</SectionHeading>
+      <SectionHeading level={3} id="zero-suppression">
+        Zero-Suppression Logic
+      </SectionHeading>
       <p>
-        To optimize visual density while maintaining logical integrity, <strong>leading zeros in the MMDD segment are suppressed during written representation</strong>.
+        To optimize visual density while maintaining logical integrity,{" "}
+        <strong>
+          leading zeros in the MMDD segment are suppressed during written
+          representation
+        </strong>
+        .
       </p>
-      
+
       <Callout type="info" title="Decoding Example: XHSC4626G3">
         <div className="space-y-2 text-sm">
-          <p>To decode, the payload is expanded back to its 8-character logical state:</p>
+          <p>
+            To decode, the payload is expanded back to its 8-character logical
+            state:
+          </p>
           <ul className="list-disc pl-4 space-y-1">
-            <li><strong>Written</strong>: <code>4626G3</code> (6 chars)</li>
-            <li><strong>Expanded</strong>: <code>0406</code> (Date) + <code>26</code> (Year) + <code>G3</code> (Gen) = <code>040626G3</code></li>
-            <li><strong>Result</strong>: <span className="text-primary font-bold">April 6, 2026 | Generation 3 Architecture</span></li>
+            <li>
+              <strong>Written</strong>: <code>4626G3</code> (6 chars)
+            </li>
+            <li>
+              <strong>Expanded</strong>: <code>0406</code> (Date) +{" "}
+              <code>26</code> (Year) + <code>G3</code> (Gen) ={" "}
+              <code>040626G3</code>
+            </li>
+            <li>
+              <strong>Result</strong>:{" "}
+              <span className="text-primary font-bold">
+                April 6, 2026 | Generation 3 Architecture
+              </span>
+            </li>
           </ul>
         </div>
       </Callout>
 
-      <SectionHeading level={3} id="generations">Architectural Generations (GX)</SectionHeading>
+      <SectionHeading level={3} id="generations">
+        Architectural Generations (GX)
+      </SectionHeading>
       <p>
-        The <strong>G</strong> index represents the structural evolution of the XyPriss engine, marking significant technological shifts.
+        The <strong>G</strong> index represents the structural evolution of the
+        XyPriss engine, marking significant technological shifts.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         <div className="p-4 rounded-xl border border-white/5 bg-white/[0.01]">
           <div className="flex items-center justify-between mb-2">
             <span className="font-bold text-white">G1: Legacy</span>
-            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-muted-foreground">Node.js</span>
+            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-muted-foreground">
+              Node.js
+            </span>
           </div>
-          <p className="text-xs text-muted-foreground">Initial monolithic JavaScript core focused on ease of adoption.</p>
+          <p className="text-xs text-muted-foreground">
+            Initial monolithic JavaScript core focused on ease of adoption.
+          </p>
         </div>
         <div className="p-4 rounded-xl border border-white/5 bg-white/[0.01]">
           <div className="flex items-center justify-between mb-2">
             <span className="font-bold text-white">G2: Bridge</span>
-            <span className="text-[10px] bg-orange-500/10 px-2 py-0.5 rounded text-orange-400">Rust Native</span>
+            <span className="text-[10px] bg-orange-500/10 px-2 py-0.5 rounded text-orange-400">
+              Rust Native
+            </span>
           </div>
-          <p className="text-xs text-muted-foreground">Hybrid architecture introducing native utility binaries for core tasks.</p>
+          <p className="text-xs text-muted-foreground">
+            Hybrid architecture introducing native utility binaries for core
+            tasks.
+          </p>
         </div>
         <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
           <div className="flex items-center justify-between mb-2">
             <span className="font-bold text-primary">G3: Native-First</span>
-            <span className="text-[10px] bg-primary/20 px-2 py-0.5 rounded text-primary">Go (XHSC)</span>
+            <span className="text-[10px] bg-primary/20 px-2 py-0.5 rounded text-primary">
+              Go (XHSC)
+            </span>
           </div>
-          <p className="text-xs text-white/80 font-medium">Full native core delegation. The "Age of Rationality".</p>
+          <p className="text-xs text-white/80 font-medium">
+            Full native core delegation. The "Age of Rationality".
+          </p>
         </div>
         <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
           <div className="flex items-center justify-between mb-2">
             <span className="font-bold text-primary">G4: IPC-Hybrid</span>
-            <span className="text-[10px] bg-primary/20 px-2 py-0.5 rounded text-primary">Go (XHSC)</span>
+            <span className="text-[10px] bg-primary/20 px-2 py-0.5 rounded text-primary">
+              Go (XHSC)
+            </span>
           </div>
-          <p className="text-xs text-white/80 font-medium">Deep symbiosis between native streams and JS hooks.</p>
+          <p className="text-xs text-white/80 font-medium">
+            Deep symbiosis between native streams and JS hooks.
+          </p>
         </div>
       </div>
 
       <Callout type="warning" title="Precision Refinement (.R)">
-        When multiple architectural refinements occur within a single solar cycle, we utilize the <strong>Refinement Index</strong> (e.g., <code>XHSC4626G3.R1</code>). This signifies architectural polishing and edge-case hardening without changing the baseline identity.
+        When multiple architectural refinements occur within a single solar
+        cycle, we utilize the <strong>Refinement Index</strong> (e.g.,{" "}
+        <code>XHSC4626G3.R1</code>). This signifies architectural polishing and
+        edge-case hardening without changing the baseline identity.
       </Callout>
 
       <SectionHeading level={2} id="specs">
@@ -219,7 +273,7 @@ export default function XHSCPage() {
           <span className="font-mono text-sm">JSON-IPC over Unix Sockets</span>
         </div>
       </div>
-      <DocsFooter 
+      <DocsFooter
         title="Master the CLI"
         description="Learn how XFPM manages high-performance dependency resolution and Zero-Trust G3 security."
         buttonText="XFPM Documentation"

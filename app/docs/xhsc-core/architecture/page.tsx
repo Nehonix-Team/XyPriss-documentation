@@ -1,9 +1,9 @@
-import { TechGraph } from "@/components/docs/TechGraph";
-import { Callout } from "@/components/docs/Callout";
-import { CodeBlock } from "@/components/docs/CodeBlock";
-import { DocsFooter } from "@/components/docs/DocsFooter";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { Steps, Step } from "@/components/docs/Steps";
+import { TechGraph } from "@/components/ui/TechGraph";
+import { Callout } from "@/components/ui/Callout";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { DocsFooter } from "@/components/ui/DocsFooter";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Steps, Step } from "@/components/ui/Steps";
 import {
   Server,
   Zap,

@@ -6,6 +6,7 @@ export interface SearchResult {
   href: string;
   category: string;
   content: string;
+  description: string;
 }
 
 export async function getDynamicSearchIndex(): Promise<SearchResult[]> {
@@ -22,34 +23,41 @@ export async function getDynamicSearchIndex(): Promise<SearchResult[]> {
       if (stat.isDirectory()) {
         walk(fullPath);
       } else if (file === "page.tsx") {
-        const content = fs.readFileSync(fullPath, "utf-8");
+        const rawContent = fs.readFileSync(fullPath, "utf-8");
         const relativePath = path.relative(docsDir, dir);
         const href = relativePath === "" ? "/docs" : `/docs/${relativePath}`;
         
         // Extract Title
-        // Look for <SectionHeading level={1}>...</SectionHeading> or <h1>...</h1>
-        const titleMatch = content.match(/<SectionHeading\s+level=\{1\}>\s*([\s\S]*?)\s*<\/SectionHeading>/) || 
-                          content.match(/<h1>\s*([\s\S]*?)\s*<\/h1>/);
+        const titleMatch = rawContent.match(/<SectionHeading\s+level=\{1\}>\s*([\s\S]*?)\s*<\/SectionHeading>/) || 
+                          rawContent.match(/<h1>\s*([\s\S]*?)\s*<\/h1>/);
         
         const title = titleMatch ? titleMatch[1].replace(/<[^>]*>?/gm, "").trim() : relativePath || "Documentation";
 
-        // Extract Category (parent folder name or "General")
-        const category = relativePath ? relativePath.split("/")[0].replace(/-/g, " ") : "Introduction";
+        // Extract Category
+        const categoryParts = relativePath.split("/");
+        const categoryName = categoryParts[0] ? categoryParts[0].replace(/-/g, " ") : "Introduction";
+        const category = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
-        // Extract some content/keywords (simple text extraction)
-        // We'll strip tags and just take a chunk of text
-        const textContent = content
+        // Clean content for indexing
+        let cleanContent = rawContent
+          .replace(/import\s+[\s\S]*?from\s+['"].*?['"];/g, "") // remove imports
+          .replace(/export\s+default\s+function\s+[\s\S]*?\{/g, "") // remove component declaration
+          .replace(/<CodeBlock[\s\S]*?\/>/g, "") // remove large code blocks from index
+          .replace(/<TechGraph[\s\S]*?\/>/g, "") // remove graph definitions
           .replace(/<[^>]*>?/gm, " ") // strip tags
           .replace(/\{`[\s\S]*?`\}/g, "") // strip code template literals
+          .replace(/\{([\s\S]*?)\}/g, "$1") // remove curly braces around content
           .replace(/\s+/g, " ")
-          .trim()
-          .substring(0, 500);
+          .trim();
 
+        const description = cleanContent.substring(0, 160) + "...";
+        
         results.push({
           title,
           href,
-          category: category.charAt(0).toUpperCase() + category.slice(1),
-          content: textContent,
+          category,
+          content: cleanContent, // Index more content for semantic matching
+          description,
         });
       }
     }

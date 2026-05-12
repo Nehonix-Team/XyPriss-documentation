@@ -1,7 +1,7 @@
-import { Callout } from "@/components/docs/Callout";
-import { CodeBlock } from "@/components/docs/CodeBlock";
-import { DocsFooter } from "@/components/docs/DocsFooter";
-import { SectionHeading } from "@/components/docs/SectionHeading";
+import { Callout } from "@/components/ui/Callout";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { DocsFooter } from "@/components/ui/DocsFooter";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   Download,
   Terminal,
@@ -115,8 +115,7 @@ export default function InstallationPage() {
       <Callout type="warning" title="Runtime Restrictions">
         Starting a XyPriss server with <code>npm run</code>, <code>node</code>,
         or other unsupported runtimes may produce undefined behavior. Always use{" "}
-        <code>xfpm run</code> to execute scripts and entry
-        points.
+        <code>xfpm run</code> to execute scripts and entry points.
       </Callout>
 
       <SectionHeading level={2} id="install-xypriss">
@@ -156,11 +155,13 @@ export default function InstallationPage() {
       </SectionHeading>
 
       <Callout type="warning" title="Permission Denied">
-        If you encounter an <code>EACCES</code> error on Linux/macOS, you may need to manually grant write permissions or run the command with elevated privileges:
-        <CodeBlock 
-          language="bash" 
+        If you encounter an <code>EACCES</code> error on Linux/macOS, you may
+        need to manually grant write permissions or run the command with
+        elevated privileges:
+        <CodeBlock
+          language="bash"
           className="mt-4"
-          code="sudo xfpm [command]" 
+          code="sudo xfpm [command]"
         />
       </Callout>
 
@@ -173,7 +174,7 @@ export default function InstallationPage() {
         />
       </Callout>
 
-      <DocsFooter 
+      <DocsFooter
         title="Ready to code?"
         description="Now that your environment is configured, you can initialize a new project from a template and start building."
         buttonText="Quick Start"

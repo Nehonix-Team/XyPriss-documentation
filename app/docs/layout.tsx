@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { DocsHeader } from "@/components/docs/DocsHeader";
-import { DocSidebar } from "@/components/docs/DocSidebar";
-import { OnThisPage } from "@/components/docs/OnThisPage";
+import React, { useState, Suspense } from "react";
+import { DocsHeader } from "@/components/ui/DocsHeader";
+import { DocSidebar } from "@/components/ui/DocSidebar";
+import { OnThisPage } from "@/components/ui/OnThisPage";
+import { SearchHighlighter } from "@/components/ui/SearchHighlighter";
 import { cn } from "@/lib/utils";
 
 export default function DocsLayout({
@@ -20,35 +21,40 @@ export default function DocsLayout({
       <div className="container mx-auto flex-1 px-4 lg:px-8">
         <div className="flex flex-1 gap-10">
           {/* Sidebar */}
-          <aside 
+          <aside
             className={cn(
               "hidden lg:block shrink-0 border-r border-border pr-4 sticky top-16 h-[calc(100vh-4rem)] transition-all duration-300",
-              leftSidebarCollapsed ? "w-16" : "w-64"
+              leftSidebarCollapsed ? "w-16" : "w-64",
             )}
           >
-            <DocSidebar 
-              isCollapsed={leftSidebarCollapsed} 
-              onToggle={() => setLeftSidebarCollapsed(!leftSidebarCollapsed)} 
+            <DocSidebar
+              isCollapsed={leftSidebarCollapsed}
+              onToggle={() => setLeftSidebarCollapsed(!leftSidebarCollapsed)}
             />
           </aside>
 
           {/* Main Content */}
           <main className="flex-1 min-w-0 py-12 lg:py-16">
             <div className="mx-auto max-w-4xl">
-              <div className="prose max-w-none">{children}</div>
+              <div className="prose max-w-none">
+                <Suspense fallback={null}>
+                  <SearchHighlighter />
+                </Suspense>
+                {children}
+              </div>
             </div>
           </main>
 
           {/* On This Page (TOC) */}
-          <aside 
+          <aside
             className={cn(
               "hidden xl:block shrink-0 sticky top-16 h-[calc(100vh-4rem)] transition-all duration-300",
-              rightSidebarCollapsed ? "w-16" : "w-64"
+              rightSidebarCollapsed ? "w-16" : "w-64",
             )}
           >
-            <OnThisPage 
-              isCollapsed={rightSidebarCollapsed} 
-              onToggle={() => setRightSidebarCollapsed(!rightSidebarCollapsed)} 
+            <OnThisPage
+              isCollapsed={rightSidebarCollapsed}
+              onToggle={() => setRightSidebarCollapsed(!rightSidebarCollapsed)}
             />
           </aside>
         </div>

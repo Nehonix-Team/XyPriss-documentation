@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { CodeBlock } from "@/components/docs/CodeBlock";
-import { Callout } from "@/components/docs/Callout";
-import { Steps, Step } from "@/components/docs/Steps";
-import { DocsFooter } from "@/components/docs/DocsFooter";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { Callout } from "@/components/ui/Callout";
+import { Steps, Step } from "@/components/ui/Steps";
+import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Zap, Terminal, Code2, Rocket, Globe, Shield, Cpu } from "lucide-react";
 
 export default function QuickStartPage() {
@@ -40,7 +40,9 @@ export default function QuickStartPage() {
         </Step>
         <Step title="Verification and Install">
           <p className="mb-4">
-            Navigate to your project directory. While <code>xfpm init</code> usually handles dependency installation, you can run this manually if the process was interrupted (network failure, crash, etc.):
+            Navigate to your project directory. While <code>xfpm init</code>{" "}
+            usually handles dependency installation, you can run this manually
+            if the process was interrupted (network failure, crash, etc.):
           </p>
           <CodeBlock language="bash" code="cd my-app && xfpm install" />
         </Step>
@@ -146,7 +148,8 @@ app.start();`}
         Running your app
       </SectionHeading>
       <p>
-        Always use <code>xfpm run</code> to execute your scripts and entry points.
+        Always use <code>xfpm run</code> to execute your scripts and entry
+        points.
       </p>
       <CodeBlock language="bash" code="xfpm dev" />
 
@@ -155,7 +158,7 @@ app.start();`}
         undefined behavior due to the native engine requirements.
       </Callout>
 
-      <DocsFooter 
+      <DocsFooter
         title="Deep Dive into XHSC"
         description="Learn how the native Go-core handles routing, security, and performance at the lowest level."
         buttonText="Explore XHSC Core"

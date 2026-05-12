@@ -47,8 +47,8 @@ const Card = ({
   </div>
 );
 
-import { CodeBlock } from "@/components/docs/CodeBlock";
-import { DocsFooter } from "@/components/docs/DocsFooter";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { DocsFooter } from "@/components/ui/DocsFooter";
 import { HelpCircle } from "lucide-react";
 
 export default function ContributingPage() {
@@ -355,7 +355,7 @@ export default function ContributingPage() {
         </div>
       </Section>
 
-      <DocsFooter 
+      <DocsFooter
         title="Need clarification?"
         description="If you have questions about specific implementation patterns or architectural decisions, please contact our core maintainers."
         buttonText="Contact Support"
