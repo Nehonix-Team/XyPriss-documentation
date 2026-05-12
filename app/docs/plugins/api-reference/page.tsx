@@ -15,7 +15,8 @@ import {
   Box, 
   Lock, 
   ChevronRight, 
-  Layers 
+  Layers,
+  Search
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -89,106 +90,10 @@ export default function PluginAPIReferencePage() {
         />
       </div>
 
-      <SectionHeading level={2} id="registry">Unified Hook Registry</SectionHeading>
+      <SectionHeading level={2} id="registry">Functional Domain Reference</SectionHeading>
       <p className="mb-4">
-        A consolidated index of all available hooks, properties, and capabilities. For detailed technical specifications, click on a category in the navigation cards above or use the table below.
+        The XyPriss hook ecosystem is categorized by functional domains. Explore the detailed technical documentation for each hook category below.
       </p>
-
-      <div className="my-6 overflow-hidden rounded-xl border border-white/10 bg-white/5">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-white/10 text-[10px] uppercase font-bold text-muted-foreground tracking-[0.2em]">
-            <tr>
-              <th className="px-4 py-3">Category</th>
-              <th className="px-4 py-3">Hook / Property</th>
-              <th className="px-4 py-3">Permission ID</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5 text-[10px]">
-            {/* Lifecycle */}
-            <tr className="bg-white/[0.01]">
-              <td rowSpan={4} className="px-4 py-3 font-bold text-primary border-r border-white/5">Lifecycle</td>
-              <td className="px-4 py-3 font-mono text-white">onRegister</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.LIFECYCLE.REGISTER</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">onServerStart</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.LIFECYCLE.SERVER_START</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">onServerReady</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.LIFECYCLE.SERVER_READY</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">onServerStop</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.LIFECYCLE.SERVER_STOP</td>
-            </tr>
-
-            {/* HTTP */}
-            <tr className="bg-white/[0.02]">
-              <td rowSpan={4} className="px-4 py-3 font-bold text-purple-400 border-r border-white/5">HTTP</td>
-              <td className="px-4 py-3 font-mono text-white">onRequest</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.HTTP.REQUEST</td>
-            </tr>
-            <tr className="bg-white/[0.02]">
-              <td className="px-4 py-3 font-mono text-white">onResponse</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.HTTP.RESPONSE</td>
-            </tr>
-            <tr className="bg-white/[0.02]">
-              <td className="px-4 py-3 font-mono text-white">onError</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.HTTP.ERROR</td>
-            </tr>
-            <tr className="bg-white/[0.02]">
-              <td className="px-4 py-3 font-mono text-white">onRouteError</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.HOOK.METRICS.ROUTE_ERROR</td>
-            </tr>
-
-            {/* Routing */}
-            <tr className="bg-white/[0.01]">
-              <td rowSpan={5} className="px-4 py-3 font-bold text-blue-400 border-r border-white/5">Routing</td>
-              <td className="px-4 py-3 font-mono text-white">registerRoutes</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.PERM.ROUTING.REGISTER_ROUTES</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">bypassNamespace</td>
-              <td className="px-4 py-3 font-mono text-red-400/80">XHS.PERM.ROUTING.BYPASS_NAMESPACE</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">overwriteProtected</td>
-              <td className="px-4 py-3 font-mono text-red-400/80">XHS.PERM.ROUTING.OVERWRITE_PROTECTED</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">middleware</td>
-              <td className="px-4 py-3 font-mono text-muted-foreground">XHS.PERM.HTTP.MIDDLEWARE</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">globalMiddleware</td>
-              <td className="px-4 py-3 font-mono text-orange-400/80">XHS.PERM.HTTP.GLOBAL_MIDDLEWARE</td>
-            </tr>
-
-            {/* Ops & Logs */}
-            <tr className="bg-white/[0.02]">
-              <td rowSpan={2} className="px-4 py-3 font-bold text-orange-400 border-r border-white/5">Ops & Logs</td>
-              <td className="px-4 py-3 font-mono text-white">onAuxiliaryServerDeploy</td>
-              <td className="px-4 py-3 font-mono text-orange-400/80">XHS.PERM.OPS.AUXILIARY_SERVER</td>
-            </tr>
-            <tr className="bg-white/[0.02]">
-              <td className="px-4 py-3 font-mono text-white">onConsoleIntercept</td>
-              <td className="px-4 py-3 font-mono text-orange-400/80">XHS.PERM.LOGGING.CONSOLE_INTERCEPT</td>
-            </tr>
-
-            {/* Security */}
-            <tr className="bg-white/[0.01]">
-              <td rowSpan={2} className="px-4 py-3 font-bold text-green-400 border-r border-white/5">Security</td>
-              <td className="px-4 py-3 font-mono text-white">configs</td>
-              <td className="px-4 py-3 font-mono text-orange-400/80">XHS.PERM.SECURITY.CONFIGS</td>
-            </tr>
-            <tr className="bg-white/[0.01]">
-              <td className="px-4 py-3 font-mono text-white">sensitiveData</td>
-              <td className="px-4 py-3 font-mono text-orange-400/80">XHS.PERM.SECURITY.SENSITIVE_DATA</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         {[
@@ -240,6 +145,25 @@ export default function PluginAPIReferencePage() {
         ))}
       </div>
 
+      <SectionHeading level={2} id="unified-registry">Unified Registry</SectionHeading>
+      <div className="p-8 rounded-3xl border border-primary/20 bg-primary/5 flex flex-col md:flex-row items-center justify-between gap-6 group my-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-primary font-bold">
+            <Search size={20} />
+            <h4 className="text-lg">Unified Hook Registry</h4>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed max-w-md">
+            A single, searchable index of every hook, property, and capability ID available in XyPriss. Ideal for quick reference and scalable permission mapping.
+          </p>
+        </div>
+        <button 
+          onClick={() => router.push("/docs/plugins/api-reference/hooks")}
+          className="px-6 py-3 rounded-xl bg-primary text-white !text-white text-sm font-bold hover:bg-primary/80 transition-all flex items-center gap-2 cursor-pointer border-none shadow-xl shadow-primary/20 shrink-0"
+        >
+          Open Registry <ChevronRight size={16} />
+        </button>
+      </div>
+
       <SectionHeading level={2} id="priority">Middleware Priority Protocols</SectionHeading>
       <p>
         Developers can control the relative execution order of their plugin middleware within the pipeline using the <code>middlewarePriority</code> property.
@@ -272,32 +196,6 @@ export default function PluginAPIReferencePage() {
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <SectionHeading level={2} id="stability">Error Handling & Stability</SectionHeading>
-      <p>
-        XyPriss implements a "Fail-Safe" execution model. Errors in plugin hooks are isolated to prevent cascading failures that could destabilize the core engine.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-        <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3">
-          <div className="flex items-center gap-2 text-red-400">
-            <ShieldCheck size={18} />
-            <h4 className="font-bold text-sm">Hook Isolation</h4>
-          </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Every hook execution is wrapped in a dedicated error boundary. Synchronous and asynchronous exceptions are caught, logged with the plugin ID, and bypassed to allow the pipeline to continue.
-          </p>
-        </div>
-        <div className="p-5 rounded-2xl border border-white/5 bg-white/[0.02] space-y-3">
-          <div className="flex items-center gap-2 text-orange-400">
-            <Lock size={18} />
-            <h4 className="font-bold text-sm">Conflict Prevention</h4>
-          </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            The engine detects "Double-Finalization" (calling <code>next()</code> after <code>res.send()</code>). If detected, it halts the middleware chain for that request to prevent illegal write attempts.
-          </p>
-        </div>
       </div>
 
       <DocsFooter 
