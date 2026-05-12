@@ -22,6 +22,12 @@ export const docsConfig = [
     ],
   },
   {
+    title: "Security",
+    items: [
+      { title: "Environment Shield", href: "/docs/security/environment-shield" },
+    ],
+  },
+  {
     title: "Community",
     items: [
       { title: "Contributing", href: "/docs/contributing" },
