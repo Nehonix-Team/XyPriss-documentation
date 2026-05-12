@@ -11,6 +11,7 @@ export const docsConfig = [
     title: "Core Concepts",
     items: [
       { title: "XHSC Engine", href: "/docs/xhsc-core" },
+      { title: "Global APIs", href: "/docs/global-apis" },
       { title: "XFPM CLI", href: "/docs/xfpm" },
     ],
   },
