@@ -84,6 +84,19 @@ export default function DocumentationPage() {
 ### 3. Navigation Configuration
 While the search engine dynamically indexes all pages under `app/docs/`, manual registration is required for the sidebar.
 - Update `lib/docs-config.ts` to include the new route in the appropriate section.
+- **Sub-modules (Grouping)**: To create a nested documentation group, add an `items` array to a route object. These are visually marked in the sidebar with a `Layers` icon and a dedicated button-style toggle.
+
+```typescript
+// Example of a grouped route in lib/docs-config.ts
+{ 
+  title: "Parent Topic", 
+  href: "/docs/parent",
+  items: [
+    { title: "Sub-topic A", href: "/docs/parent/a" },
+    { title: "Sub-topic B", href: "/docs/parent/b" },
+  ]
+}
+```
 
 ## Component Library
 
@@ -92,6 +105,7 @@ The following components must be used to maintain architectural integrity:
 - **SectionHeading**: Used for all titles (level 1) and sub-sections (levels 2-4). Handles automatic anchor ID generation.
 - **CodeBlock**: Mandatory for all code snippets. Implements the VS Code Dark Plus theme.
 - **Callout**: Used for highlighting important information (types: info, warning, success, danger, tip).
+- **TechGraph**: Used for visualizing data flows, architecture layers, and technical pipelines through animated node-link diagrams.
 - **Steps / Step**: Mandatory for sequential tutorials or installation flows.
 - **DocsFooter**: Mandatory at the end of every page to provide a clear Call-to-Action (CTA) and navigation to the next logical topic.
 
