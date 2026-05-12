@@ -28,6 +28,21 @@ export const docsConfig = [
     ],
   },
   {
+    title: "Plugins",
+    items: [
+      { 
+        title: "Overview", 
+        href: "/docs/plugins",
+        items: [
+          { title: "System Guide", href: "/docs/plugins/system-guide" },
+          { title: "Development Guide", href: "/docs/plugins/development-guide" },
+          { title: "Permissions", href: "/docs/plugins/permissions" },
+          { title: "API Reference", href: "/docs/plugins/api-reference" },
+        ]
+      },
+    ],
+  },
+  {
     title: "Community",
     items: [
       { title: "Contributing", href: "/docs/contributing" },
