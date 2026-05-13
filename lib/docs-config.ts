@@ -1,4 +1,6 @@
-export const docsConfig = [
+import { DocT } from "./DocT";
+
+export const docsConfig: DocT[] = [
   {
     title: "Start Here",
     items: [
@@ -75,6 +77,14 @@ export const docsConfig = [
         ]
       },
       { title: "Dynamic Variables", href: "/docs/system/vars" },
+    ],
+  },
+  {
+    title: "Cluster",
+    items: [
+      { title: "Overview", href: "/docs/cluster" },
+      { title: "Configuration", href: "/docs/cluster/configuration" },
+      { title: "Performance Tuning", href: "/docs/cluster/performance" },
     ],
   },
   {

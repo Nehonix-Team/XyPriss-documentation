@@ -105,14 +105,29 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
             <div key={idx} className="flex flex-col gap-3">
               <button 
                 onClick={() => toggleSection(section.title)}
-                className="flex items-center justify-between w-full text-xs font-bold uppercase tracking-widest text-muted-foreground/60 px-2 hover:text-foreground transition-colors group/header"
+                className={cn(
+                  "flex items-center justify-between w-full text-[11px] font-black uppercase tracking-[0.2em] px-3 py-2 rounded-lg transition-all group/header",
+                  isSectionCollapsed 
+                    ? "text-muted-foreground/40 hover:text-muted-foreground/80 hover:bg-white/[0.02]" 
+                    : "text-primary/80 bg-primary/5 mb-1"
+                )}
               >
-                {section.title}
-                {isSectionCollapsed ? <ChevronRight size={12} /> : <ChevronDown size={12} />}
+                <div className="flex items-center gap-2">
+                  <div className={cn(
+                    "w-1 h-1 rounded-full transition-all",
+                    isSectionCollapsed ? "bg-muted-foreground/20" : "bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)]"
+                  )} />
+                  {section.title}
+                </div>
+                {isSectionCollapsed ? <ChevronRight size={12} className="opacity-40" /> : <ChevronDown size={12} className="text-primary" />}
               </button>
               
               {!isSectionCollapsed && (
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 ml-3.5 pl-4 border-l border-white/[0.05] relative">
+                  {/* Tree line highlight for active section */}
+                  {section.items.some((item: any) => pathname === item.href || (item.items && item.items.some((sub: any) => pathname === sub.href))) && (
+                    <div className="absolute left-[-1px] top-0 w-[1px] h-full bg-gradient-to-b from-primary/50 via-primary/20 to-transparent" />
+                  )}
                   {section.items.map((item: any, itemIdx: number) => {
                     const hasSubItems = item.items && item.items.length > 0;
                     const isExpanded = expandedItems.includes(item.title);
@@ -124,18 +139,28 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
                           <Link
                             href={item.href}
                             className={cn(
-                              "flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all relative overflow-hidden",
+                              "flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all relative overflow-hidden group/link",
                               isActive 
-                                ? "bg-primary/10 text-primary font-bold shadow-[inset_0_0_12px_rgba(var(--color-primary-rgb),0.05)]" 
-                                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                ? "bg-white/[0.03] text-foreground font-semibold border border-white/5" 
+                                : "text-muted-foreground hover:bg-white/[0.02] hover:text-foreground"
                             )}
                           >
                             {isActive && pathname === item.href && (
-                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-primary rounded-r-full shadow-[0_0_8px_var(--color-primary)]" />
+                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full shadow-[0_0_8px_var(--color-primary)]" />
                             )}
                             <div className="flex items-center gap-2">
-                              {hasSubItems && <Layers size={12} className={cn("transition-colors", isActive ? "text-primary" : "text-muted-foreground/40")} />}
-                              <span>{item.title}</span>
+                              {hasSubItems ? (
+                                <Layers size={12} className={cn("transition-colors", isActive ? "text-primary" : "text-muted-foreground/40")} />
+                              ) : (
+                                <div className={cn(
+                                  "w-1 h-1 rounded-full transition-all",
+                                  pathname === item.href ? "bg-primary shadow-[0_0_5px_var(--color-primary)]" : "bg-white/10 group-hover/link:bg-white/30"
+                                )} />
+                              )}
+                              <span className={cn(
+                                "transition-colors",
+                                isActive ? "text-white" : "text-slate-400 group-hover/link:text-slate-200"
+                              )}>{item.title}</span>
                             </div>
                             
                             <div className="flex items-center gap-1">
@@ -149,14 +174,14 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
                                       : "bg-white/5 text-muted-foreground/60 border-white/5 hover:border-white/20"
                                   )}
                                 >
-                                  {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                                  {isExpanded ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
                                 </button>
                               ) : (
                                 <ChevronRight 
-                                  size={14} 
+                                  size={12} 
                                   className={cn(
-                                    "transition-transform",
-                                    pathname === item.href ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 group-hover/item:opacity-40 group-hover/item:translate-x-0"
+                                    "transition-all duration-300",
+                                    pathname === item.href ? "opacity-100 translate-x-0 text-primary" : "opacity-0 -translate-x-2 group-hover/item:opacity-40 group-hover/item:translate-x-0"
                                   )} 
                                 />
                               )}
@@ -165,7 +190,11 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
                         </div>
 
                         {hasSubItems && isExpanded && (
-                          <div className="flex flex-col gap-1 ml-4 pl-3 border-l border-white/5 mt-1 mb-2">
+                          <div className="flex flex-col gap-0.5 ml-2.5 pl-4 border-l border-white/[0.05] mt-1 mb-2 relative">
+                            {/* Inner tree line highlight */}
+                            {item.items?.some((sub: any) => pathname === sub.href) && (
+                              <div className="absolute left-[-1px] top-0 w-[1px] h-full bg-primary/30" />
+                            )}
                             {item.items?.map((subItem: any, subIdx: number) => {
                               const isSubActive = pathname === subItem.href;
                               return (
@@ -173,14 +202,20 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
                                   key={subIdx}
                                   href={subItem.href}
                                   className={cn(
-                                    "group/sub flex items-center justify-between px-3 py-1.5 rounded-md text-xs transition-all",
+                                    "group/sub flex items-center justify-between px-3 py-1.5 rounded-md text-[11px] transition-all relative",
                                     isSubActive
-                                      ? "text-primary font-medium bg-primary/5"
-                                      : "text-muted-foreground/60 hover:text-foreground hover:bg-white/5"
+                                      ? "text-primary font-bold bg-primary/5"
+                                      : "text-slate-500 hover:text-slate-200 hover:bg-white/5"
                                   )}
                                 >
-                                  <span>{subItem.title}</span>
-                                  {isSubActive && <ChevronRight size={10} className="text-primary" />}
+                                  <div className="flex items-center gap-2">
+                                    <div className={cn(
+                                      "w-1 h-[1px] bg-white/10 transition-all",
+                                      isSubActive ? "w-2 bg-primary" : "group-hover/sub:w-1.5 group-hover/sub:bg-white/30"
+                                    )} />
+                                    <span>{subItem.title}</span>
+                                  </div>
+                                  {isSubActive && <ChevronRight size={10} className="text-primary animate-pulse" />}
                                 </Link>
                               );
                             })}
