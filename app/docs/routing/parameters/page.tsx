@@ -11,13 +11,14 @@ export default function ParametersConstraintsPage() {
       <SectionHeading level={1}>Parameters & Constraints</SectionHeading>
 
       <p>
-        XyPriss Router V2 supports dynamic path segments with optional inline Regex 
-        constraints and type-safe shortcuts, all enforced at the routing layer.
+        XyPriss XyPriss Router supports dynamic path segments with optional
+        inline Regex constraints and type-safe shortcuts, all enforced at the
+        routing layer.
       </p>
 
       <SectionHeading level={2}>Path Parameters</SectionHeading>
       <p>
-        Parameters are defined using the <code>:name</code> prefix and are 
+        Parameters are defined using the <code>:name</code> prefix and are
         accessible via <code>req.params</code>.
       </p>
       <CodeBlock
@@ -36,7 +37,7 @@ router.get("/posts/:year/:month/:slug", (req, res) => {
 
       <SectionHeading level={2}>Regex Constraints</SectionHeading>
       <p>
-        You can enforce a specific format on a parameter directly in the path 
+        You can enforce a specific format on a parameter directly in the path
         definition using standard Regular Expressions.
       </p>
       <CodeBlock
@@ -54,7 +55,7 @@ router.get("/shop/:slug([a-z]+-[a-z]+-[a-z]+)", (req, res) => {
 
       <SectionHeading level={2}>Typed Parameters</SectionHeading>
       <p>
-        For cleaner definitions, use built-in type shortcuts. XyPriss handles 
+        For cleaner definitions, use built-in type shortcuts. XyPriss handles
         the regex generation and validation for you.
       </p>
       <CodeBlock
@@ -79,56 +80,116 @@ router.get("/status/:type<enum(active,inactive,pending)>", (req, res) => {
         <table className="w-full text-left border-collapse border border-white/10 text-xs">
           <thead>
             <tr className="bg-white/[0.05]">
-              <th className="p-3 border border-white/10 font-bold text-white">Type Name</th>
-              <th className="p-3 border border-white/10 font-bold text-white">Description / Usage</th>
-              <th className="p-3 border border-white/10 font-bold text-white">Example Match</th>
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Type Name
+              </th>
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Description / Usage
+              </th>
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Example Match
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-blue-400">number</td>
-              <td className="p-3 border border-white/10 text-slate-400">Any valid floating-point number.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">123, 45.67</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                number
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Any valid floating-point number.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                123, 45.67
+              </td>
             </tr>
             <tr className="bg-white/[0.02]">
-              <td className="p-3 border border-white/10 font-mono text-blue-400">integer</td>
-              <td className="p-3 border border-white/10 text-slate-400">Whole numbers only.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">42, -7</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                integer
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Whole numbers only.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                42, -7
+              </td>
             </tr>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-blue-400">boolean</td>
-              <td className="p-3 border border-white/10 text-slate-400">Matches "true" or "false".</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">true</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                boolean
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Matches "true" or "false".
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                true
+              </td>
             </tr>
             <tr className="bg-white/[0.02]">
-              <td className="p-3 border border-white/10 font-mono text-blue-400">uuid</td>
-              <td className="p-3 border border-white/10 text-slate-400">Standard UUID v4 format.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">550e8400-e29b...</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                uuid
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Standard UUID v4 format.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                550e8400-e29b...
+              </td>
             </tr>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-blue-400">alpha</td>
-              <td className="p-3 border border-white/10 text-slate-400">Alphabetic characters (A-Z) only.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">profile</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                alpha
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Alphabetic characters (A-Z) only.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                profile
+              </td>
             </tr>
             <tr className="bg-white/[0.02]">
-              <td className="p-3 border border-white/10 font-mono text-blue-400">alphanumeric</td>
-              <td className="p-3 border border-white/10 text-slate-400">Letters and numbers.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">user123</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                alphanumeric
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Letters and numbers.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                user123
+              </td>
             </tr>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-purple-400">string(min,max)</td>
-              <td className="p-3 border border-white/10 text-slate-400">Length constraints (inclusive).</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">slug&lt;string(3,20)&gt;</td>
+              <td className="p-3 border border-white/10 font-mono text-purple-400">
+                string(min,max)
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Length constraints (inclusive).
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                slug&lt;string(3,20)&gt;
+              </td>
             </tr>
             <tr className="bg-white/[0.02]">
-              <td className="p-3 border border-white/10 font-mono text-purple-400">number(min,max)</td>
-              <td className="p-3 border border-white/10 text-slate-400">Value range constraints.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">age&lt;number(18,99)&gt;</td>
+              <td className="p-3 border border-white/10 font-mono text-purple-400">
+                number(min,max)
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Value range constraints.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                age&lt;number(18,99)&gt;
+              </td>
             </tr>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-purple-400">enum(a,b,c)</td>
-              <td className="p-3 border border-white/10 text-slate-400">Explicit allowed values.</td>
-              <td className="p-3 border border-white/10 font-mono text-slate-500">v1, v2, v3</td>
+              <td className="p-3 border border-white/10 font-mono text-purple-400">
+                enum(a,b,c)
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Explicit allowed values.
+              </td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">
+                v1, v2, v3
+              </td>
             </tr>
           </tbody>
         </table>
@@ -140,7 +201,7 @@ router.get("/status/:type<enum(active,inactive,pending)>", (req, res) => {
             <Shield className="w-4 h-4 text-blue-400" /> Layer-1 Validation
           </h5>
           <p className="text-[10px] text-slate-400 m-0">
-            Requests that don't satisfy constraints are rejected at the routing 
+            Requests that don't satisfy constraints are rejected at the routing
             layer, never reaching your application logic.
           </p>
         </div>
@@ -149,7 +210,7 @@ router.get("/status/:type<enum(active,inactive,pending)>", (req, res) => {
             <Hash className="w-4 h-4 text-green-400" /> Multi-Segment Support
           </h5>
           <p className="text-[10px] text-slate-400 m-0">
-            Combine multiple parameters in a single segment, e.g., 
+            Combine multiple parameters in a single segment, e.g.,
             <code>/files/:name.:ext</code>.
           </p>
         </div>
@@ -161,12 +222,18 @@ router.get("/status/:type<enum(active,inactive,pending)>", (req, res) => {
       </p>
       <ul>
         <li>
-          <strong>Single Wildcard (<code>*</code>):</strong> Matches exactly one 
-          segment within a path. Accessible via <code>req.params["*"]</code>.
+          <strong>
+            Single Wildcard (<code>*</code>):
+          </strong>{" "}
+          Matches exactly one segment within a path. Accessible via{" "}
+          <code>req.params["*"]</code>.
         </li>
         <li>
-          <strong>Double Wildcard (<code>**</code>):</strong> Matches multiple 
-          segments recursively. Accessible via <code>req.params["**"]</code>.
+          <strong>
+            Double Wildcard (<code>**</code>):
+          </strong>{" "}
+          Matches multiple segments recursively. Accessible via{" "}
+          <code>req.params["**"]</code>.
         </li>
       </ul>
       <CodeBlock
@@ -184,7 +251,7 @@ router.get("/api/**", (req, res) => {
 
       <SectionHeading level={2}>Query Parameters</SectionHeading>
       <p>
-        Query strings are automatically parsed and made available via 
+        Query strings are automatically parsed and made available via
         <code>req.query</code>.
       </p>
       <CodeBlock

@@ -11,15 +11,15 @@ export default function RoutingInspectionPage() {
       <SectionHeading level={1}>Router Inspection</SectionHeading>
 
       <p>
-        Router V2 exposes a built-in inspection API that allows you to 
-        programmatically read the entire routing state at runtime. This is 
-        critical for building documentation generators, health dashboards, 
-        and debugging tools.
+        <strong>XyPriss Router</strong> exposes a built-in inspection API that
+        allows you to programmatically read the entire routing state at runtime.
+        This is critical for building documentation generators, health
+        dashboards, and debugging tools.
       </p>
 
       <SectionHeading level={2}>Registry Export</SectionHeading>
       <p>
-        Use <code>router.toRegistry()</code> to get a fully serializable 
+        Use <code>router.toRegistry()</code> to get a fully serializable
         snapshot of the routing tree.
       </p>
       <CodeBlock
@@ -32,26 +32,46 @@ console.log(JSON.stringify(registry, null, 2));`}
         <table className="w-full text-left border-collapse border border-white/10 text-sm">
           <thead>
             <tr className="bg-white/[0.05]">
-              <th className="p-3 border border-white/10 font-bold text-white">Field</th>
-              <th className="p-3 border border-white/10 font-bold text-white">Description</th>
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Field
+              </th>
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Description
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-blue-400">method</td>
-              <td className="p-3 border border-white/10 text-slate-400">HTTP verb (GET, POST, etc.).</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                method
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                HTTP verb (GET, POST, etc.).
+              </td>
             </tr>
             <tr className="bg-white/[0.02]">
-              <td className="p-3 border border-white/10 font-mono text-blue-400">path</td>
-              <td className="p-3 border border-white/10 text-slate-400">The full registered path string.</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                path
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                The full registered path string.
+              </td>
             </tr>
             <tr>
-              <td className="p-3 border border-white/10 font-mono text-blue-400">params</td>
-              <td className="p-3 border border-white/10 text-slate-400">Extracted parameters and regex constraints.</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                params
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Extracted parameters and regex constraints.
+              </td>
             </tr>
             <tr className="bg-white/[0.02]">
-              <td className="p-3 border border-white/10 font-mono text-blue-400">hasGuards</td>
-              <td className="p-3 border border-white/10 text-slate-400">True if declarative guards are present.</td>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">
+                hasGuards
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                True if declarative guards are present.
+              </td>
             </tr>
           </tbody>
         </table>
@@ -59,7 +79,7 @@ console.log(JSON.stringify(registry, null, 2));`}
 
       <SectionHeading level={2}>Router Statistics</SectionHeading>
       <p>
-        <code>router.getStats()</code> returns high-level aggregated metrics 
+        <code>router.getStats()</code> returns high-level aggregated metrics
         about the router instance.
       </p>
       <CodeBlock
@@ -67,13 +87,13 @@ console.log(JSON.stringify(registry, null, 2));`}
         code={`const stats = router.getStats();
 
 console.log(\`Total routes: \${stats.totalRoutes}\`);
-console.log(\`GET routes: \${stats.byMethod.GET}\`);`}
+`}
       />
 
       <SectionHeading level={2}>OpenAPI & Swagger Integration</SectionHeading>
       <p>
-        The <code>toRegistry()</code> output is the primary data source for the 
-        official <code>xypriss-swagger</code> plugin, enabling zero-config API 
+        The <code>toRegistry()</code> output is the primary data source for the
+        official <code>xypriss-swagger</code> plugin, enabling zero-config API
         documentation.
       </p>
       <CodeBlock
@@ -93,8 +113,8 @@ createServer({
       />
 
       <Callout type="tip" title="Custom Metadata">
-        You can add custom fields to any route via <code>meta.openapi</code>. 
-        These fields will be automatically merged into the generated OpenAPI 
+        You can add custom fields to any route via <code>meta.openapi</code>.
+        These fields will be automatically merged into the generated OpenAPI
         specification.
       </Callout>
 

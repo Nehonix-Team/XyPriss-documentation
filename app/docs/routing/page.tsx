@@ -4,12 +4,21 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
 import { Steps, Step } from "@/components/ui/Steps";
-import { Network, ShieldCheck, Zap, Lock, Cpu, Search, Activity, Layers } from "lucide-react";
+import {
+  Network,
+  ShieldCheck,
+  Zap,
+  Lock,
+  Cpu,
+  Search,
+  Activity,
+  Layers,
+} from "lucide-react";
 
 export default function RoutingOverviewPage() {
   return (
     <div className="prose prose-invert max-w-none">
-      <SectionHeading level={1}>XyPriss Router V2</SectionHeading>
+      <SectionHeading level={1}>XyPriss XyPriss Router</SectionHeading>
 
       <p>
         The <strong>XyPriss routing engine</strong> is built on a
@@ -56,7 +65,7 @@ const app = createServer();
 const router = Router();
 
 router.get("/hello", (req, res) => {
-    res.success("Hello from Router V2!");
+    res.success("Hello from XyPriss Router!");
 });
 
 app.use(router);
@@ -100,7 +109,7 @@ app.start();`}
 
       <SectionHeading level={3}>Declarative Route Options</SectionHeading>
       <p>
-        Unlike traditional middleware stacks, Router V2 lets you declare
+        Unlike traditional middleware stacks, XyPriss Router lets you declare
         security, throttling, and caching{" "}
         <strong>directly on the route definition</strong>.
       </p>

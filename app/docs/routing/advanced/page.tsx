@@ -11,14 +11,14 @@ export default function AdvancedRoutingPage() {
       <SectionHeading level={1}>Advanced Route Features</SectionHeading>
 
       <p>
-        Router V2 exposes three production-critical features directly on the route 
-        definition object: <strong>Rate Limiting</strong>, <strong>Response Caching</strong>, 
-        and <strong>Lifecycle Hooks</strong>.
+        XyPriss Router exposes three production-critical features directly on
+        the route definition object: <strong>Rate Limiting</strong>,{" "}
+        <strong>Response Caching</strong>, and <strong>Lifecycle Hooks</strong>.
       </p>
 
       <SectionHeading level={2}>Rate Limiting</SectionHeading>
       <p>
-        Per-route rate limiting is enforced natively, offloading the tracking 
+        Per-route rate limiting is enforced natively, offloading the tracking
         logic to the XHSC core for maximum efficiency.
       </p>
       <CodeBlock
@@ -41,7 +41,7 @@ export default function AdvancedRoutingPage() {
 
       <SectionHeading level={2}>Response Caching</SectionHeading>
       <p>
-        Cache the response of <code>GET</code> routes in-memory to eliminate 
+        Cache the response of <code>GET</code> routes in-memory to eliminate
         redundant handler invocations and database lookups.
       </p>
       <CodeBlock
@@ -54,35 +54,38 @@ export default function AdvancedRoutingPage() {
 });`}
       />
       <Callout type="info" title="Mutation Safety">
-        Caching applies exclusively to <code>GET</code> routes. Mutation 
+        Caching applies exclusively to <code>GET</code> routes. Mutation
         endpoints (POST, PUT, PATCH, DELETE) are never cached.
       </Callout>
 
       <SectionHeading level={2}>Lifecycle Hooks</SectionHeading>
       <p>
-        Hooks intercept the request at precisely defined stages without 
+        Hooks intercept the request at precisely defined stages without
         interfering with the normal handler chain.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-6">
         {[
-          { 
-            name: "beforeEnter", 
+          {
+            name: "beforeEnter",
             desc: "Runs before the main handler. Use for validation.",
-            icon: <Terminal className="w-4 h-4 text-blue-400" />
+            icon: <Terminal className="w-4 h-4 text-blue-400" />,
           },
-          { 
-            name: "afterLeave", 
+          {
+            name: "afterLeave",
             desc: "Runs after the response is sent. Use for metrics.",
-            icon: <Activity className="w-4 h-4 text-green-400" />
+            icon: <Activity className="w-4 h-4 text-green-400" />,
           },
-          { 
-            name: "onError", 
+          {
+            name: "onError",
             desc: "Fires if a hook or handler throws. For structured errors.",
-            icon: <ShieldAlert className="w-4 h-4 text-red-400" />
+            icon: <ShieldAlert className="w-4 h-4 text-red-400" />,
           },
         ].map((hook) => (
-          <div key={hook.name} className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
+          <div
+            key={hook.name}
+            className="p-4 bg-white/[0.02] border border-white/5 rounded-xl"
+          >
             <div className="flex items-center gap-2 font-bold text-white mb-1 text-xs">
               {hook.icon} {hook.name}
             </div>
@@ -117,8 +120,8 @@ export default function AdvancedRoutingPage() {
       />
 
       <Callout type="danger" title="onError Protocol">
-        Inside an <code>onError</code> hook, you <strong>must</strong> terminate 
-        the request by responding to the client or throwing the error. Calling 
+        Inside an <code>onError</code> hook, you <strong>must</strong> terminate
+        the request by responding to the client or throwing the error. Calling
         <code>next()</code> will cause the request to hang indefinitely.
       </Callout>
 

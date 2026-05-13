@@ -11,7 +11,7 @@ export default function SecurityGuardsPage() {
 
       <p>
         <strong>Guards</strong> are the primary mechanism for enforcing
-        authorization in XyPriss Router V2. Unlike traditional middleware,
+        authorization in XyPriss XyPriss Router. Unlike traditional middleware,
         guards use a<strong> standardized return-type protocol</strong> and are
         fully visible in the route inspection registry.
       </p>
