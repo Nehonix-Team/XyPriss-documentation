@@ -92,8 +92,29 @@ export const docsConfig = [
       { title: "Trust Proxy", href: "/docs/security/trust-proxy" },
       { title: "Honeypot & Tarpit", href: "/docs/security/honeypot" },
       { title: "Response Manipulation", href: "/docs/security/response-manipulation" },
-      { title: "XSec Engine", href: "/docs/security/xsec" },
-      { title: "Enterprise Suite (XEMS)", href: "/docs/security/xems" },
+      { 
+        title: "Security Module (XSec-M)", 
+        href: "/docs/security/xsec-m",
+        items: [
+          { title: "Core Primitives", href: "/docs/security/xsec-m/core" },
+          { title: "Ed25519 Signatures", href: "/docs/security/xsec-m/ed25519" },
+          { title: "RSA & Byte Utils", href: "/docs/security/xsec-m/rsa-utils" },
+          { title: "Secure Cache", href: "/docs/security/xsec-m/cache" },
+          { title: "Encryption", href: "/docs/security/xsec-m/encryption" },
+          { title: "Utilities", href: "/docs/security/xsec-m/utils" },
+        ]
+      },
+      { 
+        title: "XEMS", 
+        href: "/docs/security/xems",
+        items: [
+          { title: "Architecture", href: "/docs/security/xems/architecture" },
+          { title: "Configuration", href: "/docs/security/xems/configuration" },
+          { title: "Performance", href: "/docs/security/xems/performance" },
+          { title: "Usage Guide", href: "/docs/security/xems/usage" },
+          { title: "Tutorial", href: "/docs/security/xems/tutorial" },
+        ]
+      },
     ],
   },
   {

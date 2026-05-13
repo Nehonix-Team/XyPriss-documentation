@@ -55,7 +55,6 @@ const app = createServer({
             allowedTools: ["postman", "curl"], // Whitelist specific tools
             blockSecFetch: true, // Block requests with Sec-Fetch headers
             blockBrowserIndicators: true, // Block browser-specific headers
-            strictness: "normal", // "normal" | "high" | "paranoid"
             errorMessage: "Terminal/API access required",
             statusCode: 403,
         },
