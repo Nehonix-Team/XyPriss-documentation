@@ -36,6 +36,18 @@ export const docsConfig: DocT[] = [
     ],
   },
   {
+    title: "Routing",
+    items: [
+      { title: "Overview", href: "/docs/routing" },
+      { title: "Groups & Versioning", href: "/docs/routing/groups-versioning" },
+      { title: "Parameters & Constraints", href: "/docs/routing/parameters" },
+      { title: "Security Guards", href: "/docs/routing/guards" },
+      { title: "Advanced Features", href: "/docs/routing/advanced" },
+      { title: "Inspection", href: "/docs/routing/inspection" },
+      { title: "Methods Reference", href: "/docs/routing/methods" },
+    ],
+  },
+  {
     title: "Configuration",
     items: [
       { title: "Guide & Structure", href: "/docs/config/guide" },
