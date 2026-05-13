@@ -80,7 +80,20 @@ export const docsConfig = [
   {
     title: "Security",
     items: [
+      { title: "Overview", href: "/docs/security/overview" },
+      { title: "General Guide", href: "/docs/security/guide" },
       { title: "Environment Shield", href: "/docs/security/environment-shield" },
+      { title: "Access Control", href: "/docs/security/access-control" },
+      { title: "Content Security (CSP)", href: "/docs/security/csp" },
+      { title: "CORS Policy", href: "/docs/security/cors" },
+      { title: "Rate Limiting", href: "/docs/security/rate-limiting" },
+      { title: "Request Signatures", href: "/docs/security/signatures" },
+      { title: "Route Security", href: "/docs/security/route-security" },
+      { title: "Trust Proxy", href: "/docs/security/trust-proxy" },
+      { title: "Honeypot & Tarpit", href: "/docs/security/honeypot" },
+      { title: "Response Manipulation", href: "/docs/security/response-manipulation" },
+      { title: "XSec Engine", href: "/docs/security/xsec" },
+      { title: "Enterprise Suite (XEMS)", href: "/docs/security/xems" },
     ],
   },
   {

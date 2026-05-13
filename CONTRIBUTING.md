@@ -16,17 +16,21 @@ XyPriss Documentation is implemented using manual React components rather than a
 All documentation pages must adhere to the **Nehonix Premium** design language. Consistency in color and typography is non-negotiable.
 
 ### 1. Color Palette (Dark Mode)
+
 We use a high-contrast, deep-space palette to emphasize technical precision:
+
 - **Primary (Nehonix Blue)**: `#3b82f6` — Used for active states, CTA buttons, and highlights.
 - **Background (Zero Black)**: `#000000` — The absolute foundation of all pages.
 - **Surface (Deep Slate)**: `#0f172a` — Used for cards, code blocks, and muted backgrounds.
 - **Border (Subtle White)**: `rgba(255, 255, 255, 0.05)` — Used for glassmorphism borders.
 
 ### 2. Typography
+
 - **Headings & UI**: `Inter` — Clean, modern, and highly legible.
 - **Technical Content**: `JetBrains Mono` — Used for all code blocks, inline code, and terminal outputs.
 
 ### 3. Visual Language
+
 - **Glassmorphism**: Use `bg-white/[0.02]` with `backdrop-blur-sm` and `border-white/5` for containers.
 - **Interactive States**: Hover effects should involve subtle translation (`hover:-translate-y-0.5`) and increased border opacity.
 - **Glow Effects**: Use `text-glow-blue` or `shadow-primary/20` sparingly to highlight critical technical milestones.
@@ -34,26 +38,29 @@ We use a high-contrast, deep-space palette to emphasize technical precision:
 ## Page Development Workflow
 
 ### 1. Project Structure
+
 Documentation pages are located within the `app/docs/` directory. Each page follows the Next.js App Router convention:
+
 - Path: `app/docs/[slug]/page.tsx`
 - Example: `app/docs/xhsc-core/page.tsx`
 
 ### 2. Implementation Template
+
 When implementing a new documentation page, use the following standardized structure:
 
 ```tsx
 import React from "react";
-import { SectionHeading } from "@/components/docs/SectionHeading";
-import { CodeBlock } from "@/components/docs/CodeBlock";
-import { DocsFooter } from "@/components/docs/DocsFooter";
-import { Steps, Step } from "@/components/docs/Steps";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { DocsFooter } from "@/components/ui/DocsFooter";
+import { Steps, Step } from "@/components/ui/Steps";
 import { Rocket } from "lucide-react";
 
 export default function DocumentationPage() {
   return (
     <div className="prose prose-invert max-w-none">
       <SectionHeading level={1}>Page Title</SectionHeading>
-      
+
       <p>Technical description of the feature or concept.</p>
 
       <Callout type="info">
@@ -61,7 +68,7 @@ export default function DocumentationPage() {
       </Callout>
 
       <SectionHeading level={2}>Implementation Details</SectionHeading>
-      
+
       <Steps>
         <Step title="Step Definition">
           Technical instructions.
@@ -69,12 +76,12 @@ export default function DocumentationPage() {
         </Step>
       </Steps>
 
-      <DocsFooter 
+      <DocsFooter
         title="Next Topic"
         description="Brief description of the next logical documentation page."
         buttonText="Read More"
         href="/docs/next-topic"
-        icon={Rocket}
+        iconName={Rocket}
       />
     </div>
   );
@@ -82,14 +89,16 @@ export default function DocumentationPage() {
 ```
 
 ### 3. Navigation Configuration
+
 While the search engine dynamically indexes all pages under `app/docs/`, manual registration is required for the sidebar.
+
 - Update `lib/docs-config.ts` to include the new route in the appropriate section.
 - **Sub-modules (Grouping)**: To create a nested documentation group, add an `items` array to a route object. These are visually marked in the sidebar with a `Layers` icon and a dedicated button-style toggle.
 
 ```typescript
 // Example of a grouped route in lib/docs-config.ts
-{ 
-  title: "Parent Topic", 
+{
+  title: "Parent Topic",
   href: "/docs/parent",
   items: [
     { title: "Sub-topic A", href: "/docs/parent/a" },
