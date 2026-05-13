@@ -66,11 +66,11 @@ isValidByteLength(keyCandidate, 32);`} />
       </Callout>
 
       <DocsFooter 
-        title="Secure Cache"
-        description="Ultra-fast secure in-memory cache system (UFSIMC)."
-        buttonText="Next: Secure Cache"
-        href="/docs/security/xsec-m/cache"
-        iconName="Zap"
+        title="Encryption Services"
+        description="High-level data protection and hybrid encryption services."
+        buttonText="Next: Encryption"
+        href="/docs/security/xsec-m/encryption"
+        iconName="Shield"
       />
     </div>
   );

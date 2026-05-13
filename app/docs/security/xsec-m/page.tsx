@@ -76,11 +76,7 @@ export default function XSecMLandingPage() {
             desc: "RSA-PSS signing, RSA-OAEP encryption, and byte validation.",
             href: "/docs/security/xsec-m/rsa-utils",
           },
-          {
-            title: "Secure Cache",
-            desc: "Ultra-fast secure in-memory cache system (UFSIMC).",
-            href: "/docs/security/xsec-m/cache",
-          },
+
           {
             title: "Encryption",
             desc: "High-level data protection services.",

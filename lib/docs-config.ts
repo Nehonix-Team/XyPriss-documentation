@@ -99,7 +99,6 @@ export const docsConfig = [
           { title: "Core Primitives", href: "/docs/security/xsec-m/core" },
           { title: "Ed25519 Signatures", href: "/docs/security/xsec-m/ed25519" },
           { title: "RSA & Byte Utils", href: "/docs/security/xsec-m/rsa-utils" },
-          { title: "Secure Cache", href: "/docs/security/xsec-m/cache" },
           { title: "Encryption", href: "/docs/security/xsec-m/encryption" },
           { title: "Utilities", href: "/docs/security/xsec-m/utils" },
         ]
