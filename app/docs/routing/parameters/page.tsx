@@ -75,6 +75,65 @@ router.get("/status/:type<enum(active,inactive,pending)>", (req, res) => {
 });`}
       />
 
+      <div className="overflow-x-auto my-6">
+        <table className="w-full text-left border-collapse border border-white/10 text-xs">
+          <thead>
+            <tr className="bg-white/[0.05]">
+              <th className="p-3 border border-white/10 font-bold text-white">Type Name</th>
+              <th className="p-3 border border-white/10 font-bold text-white">Description / Usage</th>
+              <th className="p-3 border border-white/10 font-bold text-white">Example Match</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">number</td>
+              <td className="p-3 border border-white/10 text-slate-400">Any valid floating-point number.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">123, 45.67</td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 font-mono text-blue-400">integer</td>
+              <td className="p-3 border border-white/10 text-slate-400">Whole numbers only.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">42, -7</td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">boolean</td>
+              <td className="p-3 border border-white/10 text-slate-400">Matches "true" or "false".</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">true</td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 font-mono text-blue-400">uuid</td>
+              <td className="p-3 border border-white/10 text-slate-400">Standard UUID v4 format.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">550e8400-e29b...</td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-white/10 font-mono text-blue-400">alpha</td>
+              <td className="p-3 border border-white/10 text-slate-400">Alphabetic characters (A-Z) only.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">profile</td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 font-mono text-blue-400">alphanumeric</td>
+              <td className="p-3 border border-white/10 text-slate-400">Letters and numbers.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">user123</td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-white/10 font-mono text-purple-400">string(min,max)</td>
+              <td className="p-3 border border-white/10 text-slate-400">Length constraints (inclusive).</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">slug&lt;string(3,20)&gt;</td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 font-mono text-purple-400">number(min,max)</td>
+              <td className="p-3 border border-white/10 text-slate-400">Value range constraints.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">age&lt;number(18,99)&gt;</td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-white/10 font-mono text-purple-400">enum(a,b,c)</td>
+              <td className="p-3 border border-white/10 text-slate-400">Explicit allowed values.</td>
+              <td className="p-3 border border-white/10 font-mono text-slate-500">v1, v2, v3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
           <h5 className="text-white font-semibold mb-2 text-sm flex items-center gap-2">

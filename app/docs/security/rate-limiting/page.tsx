@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
@@ -30,20 +31,11 @@ const server = createServer({
 });`} />
 
       <SectionHeading level={2}>Per-Route Rate Limiting</SectionHeading>
-      <p>You can also apply specific rate limits to sensitive endpoints, such as login or registration routes, to provide extra protection where it's needed most.</p>
-      <CodeBlock language="typescript" code={`import { rateLimit } from "xypriss";
-
-app.post(
-    "/api/login",
-    rateLimit({ 
-        windowMs: 15 * 60 * 1000, // 15 minutes
-        max: 5, // Only 5 attempts per window
-        message: "Too many login attempts. Please try again later."
-    }),
-    (req, res) => {
-        // Login logic
-    },
-);`} />
+      <p>
+        In XyPriss, per-route rate limiting is enforced natively within the routing definition for maximum efficiency. 
+        Please refer to the <Link href="/docs/routing/advanced#rate-limiting" className="text-primary hover:underline font-bold">Advanced Routing Features</Link> documentation 
+        for the correct implementation details and examples.
+      </p>
 
       <SectionHeading level={2}>Configuration Options</SectionHeading>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">

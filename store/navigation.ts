@@ -36,11 +36,27 @@ export const NavigationFlow = defineFlow(
       setExpandedItems: (items: string[]) => (ops) => {
         ops.self.expandedItems._set(items);
       },
+      setCollapsedSections: (titles: string[]) => (ops) => {
+        ops.self.collapsedSections._set(titles);
+      },
       expandSections: (titles: string[]) => (ops) => {
         const { collapsedSections } = ops.state;
         ops.self.collapsedSections._set(
           collapsedSections.filter((t) => !titles.includes(t))
         );
+      },
+      collapseSections: (titles: string[]) => (ops) => {
+        const { collapsedSections } = ops.state;
+        ops.self.collapsedSections._set(
+          Array.from(new Set([...collapsedSections, ...titles]))
+        );
+      },
+      collapseAll: (allTitles: string[]) => (ops) => {
+        ops.self.collapsedSections._set(allTitles);
+        ops.self.expandedItems._set([]);
+      },
+      expandAll: () => (ops) => {
+        ops.self.collapsedSections._set([]);
       },
       toggleLeftSidebar: () => (ops) => {
         ops.self.isLeftSidebarCollapsed._set(!ops.state.isLeftSidebarCollapsed);

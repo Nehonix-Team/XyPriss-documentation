@@ -94,20 +94,26 @@ export default function AdvancedRoutingPage() {
       <CodeBlock
         language="typescript"
         title="Hook Implementation"
-        code={`router.get("/api/users/:id", {
-    beforeEnter(req, res, next) {
+        code={`router.get(
+  "/api/users/:id",
+  {
+    lifecycle: {
+      beforeEnter(req, res, next) {
         if (!req.params.id.match(/^\\d+$/)) {
-            return res.status(400).json({ error: "Invalid ID" });
+          return res.status(400).json({ error: "Invalid ID" });
         }
         next();
-    },
-    afterLeave(req, res) {
+      },
+      afterLeave(req, res) {
         // Fires after response is sent—safe for async analytics
         analytics.track("user.viewed", { id: req.params.id });
-    }
-}, (req, res) => {
+      },
+    },
+  },
+  (req, res) => {
     res.json({ userId: req.params.id });
-});`}
+  },
+);`}
       />
 
       <Callout type="danger" title="onError Protocol">

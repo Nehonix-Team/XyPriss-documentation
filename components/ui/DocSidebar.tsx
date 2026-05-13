@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { docsConfig } from "@/lib/docs-config";
 import { cn } from "@/lib/utils";
-import { ChevronRight, ChevronDown, PanelLeftClose, PanelLeftOpen, Layers } from "lucide-react";
+import { ChevronRight, ChevronDown, PanelLeftClose, PanelLeftOpen, Layers, Maximize2, Minimize2 } from "lucide-react";
 
 import { useFlow } from "fractostate";
 import { NavigationFlow } from "@/store/navigation";
 
 export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; onToggle: () => void }) => {
   const pathname = usePathname();
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const activeItemRef = useRef<HTMLAnchorElement>(null);
+
   const [
     { collapsedSections, expandedItems },
     { actions }
@@ -27,18 +30,22 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
     actions.toggleItem(title);
   };
 
+  const handleExpandAll = () => actions.expandAll();
+  const handleCollapseAll = () => actions.collapseAll(docsConfig.map(s => s.title));
+
   const [isMounted, setIsMounted] = useState(false);
 
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Auto-expand active items on mount and pathname change
+  // Auto-expand active items and collapse others
   React.useEffect(() => {
     if (!isMounted) return;
 
     const itemsToExpand: string[] = [];
-    const sectionsToExpand: string[] = [];
+    let sectionToExpand = "";
+    const allSectionTitles = docsConfig.map(s => s.title);
     
     docsConfig.forEach(section => {
       let sectionHasActive = false;
@@ -50,25 +57,34 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
         
         if (isExactActive || isChildActive) {
           sectionHasActive = true;
+          sectionToExpand = section.title;
         }
         
-        if (isChildActive && !expandedItems.includes(item.title)) {
+        if (isChildActive) {
           itemsToExpand.push(item.title);
         }
       });
-      
-      if (sectionHasActive && collapsedSections.includes(section.title)) {
-        sectionsToExpand.push(section.title);
-      }
     });
     
+    if (sectionToExpand) {
+      // Auto-collapse others: only the active section is not in the collapsed list
+      const newCollapsed = allSectionTitles.filter(t => t !== sectionToExpand);
+      actions.setCollapsedSections(newCollapsed);
+    }
+
     if (itemsToExpand.length > 0) {
-      actions.setExpandedItems(Array.from(new Set([...expandedItems, ...itemsToExpand])));
+      actions.setExpandedItems(itemsToExpand);
     }
-    
-    if (sectionsToExpand.length > 0) {
-      actions.expandSections(sectionsToExpand);
-    }
+
+    // Scroll active item into view
+    setTimeout(() => {
+      if (activeItemRef.current) {
+        activeItemRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+      }
+    }, 100);
   }, [pathname, isMounted]);
 
   if (isCollapsed) {
@@ -86,9 +102,32 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
   }
 
   return (
-    <aside className="w-full h-full py-8 pr-4 overflow-y-auto custom-scrollbar transition-all duration-300 relative group">
+    <aside 
+      ref={sidebarRef}
+      className="w-full h-full py-8 pr-4 overflow-y-auto custom-scrollbar transition-all duration-300 relative group"
+    >
       <div className="flex items-center justify-between mb-8 px-2">
-        <span className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-[0.2em]">Navigation</span>
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-[0.2em]">Navigation</span>
+          <div className="flex items-center gap-2 mt-1">
+            <button 
+              onClick={handleExpandAll}
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/[0.03] border border-white/5 text-[9px] text-muted-foreground hover:text-white hover:bg-white/[0.08] transition-all"
+              title="Expand All Sections"
+            >
+              <Maximize2 size={10} />
+              EXPAND
+            </button>
+            <button 
+              onClick={handleCollapseAll}
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/[0.03] border border-white/5 text-[9px] text-muted-foreground hover:text-white hover:bg-white/[0.08] transition-all"
+              title="Collapse All Sections"
+            >
+              <Minimize2 size={10} />
+              COLLAPSE
+            </button>
+          </div>
+        </div>
         <button 
           onClick={onToggle}
           className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-muted text-muted-foreground transition-all"
@@ -144,6 +183,7 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
                                 ? "bg-white/[0.03] text-foreground font-semibold border border-white/5" 
                                 : "text-muted-foreground hover:bg-white/[0.02] hover:text-foreground"
                             )}
+                            {...(isActive && pathname === item.href ? { ref: activeItemRef } : {})}
                           >
                             {isActive && pathname === item.href && (
                               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full shadow-[0_0_8px_var(--color-primary)]" />
@@ -198,16 +238,17 @@ export const DocSidebar = ({ isCollapsed, onToggle }: { isCollapsed: boolean; on
                             {item.items?.map((subItem: any, subIdx: number) => {
                               const isSubActive = pathname === subItem.href;
                               return (
-                                <Link
-                                  key={subIdx}
-                                  href={subItem.href}
-                                  className={cn(
-                                    "group/sub flex items-center justify-between px-3 py-1.5 rounded-md text-[11px] transition-all relative",
-                                    isSubActive
-                                      ? "text-primary font-bold bg-primary/5"
-                                      : "text-slate-500 hover:text-slate-200 hover:bg-white/5"
-                                  )}
-                                >
+                                  <Link
+                                    key={subIdx}
+                                    href={subItem.href}
+                                    className={cn(
+                                      "group/sub flex items-center justify-between px-3 py-1.5 rounded-md text-[11px] transition-all relative",
+                                      isSubActive
+                                        ? "text-primary font-bold bg-primary/5"
+                                        : "text-slate-500 hover:text-slate-200 hover:bg-white/5"
+                                    )}
+                                    {...(isSubActive ? { ref: activeItemRef } : {})}
+                                  >
                                   <div className="flex items-center gap-2">
                                     <div className={cn(
                                       "w-1 h-[1px] bg-white/10 transition-all",

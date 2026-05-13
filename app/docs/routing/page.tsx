@@ -12,9 +12,11 @@ export default function RoutingOverviewPage() {
       <SectionHeading level={1}>XyPriss Router V2</SectionHeading>
 
       <p>
-        The XyPriss routing engine is built on a high-performance <strong>radix-tree</strong> 
-        lookup algorithm backed by the XHSC core. It is designed for sub-millisecond 
-        route resolution, native security, and developer clarity.
+        The <strong>XyPriss routing engine</strong> is built on a
+        high-performance <strong>radix-tree </strong>
+        lookup algorithm backed by the XHSC core. It is designed for
+        sub-millisecond route resolution, native security, and developer
+        clarity.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-8">
@@ -27,14 +29,18 @@ export default function RoutingOverviewPage() {
         </div>
         <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
           <ShieldCheck className="w-5 h-5 text-blue-400 mb-2" />
-          <h5 className="text-white font-semibold mb-1 text-sm">Declarative Guards</h5>
+          <h5 className="text-white font-semibold mb-1 text-sm">
+            Declarative Guards
+          </h5>
           <p className="text-[10px] text-slate-400 m-0">
             Typed, inheritable security chains applied directly to definitions.
           </p>
         </div>
         <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
           <Activity className="w-5 h-5 text-green-400 mb-2" />
-          <h5 className="text-white font-semibold mb-1 text-sm">Native Throttling</h5>
+          <h5 className="text-white font-semibold mb-1 text-sm">
+            Native Throttling
+          </h5>
           <p className="text-[10px] text-slate-400 m-0">
             Per-route rate limiting and caching enforced at the native level.
           </p>
@@ -59,42 +65,44 @@ app.start();`}
 
       <SectionHeading level={2}>HTTP Server Modularity</SectionHeading>
       <p>
-        The XHSC HTTP server core is modularized into specialized components to 
+        The XHSC HTTP server core is modularized into specialized components to
         handle high-concurrency traffic with minimal overhead.
       </p>
 
       <Steps>
         <Step title="RouteManager">
           <p>
-            Handles high-speed registration, parameter extraction, and radix-based 
-            route matching.
+            Handles high-speed registration, parameter extraction, and
+            radix-based route matching.
           </p>
         </Step>
         <Step title="BodyParser">
           <p>
-            A high-efficiency utility for parsing JSON and URL-encoded request bodies.
+            A high-efficiency utility for parsing JSON and URL-encoded request
+            bodies.
           </p>
         </Step>
         <Step title="RequestForwarder">
           <p>
-            Manages server-side request forwarding (<code>req.forward</code>) for 
-            seamless internal communication.
+            Manages server-side request forwarding (<code>req.forward</code>)
+            for seamless internal communication.
           </p>
         </Step>
         <Step title="HttpErrorHandler">
           <p>
-            Centralizes 404 management and internal server error handling across 
+            Centralizes 404 management and internal server error handling across
             the framework.
           </p>
         </Step>
       </Steps>
 
       <SectionHeading level={2}>Core Concepts</SectionHeading>
-      
+
       <SectionHeading level={3}>Declarative Route Options</SectionHeading>
       <p>
-        Unlike traditional middleware stacks, Router V2 lets you declare security, 
-        throttling, and caching <strong>directly on the route definition</strong>.
+        Unlike traditional middleware stacks, Router V2 lets you declare
+        security, throttling, and caching{" "}
+        <strong>directly on the route definition</strong>.
       </p>
       <CodeBlock
         language="typescript"
@@ -113,16 +121,16 @@ app.start();`}
 
       <SectionHeading level={3}>Guard Inheritance Chain</SectionHeading>
       <p>
-        Guards cascade from the broadest to most specific scope, ensuring a robust 
-        security hierarchy:
+        Guards cascade from the broadest to most specific scope, ensuring a
+        robust security hierarchy:
       </p>
       <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl font-mono text-[11px] text-center">
         Router Guards → Group Guards → Route Guards
       </div>
 
       <Callout type="info" title="XyGuard API">
-        XyGuard allows you to define the logic for these declarative guards globally, 
-        keeping your route definitions clean and expressive.
+        XyGuard allows you to define the logic for these declarative guards
+        globally, keeping your route definitions clean and expressive.
       </Callout>
 
       <DocsFooter
