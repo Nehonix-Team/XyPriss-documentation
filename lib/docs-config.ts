@@ -156,6 +156,22 @@ export const docsConfig: DocT[] = [
       { title: "Permissions", href: "/docs/plugins/permissions" },
       { title: "Built-in Plugins", href: "/docs/plugins/built-in" },
       { 
+        title: "Official Plugins", 
+        href: "/docs/plugins/official",
+        items: [
+          { title: "XyPriss Swagger", href: "/docs/plugins/official/swagger" },
+          { title: "Xyphra Logger", href: "/docs/plugins/official/xyphra" },
+          { 
+            title: "XyNginC (Nginx)", 
+            href: "/docs/plugins/official/xynginc",
+            items: [
+              { title: "Installation", href: "/docs/plugins/official/xynginc/installation" },
+              { title: "Build from Source", href: "/docs/plugins/official/xynginc/build" },
+            ]
+          },
+        ]
+      },
+      { 
         title: "API Reference", 
         href: "/docs/plugins/api-reference",
         items: [

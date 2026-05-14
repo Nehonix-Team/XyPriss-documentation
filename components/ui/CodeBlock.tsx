@@ -24,7 +24,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(code);
+    const textToCopy = code.split("\\n").join("\n");
+    await navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -90,7 +91,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
             },
           }}
         >
-          {code.trim()}
+          {code.split("\\n").join("\n").trim()}
         </SyntaxHighlighter>
         {!title && (
           <button

@@ -1,15 +1,10 @@
-export  interface DocT {
+export interface DocItem {
     title: string;
-    items: ({
-        title: string;
-        href: string;
-        items: {
-            title: string;
-            href: string;
-        }[];
-    } | {
-        title: string;
-        href: string;
-        items?: undefined;
-    })[];
+    href: string;
+    items?: DocItem[];
+}
+
+export interface DocT {
+    title: string;
+    items: DocItem[];
 }
