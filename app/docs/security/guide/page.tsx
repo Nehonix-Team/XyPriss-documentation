@@ -177,6 +177,25 @@ const server = createServer({
         />
       </Callout>
 
+      <SectionHeading level={2}>Data Privacy & Disclosure</SectionHeading>
+      <p>
+        At Nehonix, we prioritize the privacy and security of your data. We are 
+        committed to total transparency regarding data handling:
+      </p>
+      <Callout type="success" title="Zero External Data Collection">
+        <p className="m-0 text-sm">
+          XyPriss is designed as a self-contained framework. Nehonix <strong>does not collect, 
+          store, or transmit</strong> any application data, user information, or server metrics 
+          to external servers. All logic executed by the framework stays within your local 
+          infrastructure, ensuring absolute data sovereignty.
+        </p>
+      </Callout>
+      <p>
+        The only external requests made by official components (such as XyNginC or XFPM) 
+        are strictly for fetching necessary updates, security templates, or package metadata 
+        from official GitHub repositories.
+      </p>
+
       <DocsFooter
         title="Environment Shield"
         description="Secure your server by preventing unauthorized access to sensitive system files and directories."

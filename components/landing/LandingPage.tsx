@@ -441,24 +441,36 @@ export default function Landing() {
               </h5>
               <ul className="space-y-5 text-sm text-slate-500 font-medium">
                 <li>
-                  <a href="#" className="hover:text-xy-blue transition-colors">
+                  <Link
+                    href="/docs/quick-start"
+                    className="hover:text-xy-blue transition-colors"
+                  >
                     Setup Guide
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-xy-blue transition-colors">
+                  <Link
+                    href="/docs/xfpm"
+                    className="hover:text-xy-blue transition-colors"
+                  >
                     XFPM Protocol
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-xy-blue transition-colors">
+                  <Link
+                    href="/docs/security/xems"
+                    className="hover:text-xy-blue transition-colors"
+                  >
                     XEMS Specs
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-xy-blue transition-colors">
+                  <Link
+                    href="/docs/plugins/api-reference"
+                    className="hover:text-xy-blue transition-colors"
+                  >
                     API Reference
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -476,14 +488,20 @@ export default function Landing() {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-xy-blue transition-colors">
+                  <Link
+                    href="/docs/security/guide#data-privacy--disclosure"
+                    className="hover:text-xy-blue transition-colors"
+                  >
                     Disclosures
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-xy-blue transition-colors">
+                  <Link
+                    href="/docs/security/overview"
+                    className="hover:text-xy-blue transition-colors"
+                  >
                     Audits
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
