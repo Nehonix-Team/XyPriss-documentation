@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, Suspense, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { DocsHeader } from "@/components/ui/DocsHeader";
 import { DocSidebar } from "@/components/ui/DocSidebar";
 import { OnThisPage } from "@/components/ui/OnThisPage";
 import { SearchHighlighter } from "@/components/ui/SearchHighlighter";
 import { cn } from "@/lib/utils";
+import { docsConfig } from "@/lib/docs-config";
 
 import { useFlow } from "fractostate";
 import { NavigationFlow } from "@/store/navigation";
@@ -15,10 +17,31 @@ export default function DocsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [
     { isLeftSidebarCollapsed, isRightSidebarCollapsed },
     { actions }
   ] = useFlow(NavigationFlow);
+
+  useEffect(() => {
+    const findTitleInConfig = (items: any[], path: string): string | null => {
+      for (const item of items) {
+        if (item.href === path) return item.title;
+        if (item.items) {
+          const found = findTitleInConfig(item.items, path);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const title = findTitleInConfig(docsConfig, pathname);
+    if (title) {
+      document.title = `${title} | XyPriss`;
+    } else {
+      document.title = "Documentation | XyPriss";
+    }
+  }, [pathname]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
