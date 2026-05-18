@@ -44,6 +44,14 @@ export default function EnvironmentPage() {
         security warnings.
       </Callout>
 
+      <Callout type="info" title="Configurable Shield">
+        Starting from version 9.10.18, you can dynamically configure the <strong>Environment Security Shield (XESS)</strong> to whitelist custom variables. See the{" "}
+        <Link href="/docs/security/environment-shield#dynamic-configuration" className="text-primary font-bold underline">
+          XESS Configuration Guide
+        </Link>{" "}
+        for details.
+      </Callout>
+
       <SectionHeading level={2} id="security-mechanisms">
         Security Mechanisms
       </SectionHeading>
@@ -71,8 +79,8 @@ export default function EnvironmentPage() {
           </div>
           <p className="text-sm text-muted-foreground">
             Standard <code className="text-xs">process.env</code> access is
-            intercepted. Only whitelisted system-essential keys (PATH, HOME) and
-            internal prefixes (XY_, ENC_) are allowed.
+            intercepted. Only whitelisted system-essential keys (PATH, PORT, USER, HOME, LANG) and
+            internal prefixes (XYPRISS_, ENC_) are allowed by default.
           </p>
         </div>
         <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
