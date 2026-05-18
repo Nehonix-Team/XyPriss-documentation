@@ -122,10 +122,10 @@ export default function EnvironmentShieldPage() {
       <div className="my-6">
         <CodeBlock 
           language="typescript" 
-          code={`// ❌ Discouraged
+          code={`// Discouraged
 const apiKey = process.env.MY_API_KEY;
 
-// ✅ Recommended
+// Recommended
 const apiKey = __sys__.__env__.get("MY_API_KEY");`}
         />
       </div>
@@ -199,12 +199,12 @@ const apiKey = __sys__.__env__.get("MY_API_KEY");`}
         </div>
       </div>
 
-      <SectionHeading level={2} id="dynamic-configuration">Dynamic Configuration</SectionHeading>
+      <SectionHeading level={2} id="declarative-configuration">Declarative Configuration (XESS)</SectionHeading>
       <p>
-        Starting from version 9.10.18, you can dynamically configure the <strong>XyPriss Environment Security Shield (XESS)</strong> under the <code>security</code> property of <code>ServerOptions</code>. 
+        To guarantee impenetrable security from the very first millisecond of application initialization, the <strong>XyPriss Environment Security Shield (XESS)</strong> is configured strictly via the <code>$env</code> block in your <code className="text-primary">xypriss.config.jsonc</code> file. 
       </p>
       <p>
-        This enables you to whitelist custom environment variables that third-party, legacy libraries must access directly from <code>process.env</code>.
+        This declarative approach ensures that the shield is fully locked <em>before</em> any ES Module hoisting or routing logic is evaluated by the JavaScript engine.
       </p>
 
       <Callout type="warning" title="Active Protection Enforced">
@@ -213,20 +213,16 @@ const apiKey = __sys__.__env__.get("MY_API_KEY");`}
 
       <SectionHeading level={3} id="extending-whitelist">Extending the Default Whitelist</SectionHeading>
       <p>
-        By default, any key specified in the <code>whitelist</code> option will be <em>appended</em> to the built-in system whitelist:
+        By default, any key specified in the <code>whitelist</code> array will be <em>appended</em> to the built-in system whitelist. Add the <code>$env</code> block to your <code>xypriss.config.jsonc</code>:
       </p>
       <div className="my-6">
         <CodeBlock 
-          language="typescript" 
-          code={`import { createServer } from "xypriss";
-
-const app = createServer({
-  security: {
-    xess: {
-      whitelist: ["MY_CUSTOM_SECRET", "ANOTHER_LEGACY_VAR"]
-    }
+          language="jsonc" 
+          code={`{
+  "$env": {
+    "whitelist": ["MY_CUSTOM_SECRET", "ANOTHER_LEGACY_VAR"]
   }
-});`}
+}`}
         />
       </div>
       <p className="text-sm text-muted-foreground">
@@ -239,15 +235,13 @@ const app = createServer({
       </p>
       <div className="my-6">
         <CodeBlock 
-          language="typescript" 
-          code={`const app = createServer({
-  security: {
-    xess: {
-      whitelist: ["PORT", "MY_CUSTOM_SECRET"],
-      replaceDefaultWhitelist: true
-    }
+          language="jsonc" 
+          code={`{
+  "$env": {
+    "whitelist": ["PORT", "MY_CUSTOM_SECRET"],
+    "replaceDefaultWhitelist": true
   }
-});`}
+}`}
         />
       </div>
 
@@ -264,19 +258,19 @@ const app = createServer({
           </thead>
           <tbody className="divide-y divide-white/5">
             <tr>
-              <td className="px-4 py-3 font-mono text-primary"><code>xess</code> (or <code>envShield</code>)</td>
-              <td className="px-4 py-3 font-mono text-xs text-muted-foreground">XessConfig</td>
+              <td className="px-4 py-3 font-mono text-primary"><code>$env</code></td>
+              <td className="px-4 py-3 font-mono text-xs text-muted-foreground">Object</td>
               <td className="px-4 py-3 font-mono text-xs text-muted-foreground">undefined</td>
-              <td className="px-4 py-3 text-muted-foreground">Security shield configuration block.</td>
+              <td className="px-4 py-3 text-muted-foreground">Security shield configuration block at the root of <code>xypriss.config.jsonc</code>.</td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-mono text-primary"><code>xess.whitelist</code></td>
+              <td className="px-4 py-3 font-mono text-primary"><code>$env.whitelist</code></td>
               <td className="px-4 py-3 font-mono text-xs text-muted-foreground">string[]</td>
               <td className="px-4 py-3 font-mono text-xs text-muted-foreground">[]</td>
               <td className="px-4 py-3 text-muted-foreground">List of custom environment variable keys to whitelist.</td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-mono text-primary"><code>xess.replaceDefaultWhitelist</code></td>
+              <td className="px-4 py-3 font-mono text-primary"><code>$env.replaceDefaultWhitelist</code></td>
               <td className="px-4 py-3 font-mono text-xs text-muted-foreground">boolean</td>
               <td className="px-4 py-3 font-mono text-xs text-muted-foreground">false</td>
               <td className="px-4 py-3 text-muted-foreground">If <code>true</code>, completely discards the default system whitelist in favor of <code>whitelist</code>.</td>

@@ -45,8 +45,8 @@ export default function EnvironmentPage() {
       </Callout>
 
       <Callout type="info" title="Configurable Shield">
-        Starting from version 9.10.18, you can dynamically configure the <strong>Environment Security Shield (XESS)</strong> to whitelist custom variables. See the{" "}
-        <Link href="/docs/security/environment-shield#dynamic-configuration" className="text-primary font-bold underline">
+        Starting from version 9.10.21, you can declaratively configure the <strong>Environment Security Shield (XESS)</strong> via your <code className="text-primary">xypriss.config.jsonc</code> to whitelist custom variables. See the{" "}
+        <Link href="/docs/security/environment-shield#declarative-configuration" className="text-primary font-bold underline">
           XESS Configuration Guide
         </Link>{" "}
         for details.
