@@ -122,10 +122,10 @@ export default function EnvironmentShieldPage() {
       <div className="my-6">
         <CodeBlock 
           language="typescript" 
-          code={`// Discouraged
+          code={`// ❌ Discouraged
 const apiKey = process.env.MY_API_KEY;
 
-// Recommended
+// ✅ Recommended
 const apiKey = __sys__.__env__.get("MY_API_KEY");`}
         />
       </div>
