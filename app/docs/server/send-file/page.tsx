@@ -3,6 +3,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
+import { BenchBarChart, BenchLineChart, BenchStatCard } from "@/components/ui/BenchGraphs";
 import {
   Download,
   Zap,
@@ -12,6 +13,8 @@ import {
   Globe,
   Play,
   FileCode2,
+  Gauge,
+  Activity,
 } from "lucide-react";
 
 export default function SendFilePage() {
@@ -222,6 +225,72 @@ export const getReport = (req: XyPrisRequest, res: XyPrisResponse) => {
       <Callout type="warning" title="Always Use Absolute Paths">
         Provide an <strong>absolute path</strong> to <code>res.sendFile</code>. Use <code>__sys__.path.resolve</code> or <code>__sys__.path.join</code> to ensure platform-independent path construction and avoid security issues.
       </Callout>
+
+      <SectionHeading level={2} id="benchmarks">
+        Benchmarks: Mixed Workload (Auth + 500 KB File)
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        This benchmark validates <code>res.sendFile()</code> on a realistic
+        production workload: authentication middleware (2 ms overhead) followed
+        by a <strong>500 KB binary file transfer</strong>. The fixed IPC bridge
+        cost (~15 ms) is fully amortised by the transfer, so XyPriss leads on
+        latency at every load level.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+        <BenchStatCard
+          label="Mixed Avg Latency (50 conn)"
+          value="837.5 ms"
+          sub="Lowest among Express, Fastify, and XyPriss — auth + 500 KB file."
+          icon={Activity}
+          accent="#3b82f6"
+        />
+        <BenchStatCard
+          label="Total Data (10s window)"
+          value="~328 MB"
+          sub="Highest data transferred at 10 connections — Zero-Copy advantage."
+          icon={Gauge}
+          accent="#10b981"
+        />
+        <BenchStatCard
+          label="p99 Tail Latency (100 conn)"
+          value="4 182 ms"
+          sub="Lowest tail latency at 100 connections — Fastify reaches 8 411 ms."
+          icon={Zap}
+          accent="#f59e0b"
+        />
+      </div>
+
+      <BenchBarChart
+        title="Average Latency — Auth + 500 KB File"
+        unit="Lower is better (ms)"
+        xLabel="Concurrent connections"
+        data={[
+          { label: "10", express: 233.6, fastify: 189.8, xypriss: 165.2 },
+          { label: "50", express: 976.6, fastify: 1370.0, xypriss: 837.5 },
+          { label: "100", express: 2068.6, fastify: 2191.2, xypriss: 1615.0 },
+        ]}
+      />
+
+      <BenchLineChart
+        title="Tail Latency p99 — Auth + 500 KB File"
+        unit="Lower is better (ms)"
+        data={[
+          { x: 10, express: 797, fastify: 462, xypriss: 351 },
+          { x: 50, express: 1835, fastify: 3113, xypriss: 2167 },
+          { x: 100, express: 5379, fastify: 8411, xypriss: 4182 },
+        ]}
+      />
+
+      <div className="flex items-center gap-2 mt-2 mb-6">
+        <FileCode2 size={12} className="text-primary" />
+        <a
+          href="/docs/performance/benchmarks"
+          className="text-xs text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+        >
+          Full Benchmarks: routing, static delivery, synthesis table and takeaways
+        </a>
+      </div>
 
       <DocsFooter
         title="Structured Responses"

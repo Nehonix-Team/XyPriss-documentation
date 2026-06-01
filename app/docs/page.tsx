@@ -1,8 +1,8 @@
-import { Callout } from "@/components/ui/Callout";
+import React from "react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { stableVersion } from "@/lib/stableVersion";
+import { Callout } from "@/components/ui/Callout";
 import {
   Rocket,
   Shield,
@@ -17,8 +17,17 @@ import {
   AlertCircle,
   Terminal,
   Settings,
+  Activity,
+  Gauge,
+  FileCode2,
+  Link as LinkIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { BenchBarChart, BenchStatCard } from "@/components/ui/BenchGraphs";
+
+const COLORS = {
+  xypriss: "#3b82f6",
+};
 
 export default function IntroductionPage() {
   return (
@@ -38,7 +47,8 @@ export default function IntroductionPage() {
 
       <Callout type="info" title="Stability Note">
         XyPriss has officially left its beta phase. This documentation is
-        up-to-date for the stable <strong>v{stableVersion}</strong> release.
+        up-to-date for the stable <strong>v{/* stableVersion */}1.0</strong>{" "}
+        release.
       </Callout>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
@@ -68,6 +78,60 @@ export default function IntroductionPage() {
             access to prevent sensitive data leakage.
           </p>
         </div>
+      </div>
+
+      <SectionHeading level={2} id="performance-snapshot">
+        Performance Snapshot
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4">
+        Real-world benchmarks show XyPriss leading on static delivery and
+        maintaining stability under extreme load. Below is a quick look at the
+        static file delivery pillar; the full suite includes routing and mixed
+        workloads.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+        <BenchStatCard
+          label="Static Delivery Peak"
+          value="~13 100"
+          sub="req/s with Cluster ×10 — throughput leader against Express & Fastify."
+          icon={Gauge}
+          accent={COLORS.xypriss}
+        />
+        <BenchStatCard
+          label="0% Event Loop Blocked"
+          sub="Node.js is fully bypassed during file delivery."
+          icon={Activity}
+          accent="#10b981"
+        />
+        <BenchStatCard
+          label="Single-Worker Lead"
+          value="×5 - ×8"
+          sub="Throughput advantage over Express/Fastify without cluster scaling."
+          icon={Zap}
+          accent="#f59e0b"
+        />
+      </div>
+
+      <BenchBarChart
+        title="Throughput (req/s) — Static Files"
+        unit="Higher is better"
+        xLabel="Concurrent connections"
+        data={[
+          { label: "100", express: 1649, fastify: 1905, xypriss: 12724 },
+          { label: "500", express: 1703, fastify: 2475, xypriss: 12778 },
+          { label: "1 000", express: 1531, fastify: 1951, xypriss: 13115 },
+        ]}
+      />
+
+      <div className="flex items-center gap-2 mt-2 mb-6">
+        <LinkIcon size={12} className="text-primary" />
+        <Link
+          href="/docs/performance/benchmarks"
+          className="text-xs text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+        >
+          Full Benchmarks: routing, mixed workload, latency, p99 tail latency and error rates
+        </Link>
       </div>
 
       <SectionHeading level={2} id="architecture">

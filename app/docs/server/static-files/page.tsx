@@ -3,6 +3,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
+import { BenchBarChart, BenchStatCard } from "@/components/ui/BenchGraphs";
 import {
   Globe,
   Zap,
@@ -11,10 +12,12 @@ import {
   Cpu,
   Activity,
   Share2,
-  Info,
-  Layers,
   GitBranch,
+  Gauge,
+  FileCode2,
+  Link as LinkIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function StaticFilesPage() {
   return (
@@ -277,42 +280,56 @@ app.start();`}
       </div>
 
       <SectionHeading level={2} id="performance">Performance Benchmarks</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        Benchmarks use <strong>autocannon</strong> testing static file delivery
-        against Express, Fastify, and XyPriss XStatic on identical hardware.
-      </p>
-      <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 my-6">
-        <table className="w-full text-sm text-left">
-          <thead className="bg-white/10 text-xs uppercase font-bold text-muted-foreground">
-            <tr>
-              <th className="px-4 py-3">Metric</th>
-              <th className="px-4 py-3">Traditional Node.js</th>
-              <th className="px-4 py-3 text-primary">XyPriss XStatic</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            <tr className="hover:bg-white/[0.02]">
-              <td className="px-4 py-3 font-medium text-white">Throughput</td>
-              <td className="px-4 py-3 text-xs text-muted-foreground">~5,000 req/s</td>
-              <td className="px-4 py-3 text-xs font-bold text-primary">~45,000+ req/s</td>
-            </tr>
-            <tr className="hover:bg-white/[0.02]">
-              <td className="px-4 py-3 font-medium text-white">Memory Usage</td>
-              <td className="px-4 py-3 text-xs text-muted-foreground">Grows with concurrency</td>
-              <td className="px-4 py-3 text-xs font-bold text-primary">Constant (Zero-Copy)</td>
-            </tr>
-            <tr className="hover:bg-white/[0.02]">
-              <td className="px-4 py-3 font-medium text-white">CPU Overhead</td>
-              <td className="px-4 py-3 text-xs text-muted-foreground">High (GC + Buffer Copy)</td>
-              <td className="px-4 py-3 text-xs font-bold text-primary">Minimal (Kernel Handover)</td>
-            </tr>
-            <tr className="hover:bg-white/[0.02]">
-              <td className="px-4 py-3 font-medium text-white">Node.js Event Loop</td>
-              <td className="px-4 py-3 text-xs text-muted-foreground">Heavily blocked</td>
-              <td className="px-4 py-3 text-xs font-bold text-primary">0% Blocked</td>
-            </tr>
-          </tbody>
-        </table>
+
+      <Callout type="info" title="Real-World Data">
+        All benchmarks use <strong>autocannon</strong> on{" "}
+        <strong>Kali GNU/Linux Rolling</strong> (localhost). XyPriss runs via
+        Bun/XFPM with the XHSC native orchestrator. Baselines (Express, Fastify)
+        run in Node.js single-process mode for fair comparison.
+      </Callout>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+        <BenchStatCard
+          label="Static Delivery Peak"
+          value="~13 100"
+          sub="req/s with Cluster ×10 — throughput leader against Express & Fastify."
+          icon={Gauge}
+          accent="#3b82f6"
+        />
+        <BenchStatCard
+          label="0% Event Loop Blocked"
+          sub="Node.js is fully bypassed during file delivery."
+          icon={Activity}
+          accent="#10b981"
+        />
+        <BenchStatCard
+          label="Single-Worker Lead"
+          value="×5 - ×8"
+          sub="Throughput advantage over Express/Fastify without cluster scaling."
+          icon={Zap}
+          accent="#f59e0b"
+        />
+      </div>
+
+      <BenchBarChart
+        title="Throughput (req/s) — Static Files"
+        unit="Higher is better"
+        xLabel="Concurrent connections"
+        data={[
+          { label: "100", express: 1649, fastify: 1905, xypriss: 12724 },
+          { label: "500", express: 1703, fastify: 2475, xypriss: 12778 },
+          { label: "1 000", express: 1531, fastify: 1951, xypriss: 13115 },
+        ]}
+      />
+
+      <div className="flex items-center gap-2 mt-4">
+        <LinkIcon size={12} className="text-primary" />
+        <Link
+          href="/docs/performance/benchmarks"
+          className="text-xs text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+        >
+          Full benchmarks: routing, mixed workload, latency and error rates
+        </Link>
       </div>
 
       <Callout type="success" title="Cluster Scaling">

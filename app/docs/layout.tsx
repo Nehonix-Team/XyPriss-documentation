@@ -74,7 +74,7 @@ export default function DocsLayout({
         {/* Desktop Sidebar */}
         <aside
           className={cn(
-            "hidden lg:block fixed left-0 top-16 z-30 border-r border-border bg-background transition-all duration-300",
+            "hidden lg:flex flex-col fixed left-0 top-16 z-30 border-r border-border bg-background transition-all duration-300 h-[calc(100vh-4rem)] overflow-y-auto",
             isLeftSidebarCollapsed ? "w-16" : "w-64",
           )}
         >
@@ -98,7 +98,7 @@ export default function DocsLayout({
         {/* On This Page (TOC) */}
         <aside
           className={cn(
-            "hidden xl:block fixed right-0 top-16 z-30 border-l border-border bg-background transition-all duration-300",
+            "hidden xl:flex flex-col fixed right-0 top-16 z-30 border-l border-border bg-background transition-all duration-300 h-[calc(100vh-4rem)] overflow-y-auto",
             isRightSidebarCollapsed ? "w-16" : "w-64",
           )}
         >
