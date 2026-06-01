@@ -2,17 +2,21 @@
 
 import React from "react";
 import Link from "next/link";
-import { Github, Search, Menu, X, Moon, Sun } from "lucide-react";
+import { Github, Search, Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 import { SearchDialog } from "./SearchDialog";
 
-export const DocsHeader = () => {
+export const DocsHeader = ({
+  isMobileSidebarOpen,
+  onToggleMobileSidebar,
+}: {
+  isMobileSidebarOpen: boolean;
+  onToggleMobileSidebar: () => void;
+}) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -26,7 +30,6 @@ export const DocsHeader = () => {
         setIsSearchOpen(true);
       }
       if (e.key === "/" && !isSearchOpen) {
-        // Only if not typing in another input
         if (
           document.activeElement?.tagName !== "INPUT" &&
           document.activeElement?.tagName !== "TEXTAREA"
@@ -53,7 +56,6 @@ export const DocsHeader = () => {
             />
             <span className="hidden font-bold text-2xl tracking-tighter sm:inline-block">
               <span className="text-primary">Xy</span>Priss
-              {/* <span className="text-primary font-medium">Docs</span> */}
             </span>
           </Link>
 
@@ -77,7 +79,15 @@ export const DocsHeader = () => {
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <button
+            className="lg:hidden p-2 hover:bg-white/5 rounded-lg transition-colors"
+            onClick={onToggleMobileSidebar}
+            aria-label="Toggle sidebar"
+          >
+            <Menu size={20} />
+          </button>
+
           <button
             onClick={() => setIsSearchOpen(true)}
             className="relative hidden md:flex items-center group"
@@ -120,58 +130,8 @@ export const DocsHeader = () => {
           >
             <Github size={20} />
           </Link>
-
-          <button
-            className="lg:hidden p-2 hover:bg-white/5 rounded-lg transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-white/5 bg-black"
-          >
-            <nav className="flex flex-col p-4 gap-4">
-              <Link href="/docs" className="text-lg font-medium">
-                Documentation
-              </Link>
-              <Link href="/docs/api-reference" className="text-lg font-medium">
-                API Reference
-              </Link>
-              <Link
-                href="https://github.com/Nehonix-Team/XyPriss"
-                target="_blank"
-                className="text-lg font-medium"
-              >
-                GitHub
-              </Link>
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setIsSearchOpen(true);
-                }}
-                className="relative mt-2 w-full"
-              >
-                <Search
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                  size={18}
-                />
-                <div className="h-12 w-full rounded-xl bg-white/5 border border-white/10 pl-11 pr-4 text-base text-muted-foreground flex items-center">
-                  Search documentation...
-                </div>
-              </button>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <SearchDialog
         isOpen={isSearchOpen}

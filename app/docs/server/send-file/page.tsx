@@ -3,7 +3,16 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Download, Zap, ShieldCheck, Database, Layers, Globe } from "lucide-react";
+import {
+  Download,
+  Zap,
+  ShieldCheck,
+  Database,
+  Layers,
+  Globe,
+  Play,
+  FileCode2,
+} from "lucide-react";
 
 export default function SendFilePage() {
   return (
@@ -13,115 +22,213 @@ export default function SendFilePage() {
           <Globe size={14} />
           HTTP Server
         </div>
-        <SectionHeading level={1}>Native File Streaming (sendFile)</SectionHeading>
+        <SectionHeading level={1}>
+          Native Binary Streaming (sendFile)
+        </SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Enterprise-standard utility for serving physical assets using XHSC Zero-Copy architecture.
+          Enterprise-standard utility for serving physical assets using XHSC
+          Zero-Copy architecture with full HTTP Range support.
+        </p>
+        <p>
+          <code>res.sendFile(filePath)</code> leverages the{" "}
+          <strong>XHSC (Hyper-System Core)</strong> native engine to stream
+          binary data directly from the filesystem to the network socket,
+          bypassing the Node.js/V8 heap to ensure minimal memory footprint and
+          maximum throughput.
         </p>
       </div>
 
-      <Callout type="info" title="Zero-Copy Architecture">
-        Unlike conventional frameworks that buffer file content into the V8 heap, XyPriss streams data directly from the filesystem to the network socket, ensuring minimal memory footprint even for multi-gigabyte files.
-      </Callout>
-
-      <div className="space-y-12 my-6">
-        <div>
-          <SectionHeading level={2} id="capabilities">Core Capabilities</SectionHeading>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 group">
-              <ShieldCheck className="text-primary mb-3" size={24} />
-              <h4 className="font-bold text-white mb-2">Native Resolution</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Rigorously validated via <code className="text-primary">__sys__.fs</code>, protecting against directory traversal attacks.
-              </p>
-            </div>
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 group">
-              <Layers className="text-primary mb-3" size={24} />
-              <h4 className="font-bold text-white mb-2">MIME Intelligence</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Automatic header calculation based on internal <code className="text-primary">MIME_MAP</code> for all major asset classes.
-              </p>
-            </div>
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 group">
-              <Zap className="text-primary mb-3" size={24} />
-              <h4 className="font-bold text-white mb-2">Ranged Delivery</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Native support for HTTP <code className="text-primary">Range</code> headers, essential for video seek operations.
-              </p>
-            </div>
-            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 group">
-              <Database className="text-primary mb-3" size={24} />
-              <h4 className="font-bold text-white mb-2">Memory Stability</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Stable process RSS as data flows through a dedicated native IPC bridge.
-              </p>
-            </div>
-          </div>
+      <SectionHeading level={2} id="architecture">
+        Advanced Architecture
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        Unlike conventional frameworks that buffer file content into the
+        JavaScript heap — leading to latency and GC pressure — XyPriss
+        implements a <strong>Zero-Copy Ranged Streaming</strong> architecture:
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <ShieldCheck className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">Native Resolution</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            The path is rigorously validated using <code className="text-primary">__sys__.fs</code>, protecting against directory traversal attacks.
+          </p>
         </div>
-
-        <div>
-          <SectionHeading level={2} id="usage">Implementation Examples</SectionHeading>
-          <div className="space-y-8">
-            <div>
-              <h4 className="text-md font-bold text-white mb-2">Standard Asset Delivery</h4>
-              <CodeBlock 
-                language="typescript"
-                code={`app.get("/reports/:id", (req, res) => {
-    const reportPath = __sys__.path.resolve("./storage/reports/annual.pdf");
-    res.sendFile(reportPath); // Content-Type: application/pdf
-});`}
-              />
-            </div>
-
-            <div>
-              <h4 className="text-md font-bold text-white mb-2">Advanced Download Logic</h4>
-              <CodeBlock 
-                language="typescript"
-                code={`res.sendFile("report.pdf", {
-    root: "./storage/vault",
-    disposition: "attachment",
-    headers: { "X-Custom-Header": "Value" },
-    maxAge: 3600000 // 1 hour cache
-});`}
-              />
-            </div>
-          </div>
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <Layers className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">MIME-Type Intelligence</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            Headers are automatically calculated based on the internal <code className="text-primary">MIME_MAP</code>, ensuring browser-compliant delivery.
+          </p>
         </div>
-
-        <div>
-          <SectionHeading level={2} id="options">Configuration Options</SectionHeading>
-          <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 mt-4">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-white/10 uppercase font-bold text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3">Property</th>
-                  <th className="px-4 py-3">Description</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {[
-                  { p: "root", d: "Base directory for relative path resolution." },
-                  { p: "maxAge", d: "Cache-Control max-age in milliseconds." },
-                  { p: "headers", d: "Custom HTTP headers to serve with the file." },
-                  { p: "disposition", d: "Sets Content-Disposition (inline, attachment)." },
-                  { p: "mimeOverrides", d: "Map of extensions to custom MIME types." },
-                ].map((opt, i) => (
-                  <tr key={i} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="px-4 py-3 font-mono text-primary">{opt.p}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{opt.d}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <Play className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">Ranged Delivery</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            Full support for HTTP Range headers via native <code>lseek(2)</code> and <code>copy_file_range(2)</code>. Essential for video seek and large asset delivery.
+          </p>
+        </div>
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <Database className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">Low Memory Impact</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            Even with multi-gigabyte files, the Node.js process RSS remains stable as data flows through a dedicated native IPC bridge.
+          </p>
         </div>
       </div>
 
-      <DocsFooter 
-        title="Quick Start"
-        description="Ready to build? Get up and running with XyPriss in minutes."
-        buttonText="Get Started"
-        href="/docs/quick-start"
-        iconName="Rocket"
+      <Callout type="info" title="Zero-Copy Guarantee">
+        Data never touches the Node.js heap. The XHSC engine reads from disk and writes to the TCP socket directly, keeping your application memory footprint flat regardless of file size.
+      </Callout>
+
+      <SectionHeading level={2} id="usage">Implementation Examples</SectionHeading>
+      <div className="space-y-8">
+        <div>
+          <h4 className="text-md font-bold text-white mb-2">Standard Asset Delivery</h4>
+          <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            Serve documents or images with automatic MIME-type resolution and caching headers. Conditional requests (ETags/Last-Modified) are handled automatically.
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`import { XyPrisRequest, XyPrisResponse } from "xypriss";
+
+export const getReport = (req: XyPrisRequest, res: XyPrisResponse) => {
+    const storageRoot = __sys__.vars.get("__root__");
+    const reportPath = __sys__.path.join(
+        storageRoot,
+        "storage",
+        "reports",
+        "annual.pdf",
+    );
+
+    // Serve with Content-Type: application/pdf
+    // Handles conditional requests (ETags/Last-Modified) automatically
+    res.sendFile(reportPath);
+};`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-md font-bold text-white mb-2">Media Streaming with Seek Support</h4>
+          <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            Because <code className="text-primary">res.sendFile</code> supports Range requests natively, it is the ideal choice for streaming video content to modern browsers.
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`app.get("/media/video/:id", (req, res) => {
+    const videoPath = __sys__.path.resolve("./assets/media/demo.mp4");
+
+    // Automatically handles byte-range requests
+    // (e.g., Range: bytes=1024-2048)
+    // allowing users to seek without downloading the whole file.
+    res.sendFile(videoPath);
+});`}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-md font-bold text-white mb-2">Advanced Download Logic</h4>
+          <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            Secure download route with custom headers, MIME enforcement, and forced attachment disposition.
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`app.get("/download/report/:id", async (req, res) => {
+    const reportName = \`report-\${req.params.id}.pdf\`;
+
+    await res.sendFile(reportName, {
+        // Base directory for resolution
+        root: __sys__.path.join(__sys__.__root__, "storage/vault"),
+
+        // Force browser to download instead of rendering
+        disposition: "attachment",
+
+        // Custom security headers
+        headers: {
+            "X-Report-Id": req.params.id,
+            "Cache-Control": "private, no-store, must-revalidate"
+        },
+
+        // Ensure the browser treats it as PDF
+        mimeOverrides: {
+            ".pdf": "application/pdf"
+        },
+
+        // Cache for 1 hour unless overridden by headers
+        maxAge: 3600000
+    });
+});`}
+          />
+        </div>
+      </div>
+
+      <SectionHeading level={2} id="options">Configuration Options</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        The <code>sendFile</code> method accepts an optional second argument to
+        fine-tune delivery behaviour:
+      </p>
+      <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 my-6">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-white/10 text-xs uppercase font-bold text-muted-foreground">
+            <tr>
+              <th className="px-4 py-3">Property</th>
+              <th className="px-4 py-3">Type</th>
+              <th className="px-4 py-3">Description</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {[
+              { p: "root", t: "string", d: "Base directory for relative file path resolution." },
+              { p: "maxAge", t: "number", d: "Cache-Control max-age in milliseconds." },
+              { p: "headers", t: "Record<string, string>", d: "Custom HTTP headers to serve with the file." },
+              { p: "disposition", t: "string", d: "Content-Disposition value. Use 'inline', 'attachment', or a custom filename." },
+              { p: "mimeOverrides", t: "Record<string, string>", d: "Map of file extensions to MIME types to override system defaults." },
+            ].map((opt, i) => (
+              <tr key={i} className="hover:bg-white/[0.02] transition-colors">
+                <td className="px-4 py-3 font-mono text-primary text-xs">{opt.p}</td>
+                <td className="px-4 py-3 text-[10px] text-muted-foreground font-mono">{opt.t}</td>
+                <td className="px-4 py-3 text-xs text-muted-foreground">{opt.d}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <SectionHeading level={2} id="security">Security &amp; Reliability</SectionHeading>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <ShieldCheck className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">Path Sanitization</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            <code className="text-primary">res.sendFile</code> automatically normalises paths to prevent <code>../</code> traversal exploits.
+          </p>
+        </div>
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <FileCode2 className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">Error Resilience</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            If the file is inaccessible or corrupted, the framework dispatches a 404 or 500 before headers are flushed, ensuring client-side consistency.
+          </p>
+        </div>
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <Layers className="text-primary mb-3" size={20} />
+          <h4 className="font-bold text-white text-sm mb-2">MIME Coverage</h4>
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            Natively handles 50+ extensions including <code>.webp</code>, <code>.mp4</code>, <code>.zip</code>, <code>.svg</code>, <code>.jsonc</code>.
+          </p>
+        </div>
+      </div>
+
+      <Callout type="warning" title="Always Use Absolute Paths">
+        Provide an <strong>absolute path</strong> to <code>res.sendFile</code>. Use <code>__sys__.path.resolve</code> or <code>__sys__.path.join</code> to ensure platform-independent path construction and avoid security issues.
+      </Callout>
+
+      <DocsFooter
+        title="Structured Responses"
+        description="Standardise every API response with the structured Send utility and IResTemplate contract."
+        buttonText="Explore Send"
+        href="/docs/server/send"
+        iconName="FileCode2"
       />
     </div>
   );

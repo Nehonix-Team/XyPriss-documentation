@@ -183,6 +183,111 @@ const app = createServer({
         </div>
       </div>
 
+      <SectionHeading level={2}>Advanced: Regex Origin Patterns</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        XyPriss supports <strong>regular expressions</strong> in the{" "}
+        <code>origin</code> property, giving you fine-grained control over which
+        origins are allowed. Regex patterns are compiled once at server startup
+        and evaluated against the full origin string (scheme + host + optional
+        port).
+      </p>
+
+      <CodeBlock
+        language="typescript"
+        code={`import { createServer } from "xypriss";
+
+const app = createServer({
+    security: {
+        cors: {
+            origin: [
+                /^https:\\/\\/.*\\.myapp\\.com$/,        // All subdomains of myapp.com
+                /^https:\\/\\/admin\\.myapp\\.com$/,     // Exact admin subdomain (also matches regex above)
+                "https://app.prod.com",                  // Exact match
+            ],
+            credentials: true,
+            methods: ["GET", "POST", "PUT", "DELETE"],
+            allowedHeaders: ["Content-Type", "Authorization"],
+        },
+    },
+});`}
+      />
+
+      <div className="space-y-4 my-6">
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <h4 className="font-bold text-white text-sm mb-2">
+            Regex Matching Examples
+          </h4>
+          <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+            <table className="w-full text-xs text-left">
+              <thead className="bg-white/10 uppercase font-bold text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-2">Pattern</th>
+                  <th className="px-4 py-2">Matches</th>
+                  <th className="px-4 py-2">Doesn&apos;t Match</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="px-4 py-2 font-mono text-primary">/^https:\/\/.*\.myapp\.com$/</td>
+                  <td className="px-4 py-2 text-muted-foreground text-[10px]">
+                    https://app.myapp.com, https://api.myapp.com:8443
+                  </td>
+                  <td className="px-4 py-2 text-muted-foreground text-[10px]">
+                    https://myapp.com (no subdomain), http://evil.myapp.com
+                  </td>
+                </tr>
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="px-4 py-2 font-mono text-primary">/^https:\/\/admin\.myapp\.com$/</td>
+                  <td className="px-4 py-2 text-muted-foreground text-[10px]">
+                    https://admin.myapp.com
+                  </td>
+                  <td className="px-4 py-2 text-muted-foreground text-[10px]">
+                    https://api.myapp.com
+                  </td>
+                </tr>
+                <tr className="hover:bg-white/[0.02]">
+                  <td className="px-4 py-2 font-mono text-primary">localhost:\*</td>
+                  <td className="px-4 py-2 text-muted-foreground text-[10px]">
+                    http://localhost:3000, https://localhost:8080
+                  </td>
+                  <td className="px-4 py-2 text-muted-foreground text-[10px]">
+                    http://example.com:3000
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+          <h4 className="font-bold text-white text-sm mb-2">
+            Mixed Array: Exact, Wildcard, and Regex
+          </h4>
+          <p className="text-[10px] text-muted-foreground mb-3 leading-relaxed">
+            You can freely mix exact strings, wildcard strings, and RegExp
+            objects in the same <code>origin</code> array. XyPriss evaluates
+            each entry in order and accepts the request if any pattern matches.
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`origin: [
+    "https://app.prod.com",                  // Exact match
+    /^https:\\/\\/.*\\.myapp\\.com$/,        // Regex: any subdomain
+    "localhost:*",                            // Wildcard: any localhost port
+    /^https:\\/\\/10\\.0\\.\\d+\\.\\d+/,     // Regex: internal IP range
+]`}
+          />
+        </div>
+      </div>
+
+      <Callout type="warning" title="Regex Security Considerations">
+        Avoid overly permissive regex patterns. A pattern like{" "}
+        <code>/.*/</code> or <code>/^https:\/\/.*$/</code> essentially allows
+        all HTTPS origins, defeating the purpose of CORS. Always anchor your
+        regex (<code>^</code> and <code>$</code>) and include the scheme (
+        <code>https://</code>) to prevent bypasses.
+      </Callout>
+
       <DocsFooter
         title="Rate Limiting"
         description="Prevent abuse and DDoS attacks by limiting requests per IP."
