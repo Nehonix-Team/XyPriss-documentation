@@ -55,7 +55,7 @@ export default function StaticFilesPage() {
         </div>
         <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
           <Cpu className="text-primary mb-3" size={20} />
-          <h4 className="font-bold text-white text-sm mb-1">Event Loop Blocking</H4>
+          <h4 className="font-bold text-white text-sm mb-1">Event Loop Blocking</h4>
           <p className="text-[10px] text-muted-foreground leading-relaxed">
             High-concurrency static requests saturate the event loop, delaying
             business logic execution.

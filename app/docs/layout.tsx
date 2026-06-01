@@ -74,7 +74,7 @@ export default function DocsLayout({
         {/* Desktop Sidebar */}
         <aside
           className={cn(
-            "hidden lg:flex flex-col shrink-0 border-r border-border bg-background sticky top-16 transition-all duration-300",
+            "hidden lg:flex flex-col shrink-0 border-r border-border bg-background sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto transition-all duration-300",
             isLeftSidebarCollapsed ? "w-16" : "w-64",
           )}
         >
