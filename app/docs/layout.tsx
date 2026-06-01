@@ -46,12 +46,12 @@ export default function DocsLayout({
   }, [pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20 overflow-x-hidden">
+    <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
       <DocsHeader
         isMobileSidebarOpen={isMobileSidebarOpen}
         onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
       />
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-1">
         {/* Mobile sidebar overlay */}
         {isMobileSidebarOpen && (
           <div
@@ -74,7 +74,7 @@ export default function DocsLayout({
         {/* Desktop Sidebar */}
         <aside
           className={cn(
-            "hidden lg:flex flex-col shrink-0 border-r border-border bg-background sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto transition-all duration-300",
+            "hidden lg:block fixed left-0 top-16 z-30 border-r border-border bg-background transition-all duration-300",
             isLeftSidebarCollapsed ? "w-16" : "w-64",
           )}
         >
@@ -84,7 +84,7 @@ export default function DocsLayout({
           />
         </aside>
 
-        <main className="flex-1 min-w-0 py-12">
+        <main className="flex-1 min-w-0 py-12 lg:pl-64 lg:pr-64">
           <div className="mx-auto max-w-4xl px-4 lg:px-8">
             <div className="prose max-w-none">
               <Suspense fallback={null}>
@@ -98,7 +98,7 @@ export default function DocsLayout({
         {/* On This Page (TOC) */}
         <aside
           className={cn(
-            "hidden xl:flex flex-col shrink-0 border-l border-border bg-background transition-all duration-300 h-[calc(100vh-4rem)] overflow-y-auto",
+            "hidden xl:block fixed right-0 top-16 z-30 border-l border-border bg-background transition-all duration-300",
             isRightSidebarCollapsed ? "w-16" : "w-64",
           )}
         >

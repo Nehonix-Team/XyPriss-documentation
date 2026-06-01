@@ -63,13 +63,13 @@ export default function StaticFilesPage() {
         </div>
         <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
           <Activity className="text-primary mb-3" size={20} />
-          <h4 className="font-bold text-white text-sm mb-1">Context Switching</H4>
+          <h4 className="font-bold text-white text-sm mb-1">Context Switching</h4>
           <p className="text-[10px] text-muted-foreground leading-relaxed">
             Constant data movement between kernel and user space incurs
             significant CPU overhead.
           </p>
         </div>
-      </div>
+      </div> 
 
       <SectionHeading level={2} id="architecture">
         XHSC Fast Path Architecture
