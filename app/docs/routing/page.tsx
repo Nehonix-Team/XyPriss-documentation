@@ -16,6 +16,8 @@ import {
   Layers,
   Gauge,
   Route as RouteIcon,
+  Info,
+  AlertTriangle,
 } from "lucide-react";
 
 export default function RoutingOverviewPage() {
@@ -127,29 +129,23 @@ app.start();`}
         ]}
       />
 
-      <div className="p-4 rounded-xl border border-blue-500/20 bg-blue-500/[0.04] my-4">
-        <h4 className="font-bold text-blue-400 text-xs mb-1">📊 Context: Fastify leads on raw routing speed</h4>
-        <p className="text-xs text-muted-foreground">
-          Fastify is purpose-built for in-process routing (llhttp parser, compiled schemas),
-          which is why it tops this benchmark. XyPriss pays an IPC bridge cost on
-          trivial payloads because the request crosses Go → Node.js → Go. On real
-          workloads (auth + file transfer), that fixed cost is amortised and XyPriss
-          becomes the latency leader. Use the routing metric as a lower bound; real
-          applications will see a smaller gap thanks to middleware, I/O, and XInS
-          smoothing.
-        </p>
-      </div>
+      <Callout type="info" title="Context: Fastify leads on raw routing speed">
+        Fastify is purpose-built for in-process routing (llhttp parser, compiled
+        schemas), which is why it tops this benchmark. XyPriss pays an IPC
+        bridge cost on trivial payloads because the request crosses Go → Node.js
+        → Go. On real workloads (auth + file transfer), that fixed cost is
+        amortised and XyPriss becomes the latency leader. Use the routing metric
+        as a lower bound; real applications will see a smaller gap thanks to
+        middleware, I/O, and XInS smoothing.
+      </Callout>
 
-      <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/[0.04] my-4">
-        <h4 className="font-bold text-red-400 text-xs mb-1">⚠ Error Rate at 1 000 &amp; 5 000 connections</h4>
-        <p className="text-xs text-muted-foreground">
-          Express drops <strong>61 requests</strong> at 1,000 connections — its
-          event loop saturates. XyPriss and Fastify both achieve{" "}
-          <strong className="text-green-400">zero errors</strong> at 1,000 and
-          5,000 connections, thanks to the XHSC goroutine buffer absorbing spikes
-          before they reach Node.js.
-        </p>
-      </div>
+      <Callout type="warning" title="Error Rate at 1 000 &amp; 5 000 connections">
+        Express drops <strong>61 requests</strong> at 1,000 connections — its
+        event loop saturates. XyPriss and Fastify both achieve{" "}
+        <strong className="text-green-400">zero errors</strong> at 1,000 and
+        5,000 connections, thanks to the XHSC goroutine buffer absorbing spikes
+        before they reach Node.js.
+      </Callout>
 
       <div className="flex items-center gap-2 mb-2">
         <Gauge size={12} className="text-primary" />
