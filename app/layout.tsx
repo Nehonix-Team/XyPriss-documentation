@@ -1,6 +1,7 @@
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 export { metadata } from "./metadata";
+import "./style.scss";
 
 export default function RootLayout({
   children,
@@ -19,9 +20,7 @@ export default function RootLayout({
               name: "Nehonix",
               url: "https://nehonix.com",
               logo: "https://xypriss.nehonix.com/xypriss-logo.png",
-              sameAs: [
-                "https://github.com/Nehonix-Team",
-              ],
+              sameAs: ["https://github.com/Nehonix-Team"],
               contactPoint: {
                 "@type": "ContactPoint",
                 contactType: "technical support",
