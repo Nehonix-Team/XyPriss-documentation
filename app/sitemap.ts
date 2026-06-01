@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     section.items.map((item) => ({
       url: `${baseUrl}${item.href}`,
       lastModified: new Date(),
-      changeFrequency: "hourly" as const,
+      changeFrequency: "daily" as const,
       priority: 0.8,
     }))
   );
@@ -23,3 +23,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...docEntries,
   ];
 }
+ 

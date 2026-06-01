@@ -64,6 +64,7 @@ export const SearchFlow = defineFlow(
     effects: [
       {
         run: async (ops) => {
+          if (typeof window === 'undefined') return;
           if (ops.state.isIndexReady) return;
 
           ops.self.isLoading._set(true);

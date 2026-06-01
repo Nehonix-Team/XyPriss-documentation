@@ -12,12 +12,16 @@ export const docsConfig: DocT[] = [
   {
     title: "Core Concepts",
     items: [
-      { 
-        title: "XHSC Engine", 
+      {
+        title: "XHSC Engine",
         href: "/docs/xhsc-core",
         items: [
-          { title: "Server Architecture", href: "/docs/xhsc-core/architecture" },
-        ]
+          {
+            title: "Server Architecture",
+            href: "/docs/xhsc-core/architecture",
+          },
+          { title: "XInS (Intelligent Scaling)", href: "/docs/xhsc-core/XInS" },
+        ],
       },
       { title: "Global APIs", href: "/docs/global-apis" },
       { title: "XFPM CLI", href: "/docs/xfpm" },
@@ -30,9 +34,14 @@ export const docsConfig: DocT[] = [
       { title: "XJSON API", href: "/docs/features/xjson" },
       { title: "Client IP Detection", href: "/docs/server/get-ip" },
       { title: "File Streaming", href: "/docs/server/send-file" },
+      { title: "Structured Responses (Send)", href: "/docs/server/send" },
       { title: "Static Files (XStatic)", href: "/docs/server/static-files" },
       { title: "File Uploads", href: "/docs/server/file-uploads" },
       { title: "Response Control", href: "/docs/server/response-control" },
+      {
+        title: "NotFound vs Response Control",
+        href: "/docs/server/notfound-vs-responsecontrol",
+      },
     ],
   },
   {
@@ -62,22 +71,28 @@ export const docsConfig: DocT[] = [
     items: [
       { title: "Overview", href: "/docs/system" },
       { title: "Environment", href: "/docs/system/environment" },
-      { 
-        title: "Filesystem", 
+      {
+        title: "Filesystem",
         href: "/docs/system/filesystem",
         items: [
           { title: "Core Operations", href: "/docs/system/filesystem/core" },
           { title: "Helpers & Utils", href: "/docs/system/filesystem/helpers" },
-          { title: "Search & Patterns", href: "/docs/system/filesystem/search" },
-          { title: "Archive & Compression", href: "/docs/system/filesystem/archive" },
+          {
+            title: "Search & Patterns",
+            href: "/docs/system/filesystem/search",
+          },
+          {
+            title: "Archive & Compression",
+            href: "/docs/system/filesystem/archive",
+          },
           { title: "File Watching", href: "/docs/system/filesystem/watch" },
           { title: "Security & Advanced", href: "/docs/system/filesystem/security" },
         ]
       },
       { title: "Path", href: "/docs/system/path" },
       { title: "Operating System", href: "/docs/system/os" },
-      { 
-        title: "Utilities", 
+      {
+        title: "Utilities",
         href: "/docs/system/utils",
         items: [
           { title: "Strings", href: "/docs/system/utils/strings" },
@@ -86,7 +101,7 @@ export const docsConfig: DocT[] = [
           { title: "Data", href: "/docs/system/utils/data" },
           { title: "Logic", href: "/docs/system/utils/logic" },
           { title: "Primitives", href: "/docs/system/utils/primitives" },
-        ]
+        ],
       },
       { title: "Dynamic Variables", href: "/docs/system/vars" },
     ],
@@ -104,7 +119,10 @@ export const docsConfig: DocT[] = [
     items: [
       { title: "Overview", href: "/docs/security/overview" },
       { title: "General Guide", href: "/docs/security/guide" },
-      { title: "Environment Shield", href: "/docs/security/environment-shield" },
+      {
+        title: "Environment Shield",
+        href: "/docs/security/environment-shield",
+      },
       { title: "Access Control", href: "/docs/security/access-control" },
       { title: "Content Security (CSP)", href: "/docs/security/csp" },
       { title: "CORS Policy", href: "/docs/security/cors" },
@@ -113,20 +131,29 @@ export const docsConfig: DocT[] = [
       { title: "Route Security", href: "/docs/security/route-security" },
       { title: "Trust Proxy", href: "/docs/security/trust-proxy" },
       { title: "Honeypot & Tarpit", href: "/docs/security/honeypot" },
-      { title: "Response Manipulation", href: "/docs/security/response-manipulation" },
-      { 
-        title: "Security Module (XSec-M)", 
+      {
+        title: "Response Manipulation",
+        href: "/docs/security/response-manipulation",
+      },
+      {
+        title: "Security Module (XSec-M)",
         href: "/docs/security/xsec-m",
         items: [
           { title: "Core Primitives", href: "/docs/security/xsec-m/core" },
-          { title: "Ed25519 Signatures", href: "/docs/security/xsec-m/ed25519" },
-          { title: "RSA & Byte Utils", href: "/docs/security/xsec-m/rsa-utils" },
+          {
+            title: "Ed25519 Signatures",
+            href: "/docs/security/xsec-m/ed25519",
+          },
+          {
+            title: "RSA & Byte Utils",
+            href: "/docs/security/xsec-m/rsa-utils",
+          },
           { title: "Encryption", href: "/docs/security/xsec-m/encryption" },
           { title: "Utilities", href: "/docs/security/xsec-m/utils" },
-        ]
+        ],
       },
-      { 
-        title: "XEMS", 
+      {
+        title: "XEMS",
         href: "/docs/security/xems",
         items: [
           { title: "Architecture", href: "/docs/security/xems/architecture" },
@@ -134,7 +161,7 @@ export const docsConfig: DocT[] = [
           { title: "Performance", href: "/docs/security/xems/performance" },
           { title: "Usage Guide", href: "/docs/security/xems/usage" },
           { title: "Tutorial", href: "/docs/security/xems/tutorial" },
-        ]
+        ],
       },
     ],
   },
@@ -145,50 +172,76 @@ export const docsConfig: DocT[] = [
       { title: "Workspace System", href: "/docs/plugins/workspace" },
       { title: "System Guide", href: "/docs/plugins/system-guide" },
       { title: "Development Guide", href: "/docs/plugins/development-guide" },
-      { 
-        title: "Tutorials", 
+      {
+        title: "Tutorials",
         href: "/docs/plugins/tutorials",
         items: [
-          { title: "Authoring Plugins", href: "/docs/plugins/tutorials/authoring" },
+          {
+            title: "Authoring Plugins",
+            href: "/docs/plugins/tutorials/authoring",
+          },
           { title: "Using Plugins", href: "/docs/plugins/tutorials/usage" },
-        ]
+        ],
       },
       { title: "Permissions", href: "/docs/plugins/permissions" },
       { title: "Built-in Plugins", href: "/docs/plugins/built-in" },
-      { 
-        title: "Official Plugins", 
+      {
+        title: "Official Plugins",
         href: "/docs/plugins/official",
         items: [
           { title: "XyPriss Swagger", href: "/docs/plugins/official/swagger" },
           { title: "Xyphra Logger", href: "/docs/plugins/official/xyphra" },
-          { 
-            title: "XyNginC (Nginx)", 
+          {
+            title: "XyNginC (Nginx)",
             href: "/docs/plugins/official/xynginc",
             items: [
-              { title: "Installation", href: "/docs/plugins/official/xynginc/installation" },
-              { title: "Build from Source", href: "/docs/plugins/official/xynginc/build" },
-            ]
+              {
+                title: "Installation",
+                href: "/docs/plugins/official/xynginc/installation",
+              },
+              {
+                title: "Build from Source",
+                href: "/docs/plugins/official/xynginc/build",
+              },
+            ],
           },
-        ]
+        ],
       },
-      { 
-        title: "API Reference", 
+      {
+        title: "API Reference",
         href: "/docs/plugins/api-reference",
         items: [
-          { title: "Lifecycle Hooks", href: "/docs/plugins/api-reference/lifecycle" },
+          {
+            title: "Lifecycle Hooks",
+            href: "/docs/plugins/api-reference/lifecycle",
+          },
           { title: "HTTP Hooks", href: "/docs/plugins/api-reference/http" },
-          { title: "Routing & Middleware", href: "/docs/plugins/api-reference/routing" },
-          { title: "Logging & Ops", href: "/docs/plugins/api-reference/logging-ops" },
-          { title: "Security Permissions", href: "/docs/plugins/api-reference/security" },
-          { title: "Unified Hook Registry", href: "/docs/plugins/api-reference/hooks" },
-        ]
+          {
+            title: "Routing & Middleware",
+            href: "/docs/plugins/api-reference/routing",
+          },
+          {
+            title: "Logging & Ops",
+            href: "/docs/plugins/api-reference/logging-ops",
+          },
+          {
+            title: "Security Permissions",
+            href: "/docs/plugins/api-reference/security",
+          },
+          {
+            title: "Unified Hook Registry",
+            href: "/docs/plugins/api-reference/hooks",
+          },
+        ],
       },
     ],
   },
   {
+    title: "Performance",
+    items: [{ title: "Benchmarks", href: "/docs/performance/benchmarks" }],
+  },
+  {
     title: "Community",
-    items: [
-      { title: "Contributing", href: "/docs/contributing" },
-    ],
+    items: [{ title: "Contributing", href: "/docs/contributing" }],
   },
 ];
