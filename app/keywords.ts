@@ -39,7 +39,7 @@ export const keywords = [
   "XyPriss open source",
   "Nehonix",
   "Nehonix XyPriss",
-  "Nehonix framework",
+  "Nehonix framework", 
   "Nehonix documentation",
   "XHSC",
   "XHSC engine",
@@ -89,6 +89,8 @@ export const keywords = [
   "server-side TypeScript framework",
   "TypeScript REST API framework",
   "TypeScript HTTP server framework",
+  "framework",
+  "xypriss framework",
 
   // ─── Technical / Long-Tail English ───────────────────────────────────────
   "Radix Trie routing Node.js",
