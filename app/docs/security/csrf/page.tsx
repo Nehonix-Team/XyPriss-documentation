@@ -23,9 +23,9 @@ export default function CSRFPage() {
         </div>
         <SectionHeading level={1}>CSRF Protection</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Built-in Cross-Site Request Forgery protection using the
-          Double-Submit Cookie pattern, integrated directly into the security
-          middleware pipeline.
+          Built-in Cross-Site Request Forgery protection using the Double-Submit
+          Cookie pattern, integrated directly into the security middleware
+          pipeline.
         </p>
       </div>
 
@@ -34,9 +34,8 @@ export default function CSRFPage() {
         strategy. On the first request, the server generates a cryptographically
         signed CSRF token and sets it as a cookie (
         <code className="text-primary">__Host-csrf-token</code> by default). For
-        every state-mutating request (
-        <code className="text-primary">POST</code>,{" "}
-        <code className="text-primary">PUT</code>,{" "}
+        every state-mutating request (<code className="text-primary">POST</code>
+        , <code className="text-primary">PUT</code>,{" "}
         <code className="text-primary">PATCH</code>,{" "}
         <code className="text-primary">DELETE</code>), the client must include
         the token in one of the following locations:
@@ -79,7 +78,9 @@ export default function CSRFPage() {
         default, as they are considered safe methods.
       </p>
 
-      <SectionHeading level={2} id="configuration">Configuration</SectionHeading>
+      <SectionHeading level={2} id="configuration">
+        Configuration
+      </SectionHeading>
 
       <SectionHeading level={3}>Basic Setup</SectionHeading>
       <CodeBlock
@@ -89,7 +90,7 @@ export default function CSRFPage() {
 const app = createServer({
     security: {
         csrf: {
-            secret: process.env.CSRF_SECRET,
+            secret: __sys__.__env__.get("CSRF_SECRET"),
         }
     }
 });`}
@@ -133,7 +134,8 @@ const app = createServer({
         Configuration Reference
       </SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        CSRF protection is configured under <code className="text-primary">security.csrf</code>.
+        CSRF protection is configured under{" "}
+        <code className="text-primary">security.csrf</code>.
       </p>
       <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 my-6">
         <table className="w-full text-sm text-left">
@@ -147,30 +149,70 @@ const app = createServer({
           </thead>
           <tbody className="divide-y divide-white/5">
             {[
-              { p: "secret", t: "string", d: "Required. Secret key used to sign and verify CSRF tokens.", def: "—" },
-              { p: "enabled", t: "boolean", d: "Toggle CSRF protection.", def: "true" },
-              { p: "cookieName", t: "string", d: 'Name of the CSRF cookie set on the client.', def: '"__Host-csrf-token"' },
-              { p: "cookieOptions.httpOnly", t: "boolean", d: "Prevents client-side JavaScript from accessing the cookie.", def: "true" },
-              { p: "cookieOptions.sameSite", t: '"strict" | "lax" | "none" | boolean', d: "Controls cookie cross-site behavior.", def: '"strict"' },
-              { p: "cookieOptions.secure", t: "boolean", d: "Restricts the cookie to HTTPS. Automatically set based on environment.", def: "true in production" },
+              {
+                p: "secret",
+                t: "string",
+                d: "Required. Secret key used to sign and verify CSRF tokens.",
+                def: "—",
+              },
+              {
+                p: "enabled",
+                t: "boolean",
+                d: "Toggle CSRF protection.",
+                def: "true",
+              },
+              {
+                p: "cookieName",
+                t: "string",
+                d: "Name of the CSRF cookie set on the client.",
+                def: '"__Host-csrf-token"',
+              },
+              {
+                p: "cookieOptions.httpOnly",
+                t: "boolean",
+                d: "Prevents client-side JavaScript from accessing the cookie.",
+                def: "true",
+              },
+              {
+                p: "cookieOptions.sameSite",
+                t: '"strict" | "lax" | "none" | boolean',
+                d: "Controls cookie cross-site behavior.",
+                def: '"strict"',
+              },
+              {
+                p: "cookieOptions.secure",
+                t: "boolean",
+                d: "Restricts the cookie to HTTPS. Automatically set based on environment.",
+                def: "true in production",
+              },
             ].map((opt, i) => (
               <tr key={i} className="hover:bg-white/[0.02] transition-colors">
-                <td className="px-4 py-3 font-mono text-primary text-xs">{opt.p}</td>
-                <td className="px-4 py-3 text-[10px] text-muted-foreground font-mono">{opt.t}</td>
-                <td className="px-4 py-3 text-[10px] text-muted-foreground font-mono">{opt.def}</td>
-                <td className="px-4 py-3 text-xs text-muted-foreground">{opt.d}</td>
+                <td className="px-4 py-3 font-mono text-primary text-xs">
+                  {opt.p}
+                </td>
+                <td className="px-4 py-3 text-[10px] text-muted-foreground font-mono">
+                  {opt.t}
+                </td>
+                <td className="px-4 py-3 text-[10px] text-muted-foreground font-mono">
+                  {opt.def}
+                </td>
+                <td className="px-4 py-3 text-xs text-muted-foreground">
+                  {opt.d}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <SectionHeading level={2} id="server-side">Reading the Token (Server-Side)</SectionHeading>
+      <SectionHeading level={2} id="server-side">
+        Reading the Token (Server-Side)
+      </SectionHeading>
       <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
-        The CSRF token is attached to the request object and can be read directly
-        from <code className="text-primary">req.csrfToken()</code>. Use this to
-        send the token to the client (e.g., in an HTML form or as part of an
-        initial API response).
+        The CSRF token is attached to the request object and can be read
+        directly from <code className="text-primary">req.csrfToken()</code>. Use
+        this to send the token to the client (e.g., in an HTML form or as part
+        of an initial API response).
       </p>
       <CodeBlock
         language="typescript"
@@ -180,7 +222,9 @@ const app = createServer({
 });`}
       />
 
-      <SectionHeading level={2} id="client-side">Client-Side Integration</SectionHeading>
+      <SectionHeading level={2} id="client-side">
+        Client-Side Integration
+      </SectionHeading>
 
       <SectionHeading level={3}>HTML Forms</SectionHeading>
       <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
@@ -223,7 +267,9 @@ const app = createServer({
         </Step>
       </Steps>
 
-      <SectionHeading level={2} id="pipeline">Pipeline Position</SectionHeading>
+      <SectionHeading level={2} id="pipeline">
+        Pipeline Position
+      </SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
         CSRF middleware runs <strong>last</strong> in the security pipeline,
         after body parsing and all other protections. This is intentional, as
