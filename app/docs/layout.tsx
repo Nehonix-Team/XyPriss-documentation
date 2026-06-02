@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense, useEffect } from "react";
+import React, { useState, Suspense, useLayoutEffect } from "react";
 import { usePathname } from "next/navigation";
 import { DocsHeader } from "@/components/ui/DocsHeader";
 import { DocSidebar } from "@/components/ui/DocSidebar";
@@ -25,7 +25,7 @@ export default function DocsLayout({
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const findTitleInConfig = (items: any[], path: string): string | null => {
       for (const item of items) {
         if (item.href === path) return item.title;
