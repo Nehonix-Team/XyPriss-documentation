@@ -126,6 +126,8 @@ export const docsConfig: DocT[] = [
       { title: "Access Control", href: "/docs/security/access-control" },
       { title: "Content Security (CSP)", href: "/docs/security/csp" },
       { title: "CORS Policy", href: "/docs/security/cors" },
+      { title: "CSRF Protection", href: "/docs/security/csrf" },
+      { title: "Malicious URL Scanner", href: "/docs/security/malicious-url-scanner" },
       { title: "Rate Limiting", href: "/docs/security/rate-limiting" },
       { title: "Request Signatures", href: "/docs/security/signatures" },
       { title: "Route Security", href: "/docs/security/route-security" },
