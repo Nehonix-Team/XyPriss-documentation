@@ -9,13 +9,19 @@ import { Steps, Step } from "@/components/ui/Steps";
 import {
   Server,
   Layers,
-  ShieldCheck, 
+  ShieldCheck,
   Zap,
   GitBranch,
   Network,
   Lock,
   BookOpen,
   ChevronRight,
+  FolderTree,
+  FileCode2,
+  Folder,
+  FileJson,
+  FileType,
+  Box,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -25,6 +31,74 @@ const ARCHITECTURE_MODE = {
 } as const;
 
 type Mode = (typeof ARCHITECTURE_MODE)[keyof typeof ARCHITECTURE_MODE];
+
+function TreeNode({
+  name,
+  icon: Icon,
+  children,
+  depth = 0,
+}: {
+  name: string;
+  icon?: React.ElementType;
+  children?: React.ReactNode;
+  depth?: number;
+}) {
+  const hasChildren = Boolean(children);
+
+  return (
+    <div className="select-none">
+      <div
+        className="flex items-center gap-2 py-1 px-2 rounded-lg hover:bg-white/[0.03] transition-colors"
+        style={{ paddingLeft: depth * 16 }}
+      >
+        {hasChildren && <ChevronRight size={12} className="text-primary" />}
+        {icon && !hasChildren && (
+          <span className="text-muted-foreground">
+            <Icon size={14} />
+          </span>
+        )}
+        {!hasChildren && (
+          <span className="w-[10px] inline-block" />
+        )}
+        {hasChildren && (
+          <span className="text-primary">
+            <FolderTree size={14} />
+          </span>
+        )}
+        <span className="text-xs text-slate-200">{name}</span>
+      </div>
+      {hasChildren && <div className="ml-3 border-l border-white/5 pl-2">{children}</div>}
+    </div>
+  );
+}
+
+function FileTree({ data }: { data: any[] }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+      {data.map((node, idx) => (
+        <TreeNode key={idx} name={node.name} icon={node.icon} depth={0}>
+          {node.children?.map((child: any, cIdx: number) => (
+            <TreeNode
+              key={cIdx}
+              name={child.name}
+              icon={child.icon}
+              depth={1}
+            >
+              {child.children?.map((grand: any, gIdx: number) => (
+                <TreeNode
+                  key={gIdx}
+                  name={grand.name}
+                  icon={grand.icon}
+                  depth={2}
+                />
+              ))}
+            </TreeNode>
+          ))}
+        </TreeNode>
+      ))}
+    </div>
+  );
+}
 
 function ArchitectureCard({
   title,
@@ -175,46 +249,79 @@ export default function ArchitecturePage() {
             </div>
           </div>
 
-          <Callout type="info" title="When to use Single Server">
-            Use single-server mode when you are building an MVP, an internal
-            tool, or a micro-service that does not need network-level isolation.
-            It is simpler to debug, easier to deploy, and fully supports all
-            XyPriss features (plugins, XEMS, XInS, XStatic).
-          </Callout>
+            <Callout type="info" title="When to use Single Server">
+              Use single-server mode when you are building an MVP, an internal
+              tool, or a micro-service that does not need network-level isolation.
+              It is simpler to debug, easier to deploy, and fully supports all
+              XyPriss features (plugins, XEMS, XInS, XStatic).
+            </Callout>
 
-          <SectionHeading level={3} id="single-structure">
-            Recommended Project Structure
-          </SectionHeading>
-          <CodeBlock
-            language="text"
-            code={`my-xypriss-app/
-├── package.json
-├── tsconfig.json
-├── xypriss.config.jsonc
-├── src/
-│   ├── server.ts                 # Entry point
-│   ├── configs/
-│   │   └── manifest.ts           # App metadata
-│   ├── routers/
-│   │   ├── index.ts              # Root router
-│   │   ├── api.router.ts         # /api/*
-│   │   ├── auth.router.ts        # /auth/*
-│   │   └── admin.router.ts       # /admin/*
-│   ├── controllers/
-│   │   ├── api/
-│   │   │   └── books.controller.ts
-│   │   ├── auth/
-│   │   │   └── auth.controller.ts
-│   │   └── admin/
-│   │       └── dashboard.controller.ts
-│   ├── middleware/
-│   │   └── logger.ts
-│   ├── database/
-│   │   └── db.ts
-│   └── schema/
-│       └── schema.ts
-└── dist/`}
-          />
+            <SectionHeading level={3} id="single-structure">
+              Recommended Project Structure
+            </SectionHeading>
+            <FileTree
+              data={[
+                {
+                  name: "my-xypriss-app",
+                  icon: Folder,
+                  children: [
+                    { name: "package.json", icon: FileJson },
+                    { name: "tsconfig.json", icon: FileType },
+                    { name: "xypriss.config.jsonc", icon: FileJson },
+                    {
+                      name: "src",
+                      icon: Folder,
+                      children: [
+                        { name: "server.ts", icon: FileCode2 },
+                        {
+                          name: "configs",
+                          icon: Folder,
+                          children: [{ name: "manifest.ts", icon: FileCode2 }],
+                        },
+                        {
+                          name: "routers",
+                          icon: Folder,
+                          children: [
+                            { name: "index.ts", icon: FileCode2 },
+                            { name: "api.router.ts", icon: FileCode2 },
+                            { name: "auth.router.ts", icon: FileCode2 },
+                            { name: "admin.router.ts", icon: FileCode2 },
+                          ],
+                        },
+                        {
+                          name: "controllers",
+                          icon: Folder,
+                          children: [
+                            {
+                              name: "api",
+                              icon: Folder,
+                              children: [{ name: "books.controller.ts", icon: FileCode2 }],
+                            },
+                            {
+                              name: "auth",
+                              icon: Folder,
+                              children: [{ name: "auth.controller.ts", icon: FileCode2 }],
+                            },
+                            {
+                              name: "admin",
+                              icon: Folder,
+                              children: [{ name: "dashboard.controller.ts", icon: FileCode2 }],
+                            },
+                          ],
+                        },
+                        {
+                          name: "middleware",
+                          icon: Folder,
+                          children: [{ name: "logger.ts", icon: FileCode2 }],
+                        },
+                        { name: "database", icon: Folder, children: [{ name: "db.ts", icon: FileCode2 }] },
+                        { name: "schema", icon: Folder, children: [{ name: "schema.ts", icon: FileCode2 }] },
+                      ],
+                    },
+                  ],
+                },
+              ]}
+            />
 
           <SectionHeading level={3} id="single-flow">
             Initialization Flow
@@ -259,33 +366,43 @@ app.use("/", router);`}
             surfaces.
           </p>
 
+          <Callout type="info" title="Example Scope">
+            The diagrams below show a two-server setup for clarity:{" "}
+            <code className="text-primary">main</code> for the public API and{" "}
+            <code className="text-primary">login</code> for authentication. The
+            same pattern can be extended to additional servers (admin, webhooks,
+            internal) as your surface area grows.
+          </Callout>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
             <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
               <h4 className="font-bold text-white text-sm mb-2 flex items-center gap-2">
-                <ShieldCheck size={16} className="text-primary" />{" "}
-                main.server (API Principale)
+                <ShieldCheck size={16} className="text-primary" /> main.server
               </h4>
               <ul className="space-y-2 text-xs text-muted-foreground">
-                <li>Port: dynamique (assigné par le manifest ou config)</li>
+                <li>
+                  Port: dynamic (assigned via config or manifest)
+                </li>
                 <li>
                   Prefix: <code className="text-primary">/api</code>
                 </li>
                 <li>Strategy: strict-match</li>
-                <li>Routes publiques (books, resources, etc.)</li>
+                <li>Routes: public API endpoints</li>
               </ul>
             </div>
             <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
               <h4 className="font-bold text-white text-sm mb-2 flex items-center gap-2">
-                <Lock size={16} className="text-primary" /> login.server (Auth
-                / Sécurité)
+                <Lock size={16} className="text-primary" /> login.server
               </h4>
               <ul className="space-y-2 text-xs text-muted-foreground">
-                <li>Port: défini dans manifest.servers.login.port</li>
+                <li>
+                  Port: <code className="text-primary">manifest.servers.login.port</code>
+                </li>
                 <li>
                   Prefix: <code className="text-primary">/auth</code>
                 </li>
                 <li>Plugins: superdev, Swagger (7289), Xyphra</li>
-                <li>Routes: rate-limit sur GET /, POST /login</li>
+                <li>Routes: rate-limited GET /, POST /login</li>
               </ul>
             </div>
           </div>
@@ -304,35 +421,69 @@ app.use("/", router);`}
           <SectionHeading level={3} id="multi-structure">
             Recommended Project Structure
           </SectionHeading>
-          <CodeBlock
-            language="text"
-            code={`supperdev/
-├── package.json
-├── tsconfig.json
-├── xypriss.config.jsonc
-├── src/
-│   ├── server.ts                     # Entry point (multi-server)
-│   ├── configs/
-│   │   ├── manifest.ts               # App metadata
-│   │   └── xypriss.config.ts         # multiServer config
-│   ├── servers/
-│   │   ├── main.server.ts            # Main API server
-│   │   └── login.server.ts           # Auth server (plugins)
-│   ├── routers/
-│   │   ├── index.ts                  # Root router (aggregation)
-│   │   ├── main.router.ts            # /api/*
-│   │   └── auth.router.ts            # /auth/*
-│   ├── controllers/
-│   │   ├── main/
-│   │   │   └── books.controller.ts
-│   │   └── auth/
-│   │       └── auth.controller.ts
-│   ├── plugins/                      # Shared plugin configs
-│   ├── database/
-│   │   └── db.ts
-│   └── schema/
-│       └── schema.ts
-└── dist/`}
+          <FileTree
+            data={[
+              {
+                name: "supperdev",
+                icon: Folder,
+                children: [
+                  { name: "package.json", icon: FileJson },
+                  { name: "tsconfig.json", icon: FileType },
+                  { name: "xypriss.config.jsonc", icon: FileJson },
+                  {
+                    name: "src",
+                    icon: Folder,
+                    children: [
+                      { name: "server.ts", icon: FileCode2 },
+                      {
+                        name: "configs",
+                        icon: Folder,
+                        children: [
+                          { name: "manifest.ts", icon: FileCode2 },
+                          { name: "xypriss.config.ts", icon: FileCode2 },
+                        ],
+                      },
+                      {
+                        name: "servers",
+                        icon: Folder,
+                        children: [
+                          { name: "main.server.ts", icon: FileCode2 },
+                          { name: "login.server.ts", icon: FileCode2 },
+                        ],
+                      },
+                      {
+                        name: "routers",
+                        icon: Folder,
+                        children: [
+                          { name: "index.ts", icon: FileCode2 },
+                          { name: "main.router.ts", icon: FileCode2 },
+                          { name: "auth.router.ts", icon: FileCode2 },
+                        ],
+                      },
+                      {
+                        name: "controllers",
+                        icon: Folder,
+                        children: [
+                          {
+                            name: "main",
+                            icon: Folder,
+                            children: [{ name: "books.controller.ts", icon: FileCode2 }],
+                          },
+                          {
+                            name: "auth",
+                            icon: Folder,
+                            children: [{ name: "auth.controller.ts", icon: FileCode2 }],
+                          },
+                        ],
+                      },
+                      { name: "plugins", icon: Folder, children: [] },
+                      { name: "database", icon: Folder, children: [{ name: "db.ts", icon: FileCode2 }] },
+                      { name: "schema", icon: Folder, children: [{ name: "schema.ts", icon: FileCode2 }] },
+                    ],
+                  },
+                ],
+              },
+            ]}
           />
 
           <SectionHeading level={3} id="multi-flow">
