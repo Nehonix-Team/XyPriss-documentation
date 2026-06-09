@@ -10,6 +10,12 @@ export const docsConfig: DocT[] = [
     ],
   },
   {
+    title: "Architecture",
+    items: [
+      { title: "Recommended Architecture", href: "/docs/architecture" },
+    ],
+  },
+  {
     title: "Core Concepts",
     items: [
       {
