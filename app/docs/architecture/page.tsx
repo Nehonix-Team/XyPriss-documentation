@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
@@ -7,7 +9,7 @@ import { Steps, Step } from "@/components/ui/Steps";
 import {
   Server,
   Layers,
-  ShieldCheck,
+  ShieldCheck, 
   Zap,
   GitBranch,
   Network,
