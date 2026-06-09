@@ -52,9 +52,9 @@ function TreeNode({
         style={{ paddingLeft: depth * 16 }}
       >
         {hasChildren && <ChevronRight size={12} className="text-primary" />}
-        {icon && !hasChildren && (
+        {Icon && !hasChildren && (
           <span className="text-muted-foreground">
-            <Icon size={14} />
+            {React.createElement(Icon, { size: 14 })}
           </span>
         )}
         {!hasChildren && (
