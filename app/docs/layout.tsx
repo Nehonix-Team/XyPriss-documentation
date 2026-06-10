@@ -6,6 +6,7 @@ import { DocsHeader } from "@/components/ui/DocsHeader";
 import { DocSidebar } from "@/components/ui/DocSidebar";
 import { OnThisPage } from "@/components/ui/OnThisPage";
 import { SearchHighlighter } from "@/components/ui/SearchHighlighter";
+import { SiteMeta } from "@/components/ui/SiteMeta";
 import { cn } from "@/lib/utils";
 import { docsConfig } from "@/lib/docs-config";
 
@@ -25,32 +26,13 @@ export default function DocsLayout({
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  useLayoutEffect(() => {
-    const findTitleInConfig = (items: any[], path: string): string | null => {
-      for (const item of items) {
-        if (item.href === path) return item.title;
-        if (item.items) {
-          const found = findTitleInConfig(item.items, path);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
-
-    const title = findTitleInConfig(docsConfig, pathname);
-    if (title) {
-      document.title = `${title} | XyPriss`;
-    } else {
-      document.title = "Documentation | XyPriss";
-    }
-  }, [pathname]);
-
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
       <DocsHeader
         isMobileSidebarOpen={isMobileSidebarOpen}
         onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
       />
+      <SiteMeta />
       <div className="flex flex-1">
         {/* Mobile sidebar overlay */}
         {isMobileSidebarOpen && (
