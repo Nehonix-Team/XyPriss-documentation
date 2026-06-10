@@ -1,6 +1,7 @@
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-export { metadata } from "./metadata";
+import { generateMetadata } from "./metadata";
+export { generateMetadata as metadata };
 import "./style.scss";
 
 export default function RootLayout({
