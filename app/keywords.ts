@@ -27,6 +27,11 @@ export const keywords = [
   "XyPriss",
   "XyPriss framework",
   "XyPriss documentation",
+  "Cypress",
+  "Cypress",
+  "xypriss",
+  "xypriss bench",
+  "nehonix",
   "XyPriss docs",
   "XyPriss tutorial",
   "XyPriss getting started",
@@ -94,6 +99,10 @@ export const keywords = [
 
   // ─── Technical / Long-Tail English ───────────────────────────────────────
   "Radix Trie routing Node.js",
+  "xypriss vs express",
+  "XyPriss vs Express",
+  "c'est quoi xypriss",
+  "what is xypriss",
   "radix router TypeScript",
   "zero-trust security framework Node.js",
   "Ed25519 plugin signing Node.js",

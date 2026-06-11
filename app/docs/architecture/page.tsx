@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
@@ -57,9 +57,9 @@ function TreeNode({
             {React.createElement(Icon, { size: 14 })}
           </span>
         )}
-        {!hasChildren && (
-          <span className="w-[10px] inline-block" />
-        )}
+          {!hasChildren && (
+            <span className="w-[10px] inline-block" />
+          )}
         {hasChildren && (
           <span className="text-primary">
             <FolderTree size={14} />
