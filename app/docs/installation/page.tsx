@@ -122,27 +122,17 @@ export default function InstallationPage() {
         Installing XyPriss Core
       </SectionHeading>
       <p>
-        After configuring the CLI environment, you can add the XyPriss core
-        engine to any project directory:
+        After configuring the CLI environment, the easiest way to start a new project is to use the initialization command. This will set up the XyPriss core engine and the optional security shield automatically.
       </p>
 
-      <CodeBlock
-        language="bash"
-        code={`
-          
-          xfpm install xypriss # This will install the XyPriss core engine in your current project
-          `}
-      />
-
-      <Callout type="info" title="XyPriss Security Shield">
-        For projects requiring advanced protection, install the optional
-        security shield:
-        <CodeBlock
-          language="bash"
-          className="mt-4"
-          code="xfpm install xypriss-security"
-        />
-      </Callout>
+      <div className="mt-4 mb-8">
+        <Link 
+          href="/docs/quick-start" 
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium text-sm border border-primary/20"
+        >
+          Go to Quick Start Guide <ChevronRight size={16} />
+        </Link>
+      </div>
 
       <SectionHeading level={2} id="verification">
         Verification
