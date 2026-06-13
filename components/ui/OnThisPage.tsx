@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { List, PanelRightClose, PanelRightOpen } from "lucide-react";

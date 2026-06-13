@@ -1,3 +1,5 @@
+"use client";
+
 import { defineFlow } from "fractostate";
 
 export interface NavigationState {

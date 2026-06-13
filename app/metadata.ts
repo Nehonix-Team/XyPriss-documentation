@@ -32,7 +32,8 @@ export function generateMetadata(): Metadata {
     twitter: {
       card: "summary_large_image",
       title: "XyPriss - Enterprise-Grade Web Framework",
-      description: "Hybrid Node.js Web Framework powered by XHSC Native Engine.",
+      description:
+        "Hybrid Node.js Web Framework powered by XHSC Native Engine.",
       images: ["https://dll.nehonix.com/assets/XyPriss/xypriss-og.png"],
     },
     robots: {
