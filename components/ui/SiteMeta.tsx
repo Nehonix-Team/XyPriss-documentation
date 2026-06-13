@@ -1,37 +1,34 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useFlow } from "fractostate";
+import { getFlow, useFlow } from "fractostate";
 import { MetaFlow } from "@/store/meta";
-import { docsConfig } from "@/lib/docs-config";
 
 export function SiteMeta() {
   const pathname = usePathname();
-  const [, { actions }] = useFlow(MetaFlow);
+
+  const [, lM] = getFlow(MetaFlow);
+  const newTitle = lM.ops.self.__actions__.getDTitle(pathname) as unknown as
+    | string
+    | null;
+  const finalTitle = newTitle || "Documentation | XyPriss";
 
   useEffect(() => {
-    const findTitleInConfig = (items: any[], path: string): string | null => {
-      for (const item of items) {
-        if (item.href === path) return item.title;
-        if (item.items) {
-          const found = findTitleInConfig(item.items, path);
-          if (found) return found;
-        }
+    lM.ops.self.title._set(finalTitle);
+
+    // Force the document title to update and prevent Next.js from overwriting it during hydration/streaming
+    document.title = finalTitle;
+    const observer = new MutationObserver(() => {
+      if (document.title !== finalTitle) {
+        document.title = finalTitle;
       }
-      return null;
-    };
+    });
 
-    const title = findTitleInConfig(docsConfig, pathname);
-    if (title) {
-      actions.update(`${title} | XyPriss`, `Documentation: ${title}`);
-    } else {
-      actions.update(
-        "Documentation | XyPriss",
-        "XyPriss documentation"
-      );
-    }
-  }, [pathname, actions]);
+    observer.observe(document.head, { childList: true, subtree: true });
 
-  return null;
+    return () => observer.disconnect();
+  }, [finalTitle, lM]);
+
+  return <title>{finalTitle}</title>;
 }
