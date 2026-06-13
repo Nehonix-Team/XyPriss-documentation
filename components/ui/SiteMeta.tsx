@@ -12,7 +12,7 @@ export function SiteMeta() {
   const newTitle = lM.ops.self.__actions__.getDTitle(pathname) as unknown as
     | string
     | null;
-  const finalTitle = newTitle || "Documentation | XyPriss";
+  const finalTitle = newTitle ? `${newTitle} | XyPriss` : "Documentation | XyPriss";
 
   useEffect(() => {
     lM.ops.self.title._set(finalTitle);
