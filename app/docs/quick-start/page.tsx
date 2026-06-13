@@ -59,19 +59,25 @@ export default function QuickStartPage() {
         optionally set up authentication and file upload support.
       </Callout>
 
+      <Callout type="info" title="Optional: Security Shield">
+        For projects requiring advanced protection, you can install the optional
+        security shield layer:
+        <CodeBlock language="bash" code="xfpm install xypriss-security" />
+      </Callout>
+
       <SectionHeading level={2} id="manual-method">
         Method 2: Manual Setup
       </SectionHeading>
       <p>
-        If you prefer to build from scratch, you can install the `xypriss`
-        package manually.
+        If you prefer full control, you can write the server code directly
+        without relying on the CLI scaffolding.
       </p>
-
-      <CodeBlock
-        language="bash"
-        title="Install Core Package"
-        code="xfpm install xypriss"
-      />
+      <Callout type="info" title="CLI handles this for you">
+        The recommended method (`xfpm init`) already bootstraps the project,
+        installs dependencies, and generates the same boilerplate shown below.
+        Use this manual path only if you want to integrate XyPriss into an
+        existing codebase or avoid CLI scaffolding.
+      </Callout>
 
       <SectionHeading level={3} id="basic-server">
         Create a Basic Server
