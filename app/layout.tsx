@@ -30,6 +30,7 @@ export default function RootLayout({
           }}
         />
         <link rel="canonical" href="https://xypriss.nehonix.com" />
+        <link rel="alternate" type="application/rss+xml" title="XyPriss Documentation RSS Feed" href="/rss.xml" />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider
