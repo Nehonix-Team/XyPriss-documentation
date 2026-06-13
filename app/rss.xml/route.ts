@@ -30,7 +30,7 @@ export async function GET() {
       <description>Enterprise-Grade Hybrid Web Framework</description>
       <language>en</language>
       <lastBuildDate>${now}</lastBuildDate>
-      <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml"/>
       ${docEntries
         .map(
           (entry) => `
