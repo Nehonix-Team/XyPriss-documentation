@@ -214,20 +214,14 @@ router.get(
               <td className="p-3 border border-white/10 text-slate-300 font-semibold">
                 Visible in inspection
               </td>
-              <td className="p-3 border border-white/10 text-slate-400">
-                No
-              </td>
-              <td className="p-3 border border-white/10 text-slate-400">
-                Yes
-              </td>
+              <td className="p-3 border border-white/10 text-slate-400">No</td>
+              <td className="p-3 border border-white/10 text-slate-400">Yes</td>
             </tr>
             <tr>
               <td className="p-3 border border-white/10 text-slate-300 font-semibold">
                 Standard failure protocol
               </td>
-              <td className="p-3 border border-white/10 text-slate-400">
-                No
-              </td>
+              <td className="p-3 border border-white/10 text-slate-400">No</td>
               <td className="p-3 border border-white/10 text-slate-400">
                 Yes (<code>true/false/string</code>)
               </td>
@@ -258,7 +252,7 @@ router.get(
         description="Optimize your routes with per-route rate limiting, response caching, and hooks."
         buttonText="Next: Advanced Features"
         href="/docs/routing/advanced"
-        iconName={Zap as any}
+        iconName={"Zap"}
       />
     </div>
   );
