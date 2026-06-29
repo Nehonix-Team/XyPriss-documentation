@@ -107,6 +107,7 @@ export const docsConfig: DocT[] = [
           { title: "Data", href: "/docs/system/utils/data" },
           { title: "Logic", href: "/docs/system/utils/logic" },
           { title: "Primitives", href: "/docs/system/utils/primitives" },
+          { title: "Logger", href: "/docs/system/utils/logger" },
         ],
       },
       { title: "Dynamic Variables", href: "/docs/system/vars" },
