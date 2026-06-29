@@ -1,25 +1,32 @@
+import React from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { ShieldCheck, Lock, Key } from "lucide-react";
+import { ShieldCheck, Lock, Key, Zap } from "lucide-react";
 
 export default function SecurityGuardsPage() {
   return (
-    <div className="prose prose-invert max-w-none">
-      <SectionHeading level={1}>Security Guards & XyGuard</SectionHeading>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex items-center gap-2 text-primary font-semibold tracking-wider uppercase text-xs">
+          <ShieldCheck size={14} />
+          Routing
+        </div>
+        <SectionHeading level={1}>Security Guards</SectionHeading>
+        <p className="text-xl text-muted-foreground leading-relaxed">
+          Guards are the recommended mechanism for enforcing authorization rules
+          in XyPriss Router. Unlike traditional middleware, guards use a{" "}
+          <strong>standardized return-type protocol</strong> and are visible in
+          the route inspection registry.
+        </p>
+      </div>
 
-      <p>
-        <strong>Guards</strong> are the primary mechanism for enforcing
-        authorization in XyPriss XyPriss Router. Unlike traditional middleware,
-        guards use a<strong> standardized return-type protocol</strong> and are
-        fully visible in the route inspection registry.
-      </p>
-
-      <SectionHeading level={2}>The Guard Protocol</SectionHeading>
-      <p>
-        A guard is a function that receives <code>(req, res)</code> and returns
-        a specific value to determine the request's fate:
+      <SectionHeading level={2}>Guard Signature</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        A guard is a function that receives <code>req</code> and{" "}
+        <code>res</code> and returns a specific value to determine the
+        request&apos;s fate:
       </p>
 
       <div className="overflow-x-auto my-6">
@@ -27,7 +34,7 @@ export default function SecurityGuardsPage() {
           <thead>
             <tr className="bg-white/[0.05]">
               <th className="p-3 border border-white/10 font-bold text-white">
-                Return Value
+                Return value
               </th>
               <th className="p-3 border border-white/10 font-bold text-white">
                 HTTP Effect
@@ -44,7 +51,7 @@ export default function SecurityGuardsPage() {
               </td>
               <td className="p-3 border border-white/10">200 OK</td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Passes—the next guard or handler runs.
+                Passes — the next guard or handler runs.
               </td>
             </tr>
             <tr className="bg-white/[0.02]">
@@ -62,53 +69,44 @@ export default function SecurityGuardsPage() {
               </td>
               <td className="p-3 border border-white/10">401 Unauthorized</td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Blocks and returns the string as the error message.
+                Blocks — returns the string as the response message.
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <SectionHeading level={2}>XyGuard API</SectionHeading>
-      <p>
-        The <strong>XyGuard</strong> API provides a non-opinionated security
-        layer for implementing
-        <strong> built-in declarative guards </strong>. It allows you to keep
-        your route definitions clean while defining logic globally.
+      <SectionHeading level={2}>Applying Guards</SectionHeading>
+
+      <SectionHeading level={3}>Per Route</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        You can apply guards using the declarative object syntax or an array of
+        inline functions.
       </p>
 
-      <SectionHeading level={3}>Defining Resolvers</SectionHeading>
-      <p>
-        Register your logic for the standard guard types (
-        <code>authenticated</code>,<code>roles</code>, <code>permissions</code>
-        ).
+      <SectionHeading level={4}>
+        Declarative Object Syntax (Recommended)
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        By registering guards globally via <code>XyGuard.define()</code>, you
+        can use a strictly-typed object syntax. The <code>guards</code> object
+        provides auto-completion for built-ins while supporting arbitrary custom
+        names seamlessly.
       </p>
       <CodeBlock
         language="typescript"
-        code={`import { XyGuard } from "xypriss";
-
-// Define global auth logic
-XyGuard.define("authenticated", (req) => {
-    return !!req.session?.get("user_id") || "Login required";
+        code={`// Define a custom guard globally
+XyGuard.define("ipWhitelist", (req) => {
+    return req.ip === "127.0.0.1" ? true : "Forbidden IP";
 });
 
-// Define role-based access
-XyGuard.define("roles", (req, requiredRoles) => {
-    const userRole = req.locals.user?.role;
-    return requiredRoles.includes(userRole);
-});`}
-      />
-
-      <SectionHeading level={3}>Usage in Routes</SectionHeading>
-      <p>Apply these defined guards directly in the route options object.</p>
-      <CodeBlock
-        language="typescript"
-        code={`app.get(
+router.get(
     "/admin/settings",
     {
         guards: {
             authenticated: true,
             roles: ["admin"],
+            ipWhitelist: true // Custom declarative guard
         },
     },
     (req, res) => {
@@ -117,11 +115,49 @@ XyGuard.define("roles", (req, requiredRoles) => {
 );`}
       />
 
-      <SectionHeading level={2}>Guard Inheritance</SectionHeading>
-      <p>
-        <strong>Guards</strong> cascade from the outermost scope inward. Every
-        layer must pass independently to reach the handler.
+      <Callout type="info" title="TypeScript Auto-Completion for Custom Guards">
+        To get native autocomplete for your custom declarative guards alongside{" "}
+        <code>authenticated</code> and <code>roles</code>, use Declaration
+        Merging. Add this to any <code>.d.ts</code> or <code>.ts</code> file in
+        your project:
+        <CodeBlock
+          language="typescript"
+          code={`declare module "xypriss" {
+    interface CustomGuards {
+        ipWhitelist?: boolean;
+    }
+}`}
+        />
+      </Callout>
+
+      <SectionHeading level={4}>Array Syntax (Inline)</SectionHeading>
+      <CodeBlock
+        language="typescript"
+        code={`router.get("/profile", { guards: [authGuard] }, (req, res) => {
+    res.success("Protected profile");
+});`}
+      />
+
+      <SectionHeading level={3}>Per Group</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        Applied to every route within the group:
       </p>
+      <CodeBlock
+        language="typescript"
+        code={`router.group(
+    { prefix: "/admin", guards: [authGuard, adminRoleGuard] },
+    (admin) => {
+        admin.get("/dashboard", (req, res) => res.success("Admin dashboard"));
+    },
+);`}
+      />
+
+      <SectionHeading level={2}>Guard Inheritance</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+        Guards cascade from the outermost scope inward. Every layer must pass
+        independently to reach the handler.
+      </p>
+
       <div className="flex flex-col items-center gap-2 my-8 p-6 bg-white/[0.02] border border-white/5 rounded-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
         <div className="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-mono text-slate-300">
@@ -143,12 +179,86 @@ XyGuard.define("roles", (req, requiredRoles) => {
         top-down.
       </Callout>
 
+      <SectionHeading level={2}>Guards vs Middleware</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        While both can intercept requests, guards and middleware serve different
+        purposes:
+      </p>
+
+      <div className="overflow-x-auto my-6">
+        <table className="w-full text-left border-collapse border border-white/10 text-sm">
+          <thead>
+            <tr className="bg-white/[0.05]">
+              <th className="p-3 border border-white/10 font-bold text-white" />
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Middleware
+              </th>
+              <th className="p-3 border border-white/10 font-bold text-white">
+                Guards
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-3 border border-white/10 text-slate-300 font-semibold">
+                Declaration
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Imperative (<code>app.use</code>)
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Declarative (inline on route)
+              </td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 text-slate-300 font-semibold">
+                Visible in inspection
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                No
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Yes
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3 border border-white/10 text-slate-300 font-semibold">
+                Standard failure protocol
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                No
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Yes (<code>true/false/string</code>)
+              </td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 text-slate-300 font-semibold">
+                Execution timing
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                During request chain
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                Before handler initializes
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <Callout type="info" title="When to use which?">
+        Prefer <strong>guards</strong> for authentication and authorization
+        checks. Reserve <strong>middleware</strong> for cross-cutting concerns
+        like logging, body parsing, or CORS.
+      </Callout>
+
       <DocsFooter
         title="Advanced Features"
         description="Optimize your routes with per-route rate limiting, response caching, and hooks."
         buttonText="Next: Advanced Features"
         href="/docs/routing/advanced"
-        iconName="Zap"
+        iconName={Zap as any}
       />
     </div>
   );
