@@ -128,6 +128,60 @@ const app = createServer({
 });`}
       />
 
+      <SectionHeading level={2}>Development Security Profile (Automatic)</SectionHeading>
+      <p>
+        XyPriss includes a security profile specifically designed for local
+        development. It automatically relaxes headers (CSP, COEP, CORP, HSTS)
+        to allow development tools to function correctly (Hot Reloading, local
+        WebSockets, CDNs).
+      </p>
+      <p>
+        This profile activates automatically if <strong>both</strong> of the
+        following conditions are met:
+      </p>
+      <ol className="list-decimal pl-6 space-y-2 text-sm text-muted-foreground mb-6">
+        <li>
+          The environment is in development mode (
+          <code className="text-primary">NODE_ENV=development</code>).
+        </li>
+        <li>
+          The <code className="text-primary">XSEC_TRUST</code> environment
+          variable is not set to <code className="text-primary">"false"</code>{" "}
+          (it defaults to <code className="text-primary">"true"</code> in dev).
+        </li>
+      </ol>
+      <CodeBlock
+        language="bash"
+        title=".env"
+        code={`NODE_ENV=development
+
+# Optional: disable the dev profile to test strict production config
+# XSEC_TRUST=false`}
+      />
+      <Callout type="info" title="What the development profile does">
+        <ul className="list-disc pl-6 space-y-1 text-sm text-muted-foreground">
+          <li>
+            <strong>CSP</strong>: Allows requests to <code>localhost:*</code>{" "}
+            and <code>127.0.0.1:*</code> (HTTP and WS), plus trusted CDNs
+            (cdnjs, jsdelivr, Google Fonts).
+          </li>
+          <li>
+            <strong>COEP/CORP</strong>: Relaxes Cross-Origin isolation to allow
+            loading external resources during development.
+          </li>
+          <li>
+            <strong>HSTS</strong>: Disables strict HSTS caching (
+            <code>max-age=0</code>) to avoid locking your browser on localhost.
+          </li>
+        </ul>
+      </Callout>
+      <Callout type="warning">
+        A security reminder is printed in the console at each startup in dev
+        mode. In production (<code>NODE_ENV=production</code>), XyPriss
+        automatically switches back to the <strong>Zero Trust</strong> profile
+        (strict CSP, HSTS enabled, COEP isolation).
+      </Callout>
+
       <SectionHeading level={2}>Security Best Practices</SectionHeading>
       <div className="space-y-4 my-8">
         <Callout type="warning">
