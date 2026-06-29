@@ -258,7 +258,7 @@ router.get(
         description="Optimize your routes with per-route rate limiting, response caching, and hooks."
         buttonText="Next: Advanced Features"
         href="/docs/routing/advanced"
-        iconName={Zap}
+        iconName={Zap as any}
       />
     </div>
   );
