@@ -24,52 +24,49 @@ export default function CSRFPage() {
         <SectionHeading level={1}>CSRF Protection</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
           Built-in Cross-Site Request Forgery protection using the Double-Submit
-          Cookie pattern, integrated directly into the security middleware
-          pipeline.
+          Cookie pattern, powered by the{" "}
+          <code className="text-primary">csrf-csrf</code> library and
+          integrated directly into the security middleware pipeline.
         </p>
       </div>
 
       <Callout type="info" title="How It Works">
-        CSRF protection is based on the <strong>Double-Submit Cookie</strong>{" "}
-        strategy. On the first request, the server generates a cryptographically
-        signed CSRF token and sets it as a cookie (
-        <code className="text-primary">__Host-csrf-token</code> by default). For
-        every state-mutating request (<code className="text-primary">POST</code>
-        , <code className="text-primary">PUT</code>,{" "}
-        <code className="text-primary">PATCH</code>,{" "}
-        <code className="text-primary">DELETE</code>), the client must include
-        the token in one of the following locations:
+        The protection is based on the <strong>Double-Submit Cookie</strong>{" "}
+        strategy:
+        <ol className="list-decimal pl-6 space-y-2 text-sm text-muted-foreground mt-3">
+          <li>
+            On the first request, the server generates a cryptographically signed
+            CSRF token and sets it as a cookie (
+            <code className="text-primary">__Host-csrf-token</code> by default).
+          </li>
+          <li>
+            For every state-mutating request (
+            <code className="text-primary">POST</code>,{" "}
+            <code className="text-primary">PUT</code>,{" "}
+            <code className="text-primary">PATCH</code>,{" "}
+            <code className="text-primary">DELETE</code>), the client must
+            include the token in one of the following locations:
+            <ul className="list-disc pl-6 mt-2 space-y-1">
+              <li>
+                <code className="text-primary">x-csrf-token</code> HTTP header
+                (recommended for SPAs and API clients)
+              </li>
+              <li>
+                <code className="text-primary">_csrf</code> field in the request
+                body
+              </li>
+              <li>
+                <code className="text-primary">_csrf</code> query parameter
+              </li>
+            </ul>
+          </li>
+          <li>
+            The server validates the submitted token against the signed cookie.
+            If they do not match, the request is rejected with{" "}
+            <code className="text-primary">403 Forbidden</code>.
+          </li>
+        </ol>
       </Callout>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-        <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-          <h4 className="font-bold text-white text-xs mb-1 flex items-center gap-2">
-            <Key size={14} className="text-primary" /> Header (Recommended)
-          </h4>
-          <p className="text-[10px] text-muted-foreground">
-            <code className="text-primary">x-csrf-token</code> HTTP header for
-            SPAs and API clients.
-          </p>
-        </div>
-        <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-          <h4 className="font-bold text-white text-xs mb-1 flex items-center gap-2">
-            <Cookie size={14} className="text-primary" /> Body Field
-          </h4>
-          <p className="text-[10px] text-muted-foreground">
-            <code className="text-primary">_csrf</code> field in the request
-            body.
-          </p>
-        </div>
-        <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-          <h4 className="font-bold text-white text-xs mb-1 flex items-center gap-2">
-            <Globe size={14} className="text-primary" /> Query Param
-          </h4>
-          <p className="text-[10px] text-muted-foreground">
-            <code className="text-primary">_csrf</code> query parameter (less
-            recommended).
-          </p>
-        </div>
-      </div>
 
       <p className="text-xs text-muted-foreground">
         <code className="text-primary">GET</code>,{" "}
@@ -79,8 +76,15 @@ export default function CSRFPage() {
       </p>
 
       <SectionHeading level={2} id="configuration">
-        Configuration
+        Configuration in <code className="text-primary">ServerOptions</code>
       </SectionHeading>
+
+      <Callout type="warning" title="Important">
+        A <code className="text-primary">secret</code> is{" "}
+        <strong>required</strong> when enabling CSRF protection. It is used to
+        sign tokens. It must be a strong, randomly generated string kept out of
+        source control. Use an environment variable.
+      </Callout>
 
       <SectionHeading level={3}>Basic Setup</SectionHeading>
       <CodeBlock
@@ -90,14 +94,14 @@ export default function CSRFPage() {
 const app = createServer({
     security: {
         csrf: {
-            secret: __sys__.__env__.get("CSRF_SECRET"),
+            secret: process.env.CSRF_SECRET,
         }
     }
 });`}
       />
 
       <SectionHeading level={3}>
-        Using XyPriss Environment Shield (`__sys__`)
+        Using XyPriss Environment Shield (<code className="text-primary">__sys__</code>)
       </SectionHeading>
       <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
         The recommended approach is to use the built-in environment shield to
@@ -131,12 +135,8 @@ const app = createServer({
       />
 
       <SectionHeading level={2} id="reference">
-        Configuration Reference
+        Configuration Reference (<code className="text-primary">CSRFConfig</code>)
       </SectionHeading>
-      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        CSRF protection is configured under{" "}
-        <code className="text-primary">security.csrf</code>.
-      </p>
       <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 my-6">
         <table className="w-full text-sm text-left">
           <thead className="bg-white/10 text-xs uppercase font-bold text-muted-foreground">
@@ -152,8 +152,8 @@ const app = createServer({
               {
                 p: "secret",
                 t: "string",
-                d: "Required. Secret key used to sign and verify CSRF tokens.",
-                def: "—",
+                d: "Secret key used to sign and verify CSRF tokens.",
+                def: "Required",
               },
               {
                 p: "enabled",
@@ -164,13 +164,13 @@ const app = createServer({
               {
                 p: "cookieName",
                 t: "string",
-                d: "Name of the CSRF cookie set on the client.",
+                d: "Name of the CSRF session cookie.",
                 def: '"__Host-csrf-token"',
               },
               {
                 p: "cookieOptions.httpOnly",
                 t: "boolean",
-                d: "Prevents client-side JavaScript from accessing the cookie.",
+                d: "Prevents client-side JavaScript from accessing the session cookie.",
                 def: "true",
               },
               {
@@ -184,6 +184,18 @@ const app = createServer({
                 t: "boolean",
                 d: "Restricts the cookie to HTTPS. Automatically set based on environment.",
                 def: "true in production",
+              },
+              {
+                p: "trustedOrigins",
+                t: "(string | RegExp)[]",
+                d: "Allows cross-origin requests from specific origins (e.g. ['localhost:5500', /127\\.0\\.0\\.1:\\d+/]).",
+                def: "[]",
+              },
+              {
+                p: "doubleSubmitCookie",
+                t: "boolean | object",
+                d: "Enables the Double Submit Cookie pattern (XSRF-TOKEN cookie injection). See SPA section below.",
+                def: "true",
               },
             ].map((opt, i) => (
               <tr key={i} className="hover:bg-white/[0.02] transition-colors">
@@ -206,13 +218,13 @@ const app = createServer({
       </div>
 
       <SectionHeading level={2} id="server-side">
-        Reading the Token (Server-Side)
+        Reading the CSRF Token (Server-Side)
       </SectionHeading>
       <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
-        The CSRF token is attached to the request object and can be read
-        directly from <code className="text-primary">req.csrfToken()</code>. Use
-        this to send the token to the client (e.g., in an HTML form or as part
-        of an initial API response).
+        The CSRF token is attached to the request object and can be read directly
+        from <code className="text-primary">req.csrfToken()</code>. Use this to
+        send the token to the client (e.g., in an HTML form or as part of an
+        initial API response).
       </p>
       <CodeBlock
         language="typescript"
@@ -240,40 +252,55 @@ const app = createServer({
       />
 
       <SectionHeading level={3}>Fetch / Axios (SPA)</SectionHeading>
-      <Steps>
-        <Step title="Fetch the token">
-          <p>Get the token from the server first:</p>
-          <CodeBlock
-            language="typescript"
-            code={`const { csrfToken } = await fetch("/csrf-token").then(r => r.json());`}
-          />
-        </Step>
-        <Step title="Include in subsequent requests">
-          <p>
-            Include it in mutating requests via the{" "}
-            <code className="text-primary">x-csrf-token</code> header:
-          </p>
-          <CodeBlock
-            language="typescript"
-            code={`await fetch("/api/data", {
+
+      <Callout type="info" title="With doubleSubmitCookie enabled (Default)">
+        XyPriss automatically exposes the CSRF token via a non-HttpOnly cookie
+        named <code className="text-primary">XSRF-TOKEN</code> and a response
+        header <code className="text-primary">X-CSRF-Token</code> during any
+        initial request. Most modern HTTP clients (like Axios or Angular&apos;s
+        HttpClient) will automatically read this cookie and inject it into the{" "}
+        <code className="text-primary">X-XSRF-TOKEN</code> header on subsequent
+        requests. You don&apos;t need to write any custom logic!
+      </Callout>
+      <CodeBlock
+        language="typescript"
+        code={`import axios from 'axios';
+
+// 1. Initial request establishes session and receives XSRF-TOKEN cookie
+await axios.get('http://api.yoursite.com/');
+
+// 2. Axios automatically reads the cookie and sends it in POST
+await axios.post('http://api.yoursite.com/data', { name: "example" });`}
+      />
+
+      <Callout type="info" title="With doubleSubmitCookie disabled (Manual Mode)">
+        If you prefer to manually fetch the token, you can read it from the{" "}
+        <code className="text-primary">X-CSRF-Token</code> response header of any{" "}
+        <code className="text-primary">GET</code> request, or from a custom
+        route using <code className="text-primary">req.csrfToken()</code>.
+      </Callout>
+      <CodeBlock
+        language="typescript"
+        code={`// 1. Get the token from an initial request's headers
+const res = await fetch("/api/");
+const csrfToken = res.headers.get("X-CSRF-Token");
+
+// 2. Include in subsequent requests
+await fetch("/api/data", {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
-        "x-csrf-token": csrfToken,
+        "X-CSRF-Token": csrfToken,
     },
     body: JSON.stringify({ name: "example" }),
 });`}
-          />
-        </Step>
-      </Steps>
+      />
 
-      <SectionHeading level={2} id="pipeline">
-        Pipeline Position
-      </SectionHeading>
+      <SectionHeading level={2} id="pipeline">Pipeline Position</SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
         CSRF middleware runs <strong>last</strong> in the security pipeline,
-        after body parsing and all other protections. This is intentional, as
-        CSRF validation requires the request body and session data to be fully
+        after body parsing and all other protections. This is intentional, as CSRF
+        validation requires the request body and session data to be fully
         available.
       </p>
 
