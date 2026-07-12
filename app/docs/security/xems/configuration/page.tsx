@@ -45,7 +45,7 @@ export default function XEMSConfigurationPage() {
       <p>Persistence allows XEMS to save sessions to an encrypted file, surviving server restarts.</p>
       
       <CodeBlock language="typescript" title="Vault Configuration" code={`const app = createServer({
-    security: {
+    server: {
         xems: {
             persistence: {
                 enabled: true,
