@@ -1,9 +1,20 @@
-import React from "react";
+
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { ShieldCheck, Lock, Key, Zap } from "lucide-react";
+import {
+  ShieldCheck,
+  Zap,
+  Shield,
+  Database,
+  Code,
+  List,
+  Key,
+  Package,
+  ArrowDown,
+  ArrowRight,
+} from "lucide-react";
 
 export default function SecurityGuardsPage() {
   return (
@@ -13,34 +24,317 @@ export default function SecurityGuardsPage() {
           <ShieldCheck size={14} />
           Routing
         </div>
-        <SectionHeading level={1}>Security Guards</SectionHeading>
+        <SectionHeading level={1}>Security Guards (XyGuard)</SectionHeading>
         <p className="text-xl text-muted-foreground leading-relaxed">
-          Guards are the recommended mechanism for enforcing authorization rules
-          in XyPriss Router. Unlike traditional middleware, guards use a{" "}
-          <strong>standardized return-type protocol</strong> and are visible in
-          the route inspection registry.
+          XyGuard is the global declarative guard registry of the XyPriss
+          framework. It lets you secure routes and route groups in a centralized
+          way, without imposing any specific underlying implementation (JWT,
+          sessions, RBAC, etc.).
         </p>
       </div>
 
-      <SectionHeading level={2}>Guard Signature</SectionHeading>
+      <SectionHeading level={2}>Architecture and Core Concepts</SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        A guard is a function that receives <code>req</code> and{" "}
-        <code>res</code> and returns a specific value to determine the
-        request&apos;s fate:
+        XyGuard relies on a static registry and a compiled middleware that
+        intercepts requests before the main handler runs.
       </p>
+
+      {/* Architecture Diagram */}
+      <div className="my-10 flex flex-col items-center font-sans">
+        {/* XyGuard Block */}
+        <div className="w-full max-w-2xl rounded-xl border border-blue-500/50 bg-blue-500/10 p-5 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-lg bg-blue-500/20 text-blue-400">
+              <Shield className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-bold text-white flex items-center gap-2 tracking-wide">
+              XyGuard{" "}
+              <span className="text-blue-400/70 text-sm font-normal tracking-normal">
+                (static registry)
+              </span>
+            </h3>
+          </div>
+          <div className="ml-11 flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-black/40">
+            <Database className="w-5 h-5 text-blue-400" />
+            <code className="text-sm text-slate-300">
+              resolvers:{" "}
+              <span className="text-teal-300">
+                Map&lt;string, GuardResolver&gt;
+              </span>
+            </code>
+          </div>
+        </div>
+
+        {/* Arrow */}
+        <div className="h-10 w-0.5 bg-blue-500 relative shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+          <ArrowDown
+            className="absolute -bottom-3 -left-[7px] text-blue-500 w-4 h-4"
+            strokeWidth={3}
+          />
+        </div>
+
+        {/* Middleware Block */}
+        <div className="w-full max-w-2xl rounded-xl border border-purple-500/50 bg-purple-500/10 p-5 mt-3 shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
+                <Code className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-white tracking-wide">
+                createGuardMiddleware()
+              </h3>
+            </div>
+            <span className="px-2 py-1 rounded text-xs font-mono border border-purple-500/30 bg-purple-500/20 text-purple-300">
+              helpers.ts
+            </span>
+          </div>
+          <div className="ml-11 flex flex-col gap-3">
+            <div className="flex items-start gap-3 p-3 rounded-lg border border-white/5 bg-black/40">
+              <div className="mt-0.5 p-1.5 rounded-lg border border-green-500/30 bg-green-500/20 text-green-400">
+                <List className="w-4 h-4" />
+              </div>
+              <div className="text-sm">
+                <span className="text-slate-300">
+                  guards is an{" "}
+                  <span className="text-green-400 font-semibold">array</span>
+                </span>
+                <div className="text-slate-400 mt-1 flex items-center gap-1">
+                  <ArrowRight className="w-3 h-3 text-slate-500" /> executes
+                  each inline function
+                </div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 rounded-lg border border-white/5 bg-black/40">
+              <div className="mt-0.5 p-1.5 rounded-lg border border-blue-500/30 bg-blue-500/20 text-blue-400">
+                <Key className="w-4 h-4" />
+              </div>
+              <div className="text-sm">
+                <span className="text-slate-300">
+                  guards is an{" "}
+                  <span className="text-blue-400 font-semibold">object</span>
+                </span>
+                <div className="text-slate-400 mt-1 flex items-center gap-1">
+                  <ArrowRight className="w-3 h-3 text-slate-500" /> calls{" "}
+                  <span className="text-blue-400 px-1">XyGuard.get(key)</span>{" "}
+                  for each active key
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Arrow */}
+        <div className="h-10 w-0.5 bg-purple-500 relative shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+          <ArrowDown
+            className="absolute -bottom-3 -left-[7px] text-purple-500 w-4 h-4"
+            strokeWidth={3}
+          />
+        </div>
+
+        {/* Route Block */}
+        <div className="w-full max-w-2xl rounded-xl border border-orange-500/50 bg-orange-500/10 p-5 mt-3 shadow-[0_0_15px_rgba(249,115,22,0.1)]">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-orange-500/20 text-orange-400">
+                <Package className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-white tracking-wide">
+                addRichRoute() / handleGroup()
+              </h3>
+            </div>
+            <span className="px-2 py-1 rounded text-xs font-mono border border-orange-500/30 bg-orange-500/20 text-orange-300">
+              registry.ts / groups.ts
+            </span>
+          </div>
+          <div className="ml-11 flex items-start gap-2 text-sm text-slate-300">
+            <ArrowRight className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+            <div>
+              injects the guard middleware <br />
+              <strong className="text-orange-400">BEFORE</strong> all other
+              route middlewares
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-sm text-muted-foreground mb-6 space-y-2 leading-relaxed">
+        <p>
+          <strong>How it works:</strong>
+        </p>
+        <ol className="list-decimal pl-5 space-y-1">
+          <li>
+            At application startup, resolvers are registered via{" "}
+            <code>XyGuard.define(name, resolver)</code>.
+          </li>
+          <li>
+            On each route (or group), required guards are declared using the{" "}
+            <code>guards</code> property.
+          </li>
+          <li>
+            The framework compiles a guard middleware that runs before the route
+            handler.
+          </li>
+          <li>
+            If any guard fails, the request is immediately rejected with the
+            appropriate HTTP status code (401 or 403). The main handler is never
+            called.
+          </li>
+        </ol>
+      </div>
+
+      <SectionHeading level={2}>
+        XyGuard.define() — Registering a Resolver
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        The <code>XyGuard.define()</code> method registers guard logic. Guards
+        should be defined at the server entry point, before any routes are
+        mounted.
+      </p>
+      <CodeBlock
+        language="typescript"
+        code={`import { XyGuard } from "xypriss";
+
+// Authentication guard
+XyGuard.define("authenticated", (req) => {
+    const token = req.headers["authorization"]?.split(" ")[1];
+    if (!token) return "Missing token";
+    try {
+        (req as any).user = verifyToken(token);
+        return true;
+    } catch {
+        return "Invalid or expired token";
+    }
+});
+
+// Role-based guard
+XyGuard.define("roles", (req, required) => {
+    const user = (req as any).user;
+    if (!user) return false;
+    return required.includes(user.role)
+        ? true
+        : \`Role '\${user.role}' is insufficient. Required: \${required.join(", ")}\`;
+});
+
+// Permission-based guard
+XyGuard.define("permissions", (req, required) => {
+    const user = (req as any).user;
+    if (!user) return false;
+    const missing = required.filter((p) => !user.permissions?.includes(p));
+    return missing.length === 0 ? true : \`Missing permissions: \${missing.join(", ")}\`;
+});
+
+// Custom guard — IP whitelist
+XyGuard.define("ipWhitelist", (req) => {
+    const allowedIps = ["127.0.0.1", "192.168.1.100"];
+    return allowedIps.includes(req.ip ?? "") ? true : \`IP \${req.ip} is not allowed\`;
+});`}
+      />
+
+      <SectionHeading level={2}>Usage on a Route</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        The <code>guards</code> property is passed in the route options object.
+        The declarative object syntax is the recommended approach.
+      </p>
+
+      <CodeBlock
+        language="typescript"
+        code={`import { router } from "./router";
+
+// Authentication only
+router.get("/profile", { guards: { authenticated: true } }, async (req, res) => {
+    res.json({ user: (req as any).user });
+});
+
+// Roles
+router.post(
+    "/admin/users",
+    { guards: { authenticated: true, roles: ["admin", "super-admin"] } },
+    async (req, res) => {
+        res.status(201).json({ message: "User created" });
+    },
+);
+
+// Permissions
+router.delete(
+    "/posts/:id",
+    { guards: { authenticated: true, permissions: ["posts:delete"] } },
+    async (req, res) => {
+        res.json({ deleted: true });
+    },
+);
+
+// Combining multiple guards
+router.put(
+    "/admin/settings",
+    {
+        guards: {
+            authenticated: true,
+            roles: ["admin"],
+            permissions: ["settings:write"],
+            ipWhitelist: true,
+        },
+    },
+    handler,
+);`}
+      />
+
+      <Callout type="info" title="Evaluation Order">
+        Declarative guards (object form) are evaluated in the iteration order of{" "}
+        <code>Object.entries()</code>. The first guard that fails immediately
+        short-circuits the chain and sends the error response. Subsequent guards
+        are not evaluated.
+      </Callout>
+
+      <SectionHeading level={2}>Usage on a Group</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        Guards can be applied to an entire route group via{" "}
+        <code>router.group()</code>. They are injected before every route in the
+        group. Individual routes within the group can define additional guards on
+        top.
+      </p>
+      <CodeBlock
+        language="typescript"
+        code={`router.group(
+    {
+        prefix: "/admin",
+        guards: {
+            authenticated: true,
+            roles: ["admin"],
+        },
+    },
+    (adminRouter) => {
+        adminRouter.get("/dashboard", dashboardHandler);
+
+        // This route additionally requires the "reports:export" permission
+        adminRouter.get(
+            "/reports/export",
+            { guards: { permissions: ["reports:export"] } },
+            exportHandler,
+        );
+    },
+);`}
+      />
+
+      <Callout type="warning" title="Enforcement">
+        There is no way to bypass a group or router guard from within a child
+        route. Guards ensure that your security policy is strictly enforced
+        top-down.
+      </Callout>
+
+      <SectionHeading level={2}>Return Values and HTTP Behavior</SectionHeading>
 
       <div className="overflow-x-auto my-6">
         <table className="w-full text-left border-collapse border border-white/10 text-sm">
           <thead>
             <tr className="bg-white/[0.05]">
               <th className="p-3 border border-white/10 font-bold text-white">
-                Return value
+                Returned Value
               </th>
               <th className="p-3 border border-white/10 font-bold text-white">
-                HTTP Effect
+                Guard Type
               </th>
               <th className="p-3 border border-white/10 font-bold text-white">
-                Behavior
+                HTTP Status
               </th>
             </tr>
           </thead>
@@ -49,135 +343,88 @@ export default function SecurityGuardsPage() {
               <td className="p-3 border border-white/10 text-green-400 font-mono">
                 true
               </td>
-              <td className="p-3 border border-white/10">200 OK</td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Passes — the next guard or handler runs.
+                All
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                None — access granted
               </td>
             </tr>
             <tr className="bg-white/[0.02]">
               <td className="p-3 border border-white/10 text-red-400 font-mono">
                 false
               </td>
-              <td className="p-3 border border-white/10">403 Forbidden</td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Blocks the request immediately.
+                <code>authenticated</code>
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                401 Unauthorized
               </td>
             </tr>
             <tr>
-              <td className="p-3 border border-white/10 text-yellow-400 font-mono">
-                string
+              <td className="p-3 border border-white/10 text-red-400 font-mono">
+                false
               </td>
-              <td className="p-3 border border-white/10">401 Unauthorized</td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Blocks — returns the string as the response message.
+                <code>roles</code> / <code>permissions</code> / custom
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                403 Forbidden
+              </td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 border border-white/10 text-yellow-400 font-mono">
+                "message"
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                All
+              </td>
+              <td className="p-3 border border-white/10 text-slate-400">
+                401 / 403 with that message as the error body
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <SectionHeading level={2}>Applying Guards</SectionHeading>
+      <Callout type="info" title="Design Recommendation">
+        For precise, user-facing error messages, prefer returning a descriptive{" "}
+        <code>string</code> over <code>false</code>. The string is forwarded
+        directly as the <code>error</code> field in the JSON response body.
+      </Callout>
 
-      <SectionHeading level={3}>Per Route</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        You can apply guards using the declarative object syntax or an array of
-        inline functions.
-      </p>
-
-      <SectionHeading level={4}>
-        Declarative Object Syntax (Recommended)
+      <SectionHeading level={2}>
+        TypeScript Auto-completion via Declaration Merging
       </SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        By registering guards globally via <code>XyGuard.define()</code>, you
-        can use a strictly-typed object syntax. The <code>guards</code> object
-        provides auto-completion for built-ins while supporting arbitrary custom
-        names seamlessly.
+        XyPriss exposes the <code>CustomGuards</code> interface that you can
+        augment in your project to get auto-completion and type validation for
+        your custom guards.
       </p>
+
       <CodeBlock
         language="typescript"
-        code={`// Define a custom guard globally
-XyGuard.define("ipWhitelist", (req) => {
-    return req.ip === "127.0.0.1" ? true : "Forbidden IP";
-});
+        code={`// src/types/xypriss.d.ts  (or any .d.ts file included in tsconfig)
+declare module "xypriss" {
+    interface CustomGuards {
+        ipWhitelist?: boolean;
+        plan?: "free" | "starter" | "premium" | "enterprise";
+        apiKey?: boolean;
+    }
+}
 
+// TypeScript will now validate your guard keys and values at usage sites:
 router.get(
-    "/admin/settings",
+    "/premium-feature",
     {
         guards: {
             authenticated: true,
-            roles: ["admin"],
-            ipWhitelist: true // Custom declarative guard
+            plan: "premium", // auto-completed and type-safe
         },
     },
-    (req, res) => {
-        res.success("Welcome, Admin");
-    },
+    handler,
 );`}
       />
-
-      <Callout type="info" title="TypeScript Auto-Completion for Custom Guards">
-        To get native autocomplete for your custom declarative guards alongside{" "}
-        <code>authenticated</code> and <code>roles</code>, use Declaration
-        Merging. Add this to any <code>.d.ts</code> or <code>.ts</code> file in
-        your project:
-        <CodeBlock
-          language="typescript"
-          code={`declare module "xypriss" {
-    interface CustomGuards {
-        ipWhitelist?: boolean;
-    }
-}`}
-        />
-      </Callout>
-
-      <SectionHeading level={4}>Array Syntax (Inline)</SectionHeading>
-      <CodeBlock
-        language="typescript"
-        code={`router.get("/profile", { guards: [authGuard] }, (req, res) => {
-    res.success("Protected profile");
-});`}
-      />
-
-      <SectionHeading level={3}>Per Group</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        Applied to every route within the group:
-      </p>
-      <CodeBlock
-        language="typescript"
-        code={`router.group(
-    { prefix: "/admin", guards: [authGuard, adminRoleGuard] },
-    (admin) => {
-        admin.get("/dashboard", (req, res) => res.success("Admin dashboard"));
-    },
-);`}
-      />
-
-      <SectionHeading level={2}>Guard Inheritance</SectionHeading>
-      <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-        Guards cascade from the outermost scope inward. Every layer must pass
-        independently to reach the handler.
-      </p>
-
-      <div className="flex flex-col items-center gap-2 my-8 p-6 bg-white/[0.02] border border-white/5 rounded-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-        <div className="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-mono text-slate-300">
-          <ShieldCheck className="w-4 h-4 text-blue-400" /> Router-level Guards
-        </div>
-        <div className="w-0.5 h-4 bg-white/10" />
-        <div className="flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-mono text-slate-300">
-          <Lock className="w-4 h-4 text-purple-400" /> Group-level Guards
-        </div>
-        <div className="w-0.5 h-4 bg-white/10" />
-        <div className="flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-lg text-xs font-mono text-primary font-bold">
-          <Key className="w-4 h-4" /> Route-level Guards
-        </div>
-      </div>
-
-      <Callout type="warning" title="Enforcement">
-        There is no way to bypass a group or router guard from within a child
-        route. Guards ensure that your security policy is strictly enforced
-        top-down.
-      </Callout>
 
       <SectionHeading level={2}>Guards vs Middleware</SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
@@ -207,7 +454,7 @@ router.get(
                 Imperative (<code>app.use</code>)
               </td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Declarative (inline on route)
+                Declarative (inline on route/group)
               </td>
             </tr>
             <tr className="bg-white/[0.02]">
@@ -223,7 +470,7 @@ router.get(
               </td>
               <td className="p-3 border border-white/10 text-slate-400">No</td>
               <td className="p-3 border border-white/10 text-slate-400">
-                Yes (<code>true/false/string</code>)
+                Yes (<code>true / false / string</code>)
               </td>
             </tr>
             <tr className="bg-white/[0.02]">
@@ -249,7 +496,7 @@ router.get(
 
       <DocsFooter
         title="Advanced Features"
-        description="Optimize your routes with per-route rate limiting, response caching, and hooks."
+        description="Optimize your routes with per-route rate limiting, response caching, and lifecycle hooks."
         buttonText="Next: Advanced Features"
         href="/docs/routing/advanced"
         iconName={"Zap"}
