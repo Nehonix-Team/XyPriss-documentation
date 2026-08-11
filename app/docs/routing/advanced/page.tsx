@@ -21,7 +21,7 @@ export default function AdvancedRoutingPage() {
         It operates before JavaScript execution, ensuring ultra-low overhead and zero Node.js event-loop blocking.
       </p>
       <p>
-        Rate limiting can be declared as a <strong>string shorthand</strong>, a <strong>standard configuration object</strong>, or an <strong>XTRS (Temporal Rate Shield)</strong> multi-window policy.
+        Rate limiting can be declared as a <strong>string shorthand</strong>, a <strong>standard configuration object</strong>, or an <strong>XTRS (Temporal Rate Shield)</strong> policy inside the <code>xtrs</code> property.
       </p>
 
       <SectionHeading level={3}>1. String Shorthand</SectionHeading>
@@ -34,6 +34,7 @@ export default function AdvancedRoutingPage() {
       />
 
       <SectionHeading level={3}>2. Standard Configuration Object</SectionHeading>
+      <p>Standard rate limit options remain clean and explicit at the root of <code>rateLimit</code>:</p>
       <CodeBlock
         language="typescript"
         code={`router.get(
@@ -54,7 +55,7 @@ export default function AdvancedRoutingPage() {
       />
 
       <SectionHeading level={3}>3. XTRS (Temporal Rate Shield) &amp; Multi-Window Protection</SectionHeading>
-      <p>XTRS allows defining multiple sliding-window rules with automatic temporary IP blocking:</p>
+      <p>Advanced multi-window rules, rate limits by second (<code>limit: "3/s"</code>), and temporary IP blocks are nested cleanly inside <code>rateLimit.xtrs</code>:</p>
       <CodeBlock
         language="typescript"
         code={`router.post(
@@ -79,6 +80,24 @@ export default function AdvancedRoutingPage() {
 );`}
       />
 
+      <p>You can also pass an XTRS shorthand string or single limit directly inside <code>xtrs</code>:</p>
+      <CodeBlock
+        language="typescript"
+        code={`router.post(
+    "/upload",
+    {
+        rateLimit: {
+            xtrs: {
+                limit: "3/s",
+                blockDuration: "10s",
+            },
+        },
+    },
+    Upload.single("file"),
+    CdnController.upload,
+);`}
+      />
+
       <SectionHeading level={3}>4. Route Group Rate Limiting</SectionHeading>
       <p>
         Rate limiting can also be declared globally for an entire route group via <code>router.group(...)</code>. 
@@ -90,13 +109,11 @@ export default function AdvancedRoutingPage() {
     {
         prefix: "/stream",
         rateLimit: {
-            rules: [
-                {
-                    rule: "3/1m",
-                    message: "Stream group rate limit exceeded!",
-                    blockDuration: "20s",
-                },
-            ],
+            xtrs: {
+                limit: "3/1m",
+                message: "Stream group rate limit exceeded!",
+                blockDuration: "20s",
+            },
         },
     },
     (stream) => {
@@ -121,12 +138,12 @@ export default function AdvancedRoutingPage() {
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">max</td>
               <td className="py-2 px-3 font-mono text-slate-300">number</td>
-              <td className="py-2 px-3">Maximum requests allowed per window.</td>
+              <td className="py-2 px-3">Maximum requests allowed per window (Standard Rate Limit).</td>
             </tr>
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">window</td>
               <td className="py-2 px-3 font-mono text-slate-300">string | number</td>
-              <td className="py-2 px-3">Duration string (<code>"10s"</code>, <code>"1m"</code>, <code>"1h"</code>) or window in milliseconds.</td>
+              <td className="py-2 px-3">Window duration string (<code>"10s"</code>, <code>"1m"</code>, <code>"1h"</code>) or milliseconds.</td>
             </tr>
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">windowMs</td>
@@ -150,23 +167,53 @@ export default function AdvancedRoutingPage() {
             </tr>
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">xtrs</td>
-              <td className="py-2 px-3 font-mono text-slate-300">XtrsOptions</td>
-              <td className="py-2 px-3">Advanced multi-window XTRS configuration.</td>
+              <td className="py-2 px-3 font-mono text-slate-300">string | XtrsOptions</td>
+              <td className="py-2 px-3">Advanced multi-window XTRS policy object or shorthand string (<code>"3/s"</code>).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <SectionHeading level={4}>XTRS Options Object (<code>XtrsOptions</code>)</SectionHeading>
+      <div className="overflow-x-auto my-4">
+        <table className="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr className="border-b border-white/10 text-slate-300">
+              <th className="py-2 px-3 font-semibold">Property</th>
+              <th className="py-2 px-3 font-semibold">Type</th>
+              <th className="py-2 px-3 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody className="text-slate-400 divide-y divide-white/5">
+            <tr>
+              <td className="py-2 px-3 font-mono text-cyan-400">limit</td>
+              <td className="py-2 px-3 font-mono text-slate-300">string | number</td>
+              <td className="py-2 px-3">Shorthand limit string (e.g. <code>"3/s"</code>, <code>"5/1m"</code>).</td>
             </tr>
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">rules</td>
               <td className="py-2 px-3 font-mono text-slate-300">XtrsRuleInput[]</td>
-              <td className="py-2 px-3">Array of shorthand XTRS rules (e.g. <code>[&#123; rule: "5/1m", blockDuration: "20s" &#125;]</code>).</td>
+              <td className="py-2 px-3">Array of multi-window XTRS rules (e.g. <code>[&#123; rule: "5/1m", blockDuration: "5m" &#125;]</code>).</td>
             </tr>
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">blockDuration</td>
               <td className="py-2 px-3 font-mono text-slate-300">string | number</td>
-              <td className="py-2 px-3">Duration to temporarily block requests after threshold breach.</td>
+              <td className="py-2 px-3">Temporary IP ban duration after breaching threshold (e.g. <code>"20s"</code>, <code>"5m"</code>).</td>
             </tr>
             <tr>
               <td className="py-2 px-3 font-mono text-cyan-400">blockDurationMs</td>
               <td className="py-2 px-3 font-mono text-slate-300">number</td>
               <td className="py-2 px-3">Block duration in milliseconds.</td>
+            </tr>
+            <tr>
+              <td className="py-2 px-3 font-mono text-cyan-400">message</td>
+              <td className="py-2 px-3 font-mono text-slate-300">string | any</td>
+              <td className="py-2 px-3">XTRS error message.</td>
+            </tr>
+            <tr>
+              <td className="py-2 px-3 font-mono text-cyan-400">statusCode</td>
+              <td className="py-2 px-3 font-mono text-slate-300">number</td>
+              <td className="py-2 px-3">HTTP status code (defaults to <code>429</code>).</td>
             </tr>
           </tbody>
         </table>
@@ -301,7 +348,7 @@ onError(err, req, res) {
 // CORRECT — bubble up to the global error handler
 onError(err) {
     throw err;
-} `}
+}`}
       />
 
       <SectionHeading level={2}>Combining All Features</SectionHeading>
@@ -313,7 +360,9 @@ onError(err) {
     {
         guards: [authGuard, subscriptionGuard],
         rateLimit: {
-            rules: [{ rule: "20/1m", blockDuration: "1m" }],
+            max: 20,
+            window: "1m",
+            message: "Rate limit exceeded for order placement",
         },
         beforeEnter(req, res, next) {
             if (!req.body.items?.length) {
