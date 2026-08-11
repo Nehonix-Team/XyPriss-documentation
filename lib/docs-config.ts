@@ -136,6 +136,7 @@ export const docsConfig: DocT[] = [
       { title: "CSRF Protection", href: "/docs/security/csrf" },
       { title: "Malicious URL Scanner", href: "/docs/security/malicious-url-scanner" },
       { title: "Rate Limiting", href: "/docs/security/rate-limiting" },
+      { title: "XTRS Rate Shield", href: "/docs/security/xtrs-rate-limiting" },
       { title: "Request Signatures", href: "/docs/security/signatures" },
       { title: "Route Security", href: "/docs/security/route-security" },
       { title: "Trust Proxy", href: "/docs/security/trust-proxy" },

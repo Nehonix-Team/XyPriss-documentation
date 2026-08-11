@@ -30,6 +30,14 @@ const server = createServer({
     },
 });`} />
 
+      <SectionHeading level={2}>XTRS Temporal Rate Shield</SectionHeading>
+      <p>
+        For enterprise-grade protection with multi-window rate limiting, custom lock durations (<code>blockDuration</code>), and zero Node.js event-loop blocking, see the dedicated{" "}
+        <Link href="/docs/security/xtrs-rate-limiting" className="text-cyan-400 hover:underline font-bold">
+          XTRS Rate Shield Documentation
+        </Link>.
+      </p>
+
       <SectionHeading level={2}>Per-Route Rate Limiting</SectionHeading>
       <p>
         In XyPriss, per-route rate limiting is enforced natively within the routing definition for maximum efficiency. 
