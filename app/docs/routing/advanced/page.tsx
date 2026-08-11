@@ -1,10 +1,8 @@
-import React from "react";
-import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Zap, Activity, Clock, ShieldAlert, Cpu, Terminal, Shield, Layers, Code2 } from "lucide-react";
+import { Activity, ShieldAlert, Terminal } from "lucide-react";
 
 export default function AdvancedRoutingPage() {
   return (

@@ -1,10 +1,9 @@
-import React from "react";
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
-import { Zap, ShieldCheck, Clock, ShieldAlert, Layers, Lock, Cpu, Sliders, CheckCircle2 } from "lucide-react";
+import { Layers, Cpu, CheckCircle2 } from "lucide-react";
 
 export default function XtrsRateLimitingPage() {
   return (
