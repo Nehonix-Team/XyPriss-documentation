@@ -92,6 +92,7 @@ export const docsConfig: DocT[] = [
             href: "/docs/system/filesystem/archive",
           },
           { title: "File Watching", href: "/docs/system/filesystem/watch" },
+          { title: "Disposable Temp Files", href: "/docs/system/filesystem/temp-files" },
           { title: "Security & Advanced", href: "/docs/system/filesystem/security" },
         ]
       },
