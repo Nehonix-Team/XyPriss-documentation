@@ -43,6 +43,7 @@ export const docsConfig: DocT[] = [
       { title: "Structured Responses (Send)", href: "/docs/server/send" },
       { title: "Static Files (XStatic)", href: "/docs/server/static-files" },
       { title: "File Uploads", href: "/docs/server/file-uploads" },
+      { title: "MIME Utilities (getMimes)", href: "/docs/features/get-mime" },
       { title: "Response Control", href: "/docs/server/response-control" },
       {
         title: "NotFound vs Response Control",
