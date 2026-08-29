@@ -17,6 +17,13 @@ export default function XEMSLandingPage() {
         persistence with zero external dependencies.
       </p>
 
+      <Callout type="info" title="Field Revision Notice — XyPriss 9.12.60 (XEMS Core 1.1.22)">
+        <p className="leading-relaxed">
+          Cette mise à jour majeure de l'architecture XEMS fait suite à une profonde réflexion et d'importants tests de charge sur le terrain en environnement de production. 
+          Elle est disponible à partir de <strong>XyPriss 9.12.60</strong> (intégrant <strong>XEMS Core v1.1.22</strong>).
+        </p>
+      </Callout>
+
       <SectionHeading level={2}>Core Concepts</SectionHeading>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
         <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">

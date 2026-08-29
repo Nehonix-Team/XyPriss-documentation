@@ -4,89 +4,256 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
 import { Steps, Step } from "@/components/ui/Steps";
-import { ShieldCheck, Zap, Lock, Cpu, Database, Activity, Terminal, Key } from "lucide-react";
+import { ShieldCheck, Zap, Lock, Cpu, Database, Activity, Key, LogIn, LogOut, Shield, Layers } from "lucide-react";
 
 export default function XEMSTutorialPage() {
   return (
-    <div className="prose prose-invert max-w-none">
-      <SectionHeading level={1}>Tutorial: Secure Auth with XEMS</SectionHeading>
-      
-      <p>This tutorial details the implementation of advanced authentication systems using the <strong>XyPriss Encrypted Memory Store (XEMS)</strong>. Learn how to leverage native isolation and atomic rotation for enterprise-grade security.</p>
-
-      <SectionHeading level={2}>1. Session API Fundamentals</SectionHeading>
-      <p>Unlike simple key/value storage, the XEMS session layer manages opaque tokens and their entire lifecycle, including automatic encryption and resolution.</p>
-      
-      <div className="space-y-4 my-6">
-        <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
-          <h5 className="text-white font-semibold mb-1 text-sm">Creating a Session</h5>
-          <CodeBlock language="typescript" code={`const runner = xems.forApp(app);
-const token = await runner.createSession(
-    "auth-pending",
-    { email: "user@example.com", mfa_verified: false },
-    { ttl: "15m" }
-);`} />
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex items-center gap-2 text-primary font-semibold tracking-wider uppercase text-xs">
+          <ShieldCheck size={14} />
+          Security Tutorial
         </div>
-        <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
-          <h5 className="text-white font-semibold mb-1 text-sm">Resolution & Rotation</h5>
-          <CodeBlock language="typescript" code={`const session = await runner.resolveSession(token, {
-    sandbox: "auth-pending",
-    rotate: true,       // Generate a new token atomically
-    gracePeriod: 2000,  // 2s overlap for concurrent requests
-});`} />
-        </div>
+        <SectionHeading level={1}>XEMS Tutorial: High-Security Session Management</SectionHeading>
+        <p className="text-xl text-muted-foreground leading-relaxed">
+          Learn how to implement enterprise-grade, hardware-bound authentication and session management using XEMS (XyPriss Entry Management System).
+        </p>
       </div>
 
-      <SectionHeading level={2}>2. Implementing MFA Workflow</SectionHeading>
-      <p>A secure multi-factor authentication flow involves migrating data between sandboxes as verification steps are completed.</p>
-
-      <Steps>
-        <Step title="Initial Authentication">
-          Verify password and create a temporary session in the <code>otp-pending</code> sandbox.
-        </Step>
-        <Step title="OTP Verification">
-          When the OTP is valid, migrate the user data to a permanent active session using <code>xLink</code>.
-        </Step>
-      </Steps>
-
-      <CodeBlock language="typescript" title="MFA Verification Handler" code={`router.post("/mfa/verify", async (req, res) => {
-    const runner = xems.forApp(req.app);
-    const tempSession = await runner.from("otp-pending").get(req.body.tempToken);
-
-    if (isOtpValid(req.body.code)) {
-        // High-level API handles cookie injection and final session linking
-        await res.xLink({ userId: tempSession.userId, role: "admin" });
-        
-        // Cleanup the temporary sandbox
-        await runner.from("otp-pending").del(req.body.tempToken);
-    }
-});`} />
-
-      <SectionHeading level={2}>3. Security Best Practices</SectionHeading>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-        <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
-          <div className="flex items-center gap-2 text-blue-400 font-semibold mb-2 text-sm">
-            <Lock className="w-4 h-4" /> Persistence Secret
-          </div>
-          <p className="text-[10px] text-slate-400 m-0">The secret must be exactly <strong>32 bytes</strong>. Use environment variables and rotate them periodically for maximum security.</p>
-        </div>
-        <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">
-          <div className="flex items-center gap-2 text-blue-400 font-semibold mb-2 text-sm">
-            <Database className="w-4 h-4" /> Frontend Isolation
-          </div>
-          <p className="text-[10px] text-slate-400 m-0">Let XyPriss manage tokens via <code>HttpOnly</code> cookies. Never expose session tokens to client-side JavaScript.</p>
-        </div>
-      </div>
-
-      <Callout type="warning" title="Concurrency Note">
-        Always set a <code>gracePeriod</code> when using token rotation. This prevents race conditions where one of several concurrent requests invalidates the token before others finish.
+      <Callout type="info" title="Field Revision Notice — XyPriss 9.12.60 (XEMS Core 1.1.22)">
+        <p className="leading-relaxed">
+          Cette mise à jour majeure de l'architecture XEMS fait suite à une profonde réflexion et d'importants tests de charge sur le terrain en environnement de production. 
+          Elle est disponible à partir de <strong>XyPriss 9.12.60</strong> (intégrant <strong>XEMS Core v1.1.22</strong>).
+        </p>
       </Callout>
 
-      <DocsFooter 
-        title="Plugins Overview"
-        description="Extend XyPriss with custom functionality using the modular plugin system."
-        buttonText="Next: Plugins"
-        href="/docs/plugins"
-        iconName="Zap"
+      <SectionHeading level={2} id="native-helpers">
+        1. Native Session Helpers Overview
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        XyPriss abstracts the underlying Go sidecar and cryptographic vault behind three elegant, built-in response and request helpers:
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3">
+          <h4 className="font-bold text-white flex items-center gap-2 text-sm">
+            <LogIn size={16} className="text-primary" />
+            res.xLink(data, options?)
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Initiates an authenticated session, encrypts the payload inside the hardware-bound <code className="text-primary font-mono">.xems</code> vault, and issues the <code className="text-primary font-mono">HttpOnly</code> cookie and tracking header.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3">
+          <h4 className="font-bold text-white flex items-center gap-2 text-sm">
+            <Key size={16} className="text-primary" />
+            req.session
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Automatically resolves, decrypts, and attaches the active session payload for incoming requests carrying valid cookies or headers.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-3">
+          <h4 className="font-bold text-white flex items-center gap-2 text-sm">
+            <LogOut size={16} className="text-primary" />
+            res.xUnlink(options?)
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Instantly purges the session from the Go encrypted vault store and expires the client cookie.
+          </p>
+        </div>
+      </div>
+
+      <SectionHeading level={2} id="server-config">
+        2. Server Configuration
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        Declare your XEMS configuration in your server definition or <code className="text-primary font-mono">xypriss.config.ts</code>:
+      </p>
+
+      <CodeBlock
+        language="typescript"
+        code={`import { createServer } from "xypriss";
+import path from "path";
+
+export const app = createServer({
+    server: {
+        xems: {
+            enable: true,
+            path: path.resolve(process.cwd(), "vault.xems"), // Real vault path (.xems)
+            secret: process.env.XEMS_SECRET!,               // Min 32-byte master key
+            ttl: "7d",                                      // Expiration (max 7 days)
+            autoRotation: "1m",                             // Sliding window rotation
+            gracePeriod: 15000,                             // 15 seconds grace overlap
+            cookieName: "xems_token",
+            cookieOptions: {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "Strict",
+            },
+        },
+    },
+});`}
+      />
+
+      <SectionHeading level={2} id="auth-flow">
+        3. Real-World Authentication Flow
+      </SectionHeading>
+
+      <div className="flex flex-col gap-6 my-2">
+        <div>
+          <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <LogIn size={16} className="text-primary" />
+            A. Login: Creating a Session (res.xLink)
+          </h3>
+          <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+            When credentials are verified, call <code className="text-primary font-mono">await res.xLink(sessionData)</code>. XEMS generates an opaque cryptographic token and transparently sends the <code className="text-primary font-mono">Set-Cookie</code> header:
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`import { Router } from "xypriss";
+
+const authRouter = new Router();
+
+authRouter.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await authenticateUser(email, password);
+    if (!user) {
+        return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // 🔐 Initiate secure XEMS session
+    await res.xLink({
+        userId: user.id,
+        tenantId: user.tenantId,
+        role: user.role,
+        email: user.email,
+    });
+
+    return res.status(200).json({
+        success: true,
+        message: "Login successful",
+        user: { id: user.id, email: user.email, role: user.role },
+    });
+});`}
+          />
+        </div>
+
+        <div>
+          <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <Shield size={16} className="text-primary" />
+            B. Route Protection &amp; Guards (req.session)
+          </h3>
+          <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+            Incoming requests with valid session cookies automatically have their decrypted payload attached to <code className="text-primary font-mono">req.session</code>:
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`// authGuard.ts
+export const authGuard = (req: any, res: any) => {
+    if (!req.session || !req.session.userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    return true; // Access granted
+};
+
+// Protected router
+const apiRouter = new Router();
+
+apiRouter.get("/profile", { guards: [authGuard] }, async (req, res) => {
+    // req.session is decrypted and ready
+    return res.json({
+        userId: req.session.userId,
+        role: req.session.role,
+    });
+});`}
+          />
+        </div>
+
+        <div>
+          <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <LogOut size={16} className="text-primary" />
+            C. Logout: Destroying the Session (res.xUnlink)
+          </h3>
+          <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+            Call <code className="text-primary font-mono">await res.xUnlink()</code> to destroy the session. It purges the key from the Go encrypted memory store and expires the client cookie:
+          </p>
+          <CodeBlock
+            language="typescript"
+            code={`authRouter.post("/logout", async (req, res) => {
+    // 🗑️ Terminate session in Go vault & expire client cookie
+    await res.xUnlink();
+
+    return res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+    });
+});`}
+          />
+        </div>
+      </div>
+
+      <SectionHeading level={2} id="sandboxes">
+        4. Multi-Tenant &amp; Custom Sandboxes
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        Partition sessions into separate isolated namespaces (sandboxes) at runtime for multi-tenant applications or elevated privilege modes:
+      </p>
+
+      <CodeBlock
+        language="typescript"
+        code={`// Link to a specific organization or admin sandbox
+await res.xLink(adminData, {
+    sandbox: \`org.\${user.tenantId}\`,
+    ttl: "12h",
+});
+
+// Destroy session in a specific sandbox
+await res.xUnlink({ sandbox: \`org.\${user.tenantId}\` });`}
+      />
+
+      <SectionHeading level={2} id="best-practices">
+        5. Security Best Practices
+      </SectionHeading>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-2">
+          <h4 className="font-bold text-white text-xs flex items-center gap-2">
+            <Zap size={14} className="text-primary" /> SPAs &amp; Concurrent Requests
+          </h4>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            Always configure <code className="text-primary font-mono">autoRotation: "1m"</code> and a generous <code className="text-primary font-mono">gracePeriod</code> (15s) so parallel API calls do not trigger race conditions.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-2">
+          <h4 className="font-bold text-white text-xs flex items-center gap-2">
+            <Key size={14} className="text-primary" /> Key Security
+          </h4>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            Keep <code className="text-primary font-mono">XEMS_SECRET</code> (min 32 bytes) strictly in environment variables. Never hardcode master keys.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col gap-2">
+          <h4 className="font-bold text-white text-xs flex items-center gap-2">
+            <Lock size={14} className="text-primary" /> Hardware Locking
+          </h4>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            The generated <code className="text-primary font-mono">.xems</code> vault is cryptographically bound to the server HWID and file path, making stolen database files unreadable to attackers.
+          </p>
+        </div>
+      </div>
+
+      <DocsFooter
+        title="XEMS Configuration"
+        description="Review all XEMS configuration options, hardware binding, and transport settings."
+        buttonText="View Configuration"
+        href="/docs/security/xems/configuration"
+        iconName="Settings"
       />
     </div>
   );
