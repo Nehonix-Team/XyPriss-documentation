@@ -36,17 +36,16 @@ export default function XEMSConfigurationPage() {
       <CodeBlock
         language="typescript"
         code={`import { createServer } from "xypriss";
-import path from "path";
 
 const app = createServer({
     server: {
         xems: {
             enable: true,
-            path: path.resolve(process.cwd(), "vault.xems"), // Mandatory (.xems extension)
-            secret: process.env.XEMS_SECRET!,               // Mandatory (min 32 bytes)
-            ttl: "7d",                                      // Max 7 days retention
-            autoRotation: "1m",                             // "1m", "5m", "10s", or false
-            gracePeriod: 15000,                             // 15 seconds grace window
+            path: __sys__.path.resolve("vault.xems"), // Native __sys__.path API
+            secret: process.env.XEMS_SECRET!,         // Mandatory (min 32 bytes)
+            ttl: "7d",                                // Max 7 days retention
+            autoRotation: "1m",                       // "1m", "5m", "10s", or false
+            gracePeriod: 15000,                       // 15 seconds grace window
             cookieName: "xems_token",
             cookieOptions: {
                 httpOnly: true,
@@ -57,6 +56,10 @@ const app = createServer({
     },
 });`}
       />
+
+      <Callout type="tip" title="Recommended: Native __sys__.path API">
+        Prefer XyPriss's built-in <code className="text-primary font-mono font-bold">__sys__.path</code> API over Node.js <code className="text-muted-foreground font-mono">import path from "path"</code> for cross-platform, zero-dependency path resolutions.
+      </Callout>
 
       <SectionHeading level={2} id="parameters">
         Configuration Parameters

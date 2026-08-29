@@ -75,18 +75,17 @@ export default function XEMSTutorialPage() {
 
       <CodeBlock
         language="typescript"
-        code={`import { createServer } from "xypriss";
-import path from "path";
+        code={`import { createServer, __sys__ } from "xypriss";
 
 export const app = createServer({
     server: {
         xems: {
             enable: true,
-            path: path.resolve(process.cwd(), "vault.xems"), // Real vault path (.xems)
-            secret: process.env.XEMS_SECRET!,               // Min 32-byte master key
-            ttl: "7d",                                      // Expiration (max 7 days)
-            autoRotation: "1m",                             // Sliding window rotation
-            gracePeriod: 15000,                             // 15 seconds grace overlap
+            path: __sys__.path.resolve("vault.xems"), // Native __sys__.path API recommended
+            secret: process.env.XEMS_SECRET!,         // Min 32-byte master key
+            ttl: "7d",                                // Expiration (max 7 days)
+            autoRotation: "1m",                       // Sliding window rotation
+            gracePeriod: 15000,                       // 15 seconds grace overlap
             cookieName: "xems_token",
             cookieOptions: {
                 httpOnly: true,
