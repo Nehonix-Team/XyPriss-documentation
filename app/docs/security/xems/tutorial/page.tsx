@@ -22,8 +22,8 @@ export default function XEMSTutorialPage() {
 
       <Callout type="info" title="Field Revision Notice — XyPriss 9.12.60 (XEMS Core 1.1.22)">
         <p className="leading-relaxed">
-          Cette mise à jour majeure de l'architecture XEMS fait suite à une profonde réflexion et d'importants tests de charge sur le terrain en environnement de production. 
-          Elle est disponible à partir de <strong>XyPriss 9.12.60</strong> (intégrant <strong>XEMS Core v1.1.22</strong>).
+          This major architectural revision reflects extensive real-world testing and production feedback. 
+          Available starting from <strong>XyPriss 9.12.60</strong> (powered by <strong>XEMS Core v1.1.22</strong>).
         </p>
       </Callout>
 
