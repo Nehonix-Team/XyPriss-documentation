@@ -22,6 +22,16 @@ export default function EnvironmentShieldPage() {
         </p>
       </div>
 
+      <div className="flex flex-wrap items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 text-xs">
+        <div className="flex items-center gap-2 text-primary font-bold">
+          <Shield size={16} /> Version Compatibility: XyPriss v9.12.67+
+        </div>
+        <span className="text-slate-500">•</span>
+        <div className="text-slate-300 font-mono">
+          Status: <span className="text-green-400 font-bold">Hardened Zero-Trust Sandbox</span>
+        </div>
+      </div>
+
       <TechGraph 
         title="Security Shield Interception"
         badge="Zero-Leak Protection"
