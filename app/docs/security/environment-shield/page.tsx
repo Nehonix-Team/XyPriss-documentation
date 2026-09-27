@@ -39,7 +39,7 @@ export default function EnvironmentShieldPage() {
 
       <div className="flex flex-wrap items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 text-xs">
         <div className="flex items-center gap-2 text-primary font-bold">
-          <Shield size={16} /> Version Compatibility: XyPriss v9.12.67+
+          <Shield size={16} /> Version Compatibility: XyPriss v9.13.6+
         </div>
         <span className="text-slate-500">•</span>
         <div className="text-slate-300 font-mono">
@@ -52,7 +52,7 @@ export default function EnvironmentShieldPage() {
         badge="Zero-Leak Protection"
         nodes={[
           { iconName: "Terminal", title: "Access Attempt", subtitle: "process.env or fs.read", color: "blue" },
-          { iconName: "Shield", title: "libXESS Core", subtitle: "Go Interlock Engine", color: "primary", active: true },
+          { iconName: "Shield", title: "libXESS Core", subtitle: "", color: "primary", active: true },
           { iconName: "EyeOff", title: "Honeypot / Masking", subtitle: "Decoys or Undefined", color: "orange" },
           { iconName: "Lock", title: "Process Sandbox", subtitle: "Secrets Secured", color: "purple" }
         ]}
