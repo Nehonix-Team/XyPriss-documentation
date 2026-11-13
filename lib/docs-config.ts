@@ -26,6 +26,7 @@ export const docsConfig: DocT[] = [
             title: "Server Architecture",
             href: "/docs/xhsc-core/architecture",
           },
+          { title: "libSynapx (IPC & Dispatcher)", href: "/docs/xhsc-core/libsynapx" },
           { title: "XInS (Intelligent Scaling)", href: "/docs/xhsc-core/XInS" },
         ],
       },
@@ -38,6 +39,7 @@ export const docsConfig: DocT[] = [
     items: [
       { title: "Request & Response", href: "/docs/server/request-response" },
       { title: "XJSON API", href: "/docs/features/xjson" },
+      { title: "XML ↔ JSON Conversion", href: "/docs/features/conversion" },
       { title: "Client IP Detection", href: "/docs/server/get-ip" },
       { title: "File Streaming", href: "/docs/server/send-file" },
       { title: "Structured Responses (Send)", href: "/docs/server/send" },

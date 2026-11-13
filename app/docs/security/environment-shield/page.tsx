@@ -66,7 +66,7 @@ export default function EnvironmentShieldPage() {
         The libXESS Engine Core
       </SectionHeading>
       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-        Built as a low-level Go core embedded directly into the XHSC network engine, <strong>libXESS</strong> operates ahead of runtime bootstrap:
+        Built as a low-level Go core embedded directly into the XHSC network engine, <strong>libXESS</strong> operates at the process supervision and runtime boundary layer before application code evaluation begins. It acts as a hardened runtime shield and filesystem honeypot — not a substitute for OS-level MAC policies or hardware HSM enclaves.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
@@ -214,8 +214,65 @@ const apiKey = process.env.DATABASE_URL;
 const dbUrl = __sys__.__env__.get("DATABASE_URL");
 
 // Enforces existence (throws if missing or empty)
-const secretKey = __sys__.__env__.getStrict("JWT_SECRET");`}
+const secretKey = __sys__.__env__.getStrict("JWT_SECRET");
+
+// Ephemeral buffer retrieval with deterministic zeroization (no JS string materialized)
+const signatureValid = __sys__.__env__.withSecret("WEBHOOK_HMAC_KEY", (keyBytes) => {
+    return verifyHmac(payload, keyBytes);
+});`}
           />
+
+          <h4 className="text-sm font-bold text-white mt-6 mb-2">
+            Declarative Configuration References (<code>&amp;(env).KEY</code>)
+          </h4>
+          <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            Configuration files (<code>xypriss.config.jsonc</code>) support declarative environment variable interpolation via the <code>&amp;(env).KEY</code> syntax:
+          </p>
+          <CodeBlock
+            language="jsonc"
+            code={`{
+    "server": {
+        "port": "&(env).PORT || 3000",
+        "host": "&(env).HOST || '127.0.0.1'"
+    },
+    "security": {
+        "csrf": {
+            "secret": "&(env).CSRF_SECRET"
+        }
+    },
+    "$vars": {
+        "__port__": "&(env).PORT || 3000",
+        "__db_url__": "&(env).DATABASE_URL"
+    }
+}`}
+          />
+        </div>
+      </div>
+
+      <SectionHeading level={2} id="memory-boundaries">
+        Memory &amp; Heap Retention Boundaries
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        Understanding what <code>libXESS</code> guarantees in memory is essential for designing secure production services:
+      </p>
+      <div className="space-y-3 my-2">
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+          <h4 className="font-bold text-white text-xs mb-1">At Rest (Before Retrieval)</h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Secrets are held exclusively in the <code>libXESS</code> supervisor vault. Before <code>get()</code>, <code>getStrict()</code>, or <code>withSecret()</code> is called, <strong>0 secret bytes</strong> appear in <code>process.env</code>, <code>/proc/&lt;PID&gt;/environ</code>, or the V8/JavaScriptCore heap.
+          </p>
+        </div>
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+          <h4 className="font-bold text-white text-xs mb-1">After <code>get()</code> / <code>getStrict()</code></h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            JavaScript strings are immutable and managed by the runtime garbage collector (V8 / JSC). Once retrieved via <code>get()</code> or <code>getStrict()</code>, the value exists as a standard JS <code>string</code> in the heap until reclaimed by GC. <code>libXESS</code> cannot retroactively zeroize an immutable JS string.
+          </p>
+        </div>
+        <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+          <h4 className="font-bold text-primary text-xs mb-1">Zeroizable Ephemeral Buffers (<code>withSecret</code>)</h4>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            For cryptographic operations, signing, or native calls that do not require a JS <code>string</code>, use <code>__sys__.__env__.withSecret(key, (buf) =&gt; ...)</code>. It transfers the secret as raw bytes into a mutable <code>Uint8Array</code> and deterministically wipes it (<code>buf.fill(0)</code>) in a <code>finally</code> block as soon as the callback finishes (sync or async). Avoid decoding <code>buf</code> into a JS <code>string</code> inside the callback.
+          </p>
         </div>
       </div>
 
@@ -385,7 +442,27 @@ const secretKey = __sys__.__env__.getStrict("JWT_SECRET");`}
           <div>
             <h5 className="text-white font-bold text-xs mb-1">Always Launch via XFPM</h5>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Use <code className="text-slate-300 font-mono">xfpm dev</code> locally and <code className="text-slate-300 font-mono">xfpm start</code> in production to engage libXESS confinement automatically.
+              Use <code className="text-slate-300 font-mono">xfpm run</code>, <code className="text-slate-300 font-mono">xfpm dev</code>, or <code className="text-slate-300 font-mono">xfpm start</code> to engage libXESS confinement. Direct execution outside <code>xfpm</code> triggers <code className="text-slate-300 font-mono">XessShieldRequiredError</code>.
+            </p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex items-start gap-3">
+          <Zap className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <div>
+            <h5 className="text-white font-bold text-xs mb-1">Verify Production Profile</h5>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Setting <code>NODE_ENV=production</code> alone does not switch <code>__sys__.__env__.mode</code>. Explicitly configure the production profile and verify <code className="text-slate-300 font-mono">__sys__.__env__.mode === &quot;production&quot;</code> at startup.
+            </p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex items-start gap-3">
+          <Zap className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <div>
+            <h5 className="text-white font-bold text-xs mb-1">Disable Heap Introspection</h5>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Strictly disable <code>--inspect</code>, <code>v8.writeHeapSnapshot()</code>, and profiling endpoints in production so attackers cannot inspect JS strings already retrieved into the heap.
             </p>
           </div>
         </div>
