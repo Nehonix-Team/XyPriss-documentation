@@ -168,6 +168,15 @@ export default function ArchitecturePage() {
         </p>
       </div>
 
+      <Callout type="tip" title="Quick Bootstrap with xfpm init">
+        The sections below walk through the manual setup to explain how each
+        layer fits together. To scaffold this clean, pre-configured architecture
+        automatically in seconds, run:
+        <div className="mt-3">
+          <CodeBlock language="bash" code="xfpm init" />
+        </div>
+      </Callout>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <ArchitectureCard
           title="Single Server"
@@ -273,49 +282,53 @@ export default function ArchitecturePage() {
                       icon: Folder,
                       children: [
                         { name: "server.ts", icon: FileCode2 },
+                        { name: "router.ts", icon: FileCode2 },
                         {
                           name: "configs",
                           icon: Folder,
-                          children: [{ name: "manifest.ts", icon: FileCode2 }],
-                        },
-                        {
-                          name: "routers",
-                          icon: Folder,
                           children: [
-                            { name: "index.ts", icon: FileCode2 },
-                            { name: "api.router.ts", icon: FileCode2 },
-                            { name: "auth.router.ts", icon: FileCode2 },
-                            { name: "admin.router.ts", icon: FileCode2 },
+                            { name: "xypriss.config.ts", icon: FileCode2 },
+                            { name: "manifest.ts", icon: FileCode2 },
+                            { name: "db.ts", icon: FileCode2 },
                           ],
                         },
                         {
-                          name: "controllers",
+                          name: "routes",
                           icon: Folder,
                           children: [
-                            {
-                              name: "api",
-                              icon: Folder,
-                              children: [{ name: "books.controller.ts", icon: FileCode2 }],
-                            },
-                            {
-                              name: "auth",
-                              icon: Folder,
-                              children: [{ name: "auth.controller.ts", icon: FileCode2 }],
-                            },
-                            {
-                              name: "admin",
-                              icon: Folder,
-                              children: [{ name: "dashboard.controller.ts", icon: FileCode2 }],
-                            },
+                            { name: "api.route.ts", icon: FileCode2 },
+                            { name: "auth.route.ts", icon: FileCode2 },
                           ],
                         },
                         {
-                          name: "middleware",
+                          name: "controller",
                           icon: Folder,
-                          children: [{ name: "logger.ts", icon: FileCode2 }],
+                          children: [
+                            { name: "api.controller.ts", icon: FileCode2 },
+                            { name: "auth.controller.ts", icon: FileCode2 },
+                          ],
                         },
-                        { name: "database", icon: Folder, children: [{ name: "db.ts", icon: FileCode2 }] },
-                        { name: "schema", icon: Folder, children: [{ name: "schema.ts", icon: FileCode2 }] },
+                        {
+                          name: "services",
+                          icon: Folder,
+                          children: [
+                            { name: "api.service.ts", icon: FileCode2 },
+                            { name: "auth.service.ts", icon: FileCode2 },
+                          ],
+                        },
+                        {
+                          name: "guards",
+                          icon: Folder,
+                          children: [
+                            { name: "index.guard.ts", icon: FileCode2 },
+                            { name: "auth.guard.ts", icon: FileCode2 },
+                          ],
+                        },
+                        { name: "schemas", icon: Folder, children: [{ name: "auth.schema.ts", icon: FileCode2 }] },
+                        { name: "db", icon: Folder, children: [{ name: "schema.ts", icon: FileCode2 }] },
+                        { name: "const", icon: Folder, children: [{ name: "timeout.ts", icon: FileCode2 }] },
+                        { name: "types", icon: Folder, children: [{ name: "all.ts", icon: FileCode2 }] },
+                        { name: "utils", icon: Folder, children: [{ name: "crypto.ts", icon: FileCode2 }] },
                       ],
                     },
                   ],
@@ -331,16 +344,17 @@ export default function ArchitecturePage() {
               <CodeBlock
                 language="typescript"
                 code={`import { createServer } from "xypriss";
+import { serverConfigs } from "./configs/xypriss.config";
+import { guardsRunner } from "./guards/index.guard";
 
-const app = createServer({
-    // Global config (security, plugins, logging)
-});`}
+const app = createServer(serverConfigs);
+guardsRunner();`}
               />
             </Step>
             <Step title="Mount Root Router">
               <CodeBlock
                 language="typescript"
-                code={`import router from "./routers";
+                code={`import { router } from "./router";
 
 app.use("/", router);`}
               />
@@ -366,56 +380,72 @@ app.use("/", router);`}
             surfaces.
           </p>
 
-          <Callout type="info" title="Example Scope">
-            The diagrams below show a two-server setup for clarity:{" "}
-            <code className="text-primary">main</code> for the public API and{" "}
-            <code className="text-primary">login</code> for authentication. The
-            same pattern can be extended to additional servers (admin, webhooks,
-            internal) as your surface area grows.
+          <Callout type="info" title="Enterprise Modular XMS Topology">
+            The recommended multi-server setup splits the application into three
+            dedicated nodes resolved from{" "}
+            <code className="text-primary">xypriss.config.jsonc</code>:{" "}
+            <code className="text-primary">api</code> (primary REST API),{" "}
+            <code className="text-primary">auth</code> (authentication &amp;
+            identity), and <code className="text-primary">cdn</code> (media
+            &amp; sandboxed static assets).
           </Callout>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
             <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
               <h4 className="font-bold text-white text-sm mb-2 flex items-center gap-2">
-                <ShieldCheck size={16} className="text-primary" /> main.server
+                <Server size={16} className="text-primary" /> api.server.ts
               </h4>
               <ul className="space-y-2 text-xs text-muted-foreground">
                 <li>
-                  Port: dynamic (assigned via config or manifest)
+                  Node: <code className="text-primary">servers.main</code>
                 </li>
                 <li>
-                  Prefix: <code className="text-primary">/api</code>
+                  Prefix: <code className="text-primary">/api</code>,{" "}
+                  <code className="text-primary">/</code>
                 </li>
-                <li>Strategy: strict-match</li>
-                <li>Routes: public API endpoints</li>
+                <li>Scope: Core REST API &amp; business services</li>
               </ul>
             </div>
             <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
               <h4 className="font-bold text-white text-sm mb-2 flex items-center gap-2">
-                <Lock size={16} className="text-primary" /> login.server
+                <Lock size={16} className="text-primary" /> auth.server.ts
               </h4>
               <ul className="space-y-2 text-xs text-muted-foreground">
                 <li>
-                  Port: <code className="text-primary">manifest.servers.login.port</code>
+                  Node: <code className="text-primary">servers.auth</code>
                 </li>
                 <li>
-                  Prefix: <code className="text-primary">/auth</code>
+                  Prefix: <code className="text-primary">/auth</code>,{" "}
+                  <code className="text-primary">/api</code>
                 </li>
-                <li>Plugins: superdev, Swagger (7289), Xyphra</li>
-                <li>Routes: rate-limited GET /, POST /login</li>
+                <li>Scope: Login, registration, RBAC &amp; tokens</li>
+              </ul>
+            </div>
+            <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+              <h4 className="font-bold text-white text-sm mb-2 flex items-center gap-2">
+                <ShieldCheck size={16} className="text-primary" /> cdn.server.ts
+              </h4>
+              <ul className="space-y-2 text-xs text-muted-foreground">
+                <li>
+                  Node: <code className="text-primary">servers.cdn</code>
+                </li>
+                <li>
+                  Prefix: <code className="text-primary">/cdn</code>
+                </li>
+                <li>Scope: XStatic sandboxed uploads &amp; media</li>
               </ul>
             </div>
           </div>
 
           <Callout type="info" title="How They Work Together">
-            Both servers share the same underlying XHSC native engine but are
-            fully isolated at the HTTP layer. The main server handles public API
-            traffic, while the login server concentrates all authentication,
-            session, and security-critical logic. Requests are routed by
-            prefix: <code>/api/*</code> goes to{" "}
-            <code className="text-primary">main.server</code>,{" "}
-            <code>/auth/*</code> goes to{" "}
-            <code className="text-primary">login.server</code>.
+            All three server nodes share the underlying native XHSC engine
+            while remaining isolated at the HTTP and security boundary layer.{" "}
+            <code className="text-primary">src/router.ts</code> dispatches
+            requests by both URL prefix and{" "}
+            <code className="text-primary">serverId</code>:{" "}
+            <code>/api/*</code> to <code className="text-primary">mainServer</code>,{" "}
+            <code>/auth/*</code> to <code className="text-primary">authServer</code>,
+            and <code>/cdn/*</code> to <code className="text-primary">cdnServer</code>.
           </Callout>
 
           <SectionHeading level={3} id="multi-structure">
@@ -424,7 +454,7 @@ app.use("/", router);`}
           <FileTree
             data={[
               {
-                name: "supperdev",
+                name: "my-xypriss-app",
                 icon: Folder,
                 children: [
                   { name: "package.json", icon: FileJson },
@@ -435,50 +465,88 @@ app.use("/", router);`}
                     icon: Folder,
                     children: [
                       { name: "server.ts", icon: FileCode2 },
+                      { name: "router.ts", icon: FileCode2 },
                       {
                         name: "configs",
                         icon: Folder,
                         children: [
-                          { name: "manifest.ts", icon: FileCode2 },
                           { name: "xypriss.config.ts", icon: FileCode2 },
+                          { name: "servers.config.ts", icon: FileCode2 },
+                          { name: "manifest.ts", icon: FileCode2 },
+                          { name: "xemsConfigs.ts", icon: FileCode2 },
+                          { name: "db.ts", icon: FileCode2 },
+                          { name: "db.prisma.ts", icon: FileCode2 },
                         ],
                       },
                       {
                         name: "servers",
                         icon: Folder,
                         children: [
-                          { name: "main.server.ts", icon: FileCode2 },
-                          { name: "login.server.ts", icon: FileCode2 },
+                          { name: "api.server.ts", icon: FileCode2 },
+                          { name: "auth.server.ts", icon: FileCode2 },
+                          { name: "cdn.server.ts", icon: FileCode2 },
                         ],
                       },
                       {
-                        name: "routers",
+                        name: "routes",
                         icon: Folder,
                         children: [
-                          { name: "index.ts", icon: FileCode2 },
-                          { name: "main.router.ts", icon: FileCode2 },
-                          { name: "auth.router.ts", icon: FileCode2 },
+                          { name: "api.route.ts", icon: FileCode2 },
+                          { name: "auth.route.ts", icon: FileCode2 },
+                          { name: "cdn.route.ts", icon: FileCode2 },
                         ],
                       },
                       {
-                        name: "controllers",
+                        name: "controller",
                         icon: Folder,
                         children: [
-                          {
-                            name: "main",
-                            icon: Folder,
-                            children: [{ name: "books.controller.ts", icon: FileCode2 }],
-                          },
-                          {
-                            name: "auth",
-                            icon: Folder,
-                            children: [{ name: "auth.controller.ts", icon: FileCode2 }],
-                          },
+                          { name: "api.controller.ts", icon: FileCode2 },
+                          { name: "auth.controller.ts", icon: FileCode2 },
+                          { name: "cdn.controller.ts", icon: FileCode2 },
                         ],
                       },
-                      { name: "plugins", icon: Folder, children: [] },
-                      { name: "database", icon: Folder, children: [{ name: "db.ts", icon: FileCode2 }] },
-                      { name: "schema", icon: Folder, children: [{ name: "schema.ts", icon: FileCode2 }] },
+                      {
+                        name: "services",
+                        icon: Folder,
+                        children: [
+                          { name: "api.service.ts", icon: FileCode2 },
+                          { name: "auth.service.ts", icon: FileCode2 },
+                          { name: "cdn.service.ts", icon: FileCode2 },
+                        ],
+                      },
+                      {
+                        name: "guards",
+                        icon: Folder,
+                        children: [
+                          { name: "index.guard.ts", icon: FileCode2 },
+                          { name: "auth.guard.ts", icon: FileCode2 },
+                          { name: "roles.guard.ts", icon: FileCode2 },
+                        ],
+                      },
+                      { name: "db", icon: Folder, children: [{ name: "schema.ts", icon: FileCode2 }] },
+                      { name: "schemas", icon: Folder, children: [{ name: "auth.schema.ts", icon: FileCode2 }] },
+                      { name: "types", icon: Folder, children: [{ name: "all.ts", icon: FileCode2 }] },
+                      {
+                        name: "const",
+                        icon: Folder,
+                        children: [
+                          { name: "cdnPaths.ts", icon: FileCode2 },
+                          { name: "corsOrigins.ts", icon: FileCode2 },
+                          { name: "csrfCfg.ts", icon: FileCode2 },
+                          { name: "responseC.ts", icon: FileCode2 },
+                          { name: "timeout.ts", icon: FileCode2 },
+                        ],
+                      },
+                      {
+                        name: "utils",
+                        icon: Folder,
+                        children: [
+                          { name: "crypto.ts", icon: FileCode2 },
+                          { name: "fs.ts", icon: FileCode2 },
+                          { name: "obj.ts", icon: FileCode2 },
+                          { name: "path.ts", icon: FileCode2 },
+                        ],
+                      },
                     ],
                   },
                 ],
@@ -490,53 +558,96 @@ app.use("/", router);`}
             Initialization Flow
           </SectionHeading>
           <Steps>
-            <Step title="Configure Multi-Server">
+            <Step title="Declare Environment & Server Topology (xypriss.config.jsonc)">
               <CodeBlock
-                language="typescript"
-                code={`// src/configs/xypriss.config.ts
-export default {
-    multiServer: {
-        enabled: true,
-        servers: [
-            { id: "main", port: 3000, routePrefix: "/api", routePrefixStrategy: "strict" },
-            { id: "login", port: 3001, routePrefix: "/auth", routePrefixStrategy: "strict" }
-        ]
+                language="jsonc"
+                code={`// xypriss.config.jsonc
+{
+  "$env": {
+    "whitelist": ["NODE_ENV", "PORT"]
+  },
+  "$vars": {
+    "servers": {
+      "auth": { "port": "&(env).AUTH_SERVER_PORT || 9182", "id": "&(env).AUTH_DOMAIN || rest.auth.domain.com" },
+      "main": { "port": "&(env).MAIN_SERVER_PORT || 1822", "id": "&(env).MAIN_DOMAIN || rest.api.domain.com" },
+      "cdn": { "port": "&(env).CDN_SERVER_PORT || 5829", "id": "&(env).CDN_DOMAIN || rest.cdn.domain.com" }
     }
-};`}
+  }
+}`}
               />
             </Step>
-            <Step title="Create Server">
+            <Step title="Bind Multi-Server Router (src/router.ts)">
               <CodeBlock
                 language="typescript"
-                code={`import { createServer } from "xypriss";
-import serverConfigs from "./configs/xypriss.config";
+                code={`// src/router.ts
+import { Router } from "xypriss";
+import { apiRouter } from "./routes/api.route";
+import { authRouter } from "./routes/auth.route";
+import { cdnRouter } from "./routes/cdn.route";
+import { mainServer } from "./servers/api.server";
+import { authServer } from "./servers/auth.server";
+import { cdnServer } from "./servers/cdn.server";
 
-const app = createServer(serverConfigs);`}
-              />
-            </Step>
-            <Step title="Mount Root Router">
-              <CodeBlock
-                language="typescript"
-                code={`import router from "./routers";
+const r = Router();
 
-app.use("/", router);`}
+r.group({ prefix: ["/api", "/"], serverId: mainServer.id }, (api) => {
+  api.use("/", apiRouter);
+});
+
+r.group({ prefix: ["/auth", "/api"], serverId: authServer.id }, (auth) => {
+  auth.use("/", authRouter);
+});
+
+r.group({ prefix: "/cdn", serverId: cdnServer.id }, (cdn) => {
+  cdn.use("/", cdnRouter);
+});
+
+export { r as router };`}
               />
             </Step>
-            <Step title="Start">
+            <Step title="Bootstrap Guards, Router, XStatic & Start (src/server.ts)">
               <CodeBlock
                 language="typescript"
-                code={`app.start(); // Boots both main & login instances`}
+                code={`// src/server.ts
+import { createServer, XStatic } from "xypriss";
+import { serverConfigs } from "./configs/xypriss.config";
+import { router } from "./router";
+import { guardsRunner } from "./guards/index.guard";
+import { permanentCdnPath, publicCdnPath, publicCdnTmpPath } from "./const/cdnPaths";
+
+const app = createServer(serverConfigs);
+
+// 1. Register global XyGuard rules
+guardsRunner();
+
+// 2. Mount central multi-server routing topology
+app.use("/", router);
+
+// 3. Sandboxed static asset & temp upload delivery via XStatic
+const xs = new XStatic(app, __sys__);
+xs.define(publicCdnTmpPath, __sys__.path.tmpUserDir, {
+  allowOutsideRoot: true,
+  allowOutsideDir: false,
+});
+xs.define(publicCdnPath, permanentCdnPath, {
+  allowOutsideRoot: false,
+  allowOutsideDir: false,
+});
+
+// 4. Start all configured XMS server nodes
+app.start();`}
               />
             </Step>
           </Steps>
 
           <Callout type="success" title="Why This Architecture?">
-            <strong>Security:</strong> The auth server can have stricter plugins
-            (rate limiting, Swagger, Xyphra) without affecting the public API
-            surface. <strong>Scalability:</strong> Each server can be scaled or
-            deployed independently. <strong>Maintainability:</strong> Clear
-            separation of concerns makes the codebase easier to navigate and
-            test.
+            <strong>Strict Separation of Concerns:</strong> Routes, controllers,
+            services, guards, and schemas live in dedicated layers.{" "}
+            <strong>Zero-Trust by Default:</strong> Environment access is
+            whitelisted in <code>xypriss.config.jsonc</code>, guards are
+            registered globally via <code>XyGuard</code>, and temporary storage
+            is sandboxed inside <code>__sys__.path.tmpUserDir</code> with{" "}
+            <code>XStatic</code>.
           </Callout>
         </div>
       )}
