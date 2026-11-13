@@ -193,7 +193,7 @@ console.log(__sys__.__env__.get("DATABASE_URL"));
             2. Variable Masking &amp; Access Control
           </h3>
           <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
-            By default, global <code className="text-primary font-mono">process.env</code> is shielded. System variables essential for OS stability pass through, while business secrets return <code className="text-primary font-mono">undefined</code> and unauthorized file reads receive honeypot decoys.
+            By default, global <code className="text-primary font-mono">process.env</code> is shielded. System variables essential for OS stability pass through, while unwhitelisted access attempts return <code className="text-primary font-mono">undefined</code> (or trigger security audit logging in development profiles) and unauthorized file reads receive honeypot decoys.
           </p>
         </div>
 
@@ -271,7 +271,7 @@ const signatureValid = __sys__.__env__.withSecret("WEBHOOK_HMAC_KEY", (keyBytes)
         <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
           <h4 className="font-bold text-primary text-xs mb-1">Zeroizable Ephemeral Buffers (<code>withSecret</code>)</h4>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            For cryptographic operations, signing, or native calls that do not require a JS <code>string</code>, use <code>__sys__.__env__.withSecret(key, (buf) =&gt; ...)</code>. It transfers the secret as raw bytes into a mutable <code>Uint8Array</code> and deterministically wipes it (<code>buf.fill(0)</code>) in a <code>finally</code> block as soon as the callback finishes (sync or async). Avoid decoding <code>buf</code> into a JS <code>string</code> inside the callback.
+            For cryptographic operations, signing, or native calls that do not require a JS <code>string</code>, use <code>__sys__.__env__.withSecret(key, (buf) =&gt; ...)</code>. It transfers the secret as raw bytes into a mutable <code>Uint8Array</code> and deterministically wipes it (<code>buf.fill(0)</code>) in a <code>finally</code> block as soon as the callback finishes (sync or async). Avoid decoding <code>buf</code> into a JS <code>string</code> inside the callback. Note that while <code>withSecret</code> wipes the application <code>Uint8Array</code> and avoids JS heap strings, it cannot retroactively wipe internal native buffers allocated by third-party primitives (such as OpenSSL contexts during <code>crypto.createHmac</code>).
           </p>
         </div>
       </div>
@@ -442,7 +442,17 @@ const signatureValid = __sys__.__env__.withSecret("WEBHOOK_HMAC_KEY", (keyBytes)
           <div>
             <h5 className="text-white font-bold text-xs mb-1">Always Launch via XFPM</h5>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Use <code className="text-slate-300 font-mono">xfpm run</code>, <code className="text-slate-300 font-mono">xfpm dev</code>, or <code className="text-slate-300 font-mono">xfpm start</code> to engage libXESS confinement. Direct execution outside <code>xfpm</code> triggers <code className="text-slate-300 font-mono">XessShieldRequiredError</code>.
+              Use <code className="text-slate-300 font-mono">xfpm run</code>, <code className="text-slate-300 font-mono">xfpm dev</code>, <code className="text-slate-300 font-mono">xfpm start</code>, or <code className="text-slate-300 font-mono">xfpm exec</code> to engage libXESS confinement. Direct execution outside <code>xfpm</code> triggers <code className="text-slate-300 font-mono">XessShieldRequiredError</code>.
+            </p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] flex items-start gap-3">
+          <Zap className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <div>
+            <h5 className="text-white font-bold text-xs mb-1">Minimize JS Heap Retention</h5>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Prefer <code>__sys__.__env__.withSecret()</code> for binary/crypto secrets. When a <code>string</code> is required by a third-party SDK, call <code>get()</code> / <code>getStrict()</code> at the latest possible moment in a short local scope rather than storing secrets in long-lived globals.
             </p>
           </div>
         </div>
