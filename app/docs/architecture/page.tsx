@@ -6,6 +6,7 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
 import { Steps, Step } from "@/components/ui/Steps";
+import { XyPrissLifecycleFlow } from "@/components/ui/XyPrissLifecycleFlow";
 import {
   Server,
   Layers,
@@ -651,6 +652,17 @@ app.start();`}
           </Callout>
         </div>
       )}
+
+      <SectionHeading level={2} id="execution-lifecycle">
+        Execution &amp; Boot Lifecycle
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        Whether running in Single-Server or Multi-Server (XMS) mode, every
+        XyPriss application follows the same deterministic, Zero-Trust boot
+        sequence from <code>xfpm dev</code> supervision through{" "}
+        <code>app.start()</code>:
+      </p>
+      <XyPrissLifecycleFlow />
 
       <DocsFooter
         title="Multi-Server Setup"

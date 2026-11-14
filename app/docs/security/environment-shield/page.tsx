@@ -39,7 +39,7 @@ export default function EnvironmentShieldPage() {
 
       <div className="flex flex-wrap items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 text-xs">
         <div className="flex items-center gap-2 text-primary font-bold">
-          <Shield size={16} /> Version Compatibility: XyPriss v9.13.6+
+          <Shield size={16} /> Version Compatibility: XyPriss v9.14.35+
         </div>
         <span className="text-slate-500">•</span>
         <div className="text-slate-300 font-mono">
@@ -363,6 +363,59 @@ const signatureValid = __sys__.__env__.withSecret("WEBHOOK_HMAC_KEY", (keyBytes)
 }`}
           />
         </div>
+
+        <div>
+          <h3 className="text-base font-bold text-white mb-2" id="scoped-packages">
+            Scoped Package Environment Sandboxing (<code className="text-primary font-mono">$env.packages</code>)
+          </h3>
+          <Callout type="warning" title="Advisory ID: XSA-XESS-028">
+            By default, <code className="text-primary font-mono">$env.whitelist</code> grants global access to whitelisted variables for both the host application and any unconfigured dependency in <code className="text-slate-300 font-mono">node_modules</code>. To prevent sensitive secrets from being accessible across the entire dependency graph, configure <strong>Scoped Package Sandboxes</strong> using <code className="text-primary font-mono">$env.packages</code>.
+          </Callout>
+          <p className="text-sm text-muted-foreground my-3 leading-relaxed">
+            When a package is declared under <code className="text-primary font-mono">$env.packages</code>, its access to <code className="text-primary font-mono">process.env</code> is restricted to its own scoped <code className="text-primary font-mono">whitelist</code>. It <strong>cannot</strong> see the global <code className="text-primary font-mono">$env.whitelist</code> or default system keys unless <code className="text-primary font-mono">inheritGlobal: true</code> is explicitly enabled.
+          </p>
+          <CodeBlock
+            language="jsonc"
+            code={`{
+  "$env": {
+    // Global whitelist: accessible by host app and packages without a dedicated sandbox
+    "whitelist": ["APP_PUBLIC_URL"],
+
+    "packages": {
+      // Dedicated sandbox for xypriss-security:
+      // Only 'xypriss-security' can read these secrets from process.env.
+      // Other packages (e.g. lodash, express) will receive undefined + [SECURITY] warning.
+      "xypriss-security": {
+        "whitelist": ["ENC_SECRET_KEY", "ENC_SECRET_SEED", "XYPRISS_SEC_WARNINGS"],
+        "inheritGlobal": false // Default: does NOT inherit global whitelist
+      },
+
+      // Scoped access with global inheritance:
+      "@stripe/stripe-node": {
+        "whitelist": ["STRIPE_API_KEY"],
+        "inheritGlobal": true // Can access STRIPE_API_KEY + global whitelist (APP_PUBLIC_URL, PORT, etc.)
+      }
+    }
+  }
+}`}
+          />
+          <div className="mt-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] space-y-2 text-xs text-muted-foreground">
+            <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-2">
+              Package Sandboxing Rules
+            </h4>
+            <p>
+              <strong className="text-white">1. Scoped Isolation:</strong> A variable defined solely in <code className="text-slate-300 font-mono">packages[pkg].whitelist</code> can <strong>only</strong> be read by that specific package. All other callers (including other dependencies and undeclared packages) receive <code className="text-slate-300 font-mono">undefined</code>.
+            </p>
+            <p>
+              <strong className="text-white">2. Selective Inheritance (<code className="text-primary font-mono">inheritGlobal</code>):</strong>{" "}
+              <code className="text-slate-300 font-mono">false</code> (default) restricts the package exclusively to its explicit <code className="text-slate-300 font-mono">whitelist</code>;{" "}
+              <code className="text-slate-300 font-mono">true</code> grants access to its scoped <code className="text-slate-300 font-mono">whitelist</code> <strong>plus</strong> all global whitelist and default system keys.
+            </p>
+            <p>
+              <strong className="text-white">3. Undeclared Packages:</strong> Packages not listed in <code className="text-slate-300 font-mono">packages</code> retain standard access to the global <code className="text-slate-300 font-mono">$env.whitelist</code> and default system keys.
+            </p>
+          </div>
+        </div>
       </div>
 
       <SectionHeading level={2} id="config-reference">
@@ -390,13 +443,31 @@ const signatureValid = __sys__.__env__.withSecret("WEBHOOK_HMAC_KEY", (keyBytes)
               <td className="p-3 text-primary font-bold">$env.whitelist</td>
               <td className="p-3 text-slate-300">string[]</td>
               <td className="p-3 text-slate-300">[]</td>
-              <td className="p-3 text-slate-400 font-sans">Explicit list of variable keys permitted for direct <code className="text-slate-300 font-mono">process.env</code> access.</td>
+              <td className="p-3 text-slate-400 font-sans">Explicit list of variable keys permitted for direct <code className="text-slate-300 font-mono">process.env</code> access globally.</td>
             </tr>
             <tr>
               <td className="p-3 text-primary font-bold">$env.replaceDefaultWhitelist</td>
               <td className="p-3 text-slate-300">boolean</td>
               <td className="p-3 text-slate-300">false</td>
               <td className="p-3 text-slate-400 font-sans">When <code className="text-slate-300 font-mono">true</code>, discards all default system keys and enforces only the custom whitelist.</td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 text-primary font-bold">$env.packages</td>
+              <td className="p-3 text-slate-300">Record&lt;string, PackageCfg&gt;</td>
+              <td className="p-3 text-slate-500">undefined</td>
+              <td className="p-3 text-slate-400 font-sans">Per-package scoped sandbox configurations (<code className="text-slate-300 font-mono">XSA-XESS-028</code>).</td>
+            </tr>
+            <tr>
+              <td className="p-3 text-primary font-bold">$env.packages.&lt;pkg&gt;.whitelist</td>
+              <td className="p-3 text-slate-300">string[]</td>
+              <td className="p-3 text-slate-300">[]</td>
+              <td className="p-3 text-slate-400 font-sans">Variables whitelisted strictly for the named package.</td>
+            </tr>
+            <tr className="bg-white/[0.02]">
+              <td className="p-3 text-primary font-bold">$env.packages.&lt;pkg&gt;.inheritGlobal</td>
+              <td className="p-3 text-slate-300">boolean</td>
+              <td className="p-3 text-slate-300">false</td>
+              <td className="p-3 text-slate-400 font-sans">When <code className="text-slate-300 font-mono">true</code>, merges the global whitelist and default keys into this package&apos;s scope.</td>
             </tr>
           </tbody>
         </table>
