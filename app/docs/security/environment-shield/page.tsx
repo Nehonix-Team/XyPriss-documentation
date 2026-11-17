@@ -37,6 +37,15 @@ export default function EnvironmentShieldPage() {
         </p>
       </div>
 
+      <Callout type="warning" title="Scope of Protection & Threat Model">
+        <p className="text-xs text-muted-foreground leading-relaxed mb-2">
+          <strong>libXESS is not an antivirus and is not designed to protect your physical operating system.</strong> It does not protect against someone with physical access to your machine opening and reading your <code>.env</code> file directly on disk.
+        </p>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          <strong>What libXESS guarantees with 100% certainty</strong> is zero-trust application runtime confinement: <strong>no code or dependency—whether located in <code>node_modules</code>, transitively resolved, or executing in runtime memory—can touch, read, or exfiltrate your real <code>.env</code> file or environment variables.</strong>
+        </p>
+      </Callout>
+
       <div className="flex flex-wrap items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 text-xs">
         <div className="flex items-center gap-2 text-primary font-bold">
           <Shield size={16} /> Version Compatibility: XyPriss v9.14.35+

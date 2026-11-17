@@ -6,6 +6,7 @@ export const docsConfig: DocT[] = [
     items: [
       { title: "Introduction", href: "/docs" },
       { title: "Installation", href: "/docs/installation" },
+      { title: "Windows Notes", href: "/docs/installation/windows" },
       { title: "Quick Start", href: "/docs/quick-start" },
     ],
   },
@@ -256,6 +257,18 @@ export const docsConfig: DocT[] = [
   },
   {
     title: "Community",
-    items: [{ title: "Contributing", href: "/docs/contributing" }],
+    items: [
+      { title: "Contributing", href: "/docs/contributing" },
+      {
+        title: "Troubleshooting",
+        href: "/docs/troubleshooting",
+        items: [
+          {
+            title: "libXESS Security Violation",
+            href: "/docs/troubleshooting/libxess-security-violation",
+          },
+        ],
+      },
+    ],
   },
 ];
