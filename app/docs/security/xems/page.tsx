@@ -17,6 +17,13 @@ export default function XEMSLandingPage() {
         persistence with zero external dependencies.
       </p>
 
+      <Callout type="info" title="Field Revision Notice — XyPriss 9.12.60 (XEMS Core 1.1.22)">
+        <p className="leading-relaxed">
+          This major architectural revision reflects extensive real-world testing and production feedback. 
+          Available starting from <strong>XyPriss 9.12.60</strong> (powered by <strong>XEMS Core v1.1.22</strong>).
+        </p>
+      </Callout>
+
       <SectionHeading level={2}>Core Concepts</SectionHeading>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
         <div className="p-4 bg-white/[0.02] border border-white/5 rounded-xl">

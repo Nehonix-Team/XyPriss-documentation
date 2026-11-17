@@ -11,7 +11,11 @@ import {
   Lock,
   ExternalLink,
   CheckCircle2,
+  HelpCircle,
 } from "lucide-react";
+import { CodeBlock } from "@/components/ui/CodeBlock";
+import { DynamicInstallCmd } from "@/components/ui/DynamicInstallCmd";
+import { DocsFooter } from "@/components/ui/DocsFooter";
 
 const Section = ({
   title,
@@ -46,10 +50,6 @@ const Card = ({
     {children}
   </div>
 );
-
-import { CodeBlock } from "@/components/ui/CodeBlock";
-import { DocsFooter } from "@/components/ui/DocsFooter";
-import { HelpCircle } from "lucide-react";
 
 export default function ContributingPage() {
   return (
@@ -227,32 +227,34 @@ export default function ContributingPage() {
                 <strong>npm, yarn, or pnpm are strictly prohibited</strong>.
               </li>
               <li>
-                3. <strong className="text-white">Native Engine (XHSC)</strong>:
-                You must install the XHSC core in a{" "}
-                <code className="bg-white/5 px-1 rounded text-primary">
-                  bin/
-                </code>{" "}
-                directory at the project root.
+                3. <strong className="text-white">Download Framework Binaries (Recommended)</strong>:
+                After installing dependencies, contributors must download required framework binaries (such as <code className="bg-white/5 px-1 rounded text-primary">xhsc</code> and others) into the project root.
               </li>
             </ul>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <CodeBlock
-                language="bash"
-                title="Linux / macOS"
-                code="curl -sL https://dll.nehonix.com/repo/xypriss/install-xhsc.sh | bash"
-                className="my-0"
-              />
-              <CodeBlock
-                language="powershell"
-                title="Windows (PowerShell)"
-                code="iwr -useb https://dll.nehonix.com/repo/xypriss/install-xhsc.ps1 | iex"
-                className="my-0"
-              />
+            
+            <div className="mt-6 space-y-6">
+              <div>
+                <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                  <span className="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary font-mono">RECOMMENDED</span>
+                  Install All Required Binaries (for Contributors)
+                </h4>
+                <DynamicInstallCmd type="setup-bins" />
+              </div>
+
+              <div>
+                <h4 className="text-sm font-bold text-slate-300 mb-3">
+                  Install XHSC Engine Only
+                </h4>
+                <DynamicInstallCmd type="xhsc" />
+              </div>
             </div>
+
             <p className="text-xs text-slate-500 mt-4 italic">
-              Manual download available at{" "}
+              Manual download and binary repositories are available at{" "}
               <a
                 href="http://dll.nehonix.com/repo/xypriss/xhsc/bin"
+                target="_blank"
+                rel="noreferrer"
                 className="text-primary hover:underline underline-offset-4"
               >
                 dll.nehonix.com

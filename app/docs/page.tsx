@@ -46,10 +46,100 @@ export default function IntroductionPage() {
       </div>
 
       <Callout type="info" title="Stability Note">
-        XyPriss has officially left its beta phase. This documentation is
-        up-to-date for the stable <strong>v{/* stableVersion */}1.0</strong>{" "}
-        release.
+        XyPriss has officially left its beta phase.
+        {/* This documentation is
+        up-to-date for the stable <strong>v1.0</strong>{" "}
+        release. */}
       </Callout>
+
+      <div className="p-6 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.06] via-white/[0.02] to-transparent my-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-primary mb-1">
+              At a Glance
+            </div>
+            <h2 className="text-lg font-bold text-white tracking-tight">
+              How XyPriss Works End-to-End
+            </h2>
+          </div>
+          <Link
+            href="/docs/architecture#execution-lifecycle"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors shrink-0"
+          >
+            View full 6-layer interactive flow
+            <ChevronRight size={14} />
+          </Link>
+        </div>
+
+        <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+          Every XyPriss app runs inside a Zero-Trust, multi-layer pipeline: the{" "}
+          <code>xfpm</code> CLI launches your TypeScript runtime inside a{" "}
+          <strong>libXESS</strong> memory vault, your app retrieves secrets
+          safely via <code>__sys__.__env__</code>, builds routes and{" "}
+          <code>XyGuard</code> policies in <code>createServer()</code>, and
+          delegates networking and IPC to the native <strong>XHSC</strong> &amp;{" "}
+          <strong>libSynapx</strong> core on <code>app.start()</code>.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/[0.04]">
+            <div className="text-[11px] font-bold text-blue-300 mb-1">
+              1. CLI Supervision (xfpm)
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <code>xfpm dev</code> / <code>xfpm start</code> resolves{" "}
+              <code>xypriss.config.jsonc</code>, detects Bun/Node, and manages
+              hot-reload.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl border border-rose-500/20 bg-rose-500/[0.04]">
+            <div className="text-[11px] font-bold text-rose-300 mb-1">
+              2. Memory Vault (libXESS)
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Holds <code>.env</code> secrets in supervisor memory, shields{" "}
+              <code>process.env</code>, and serves canary decoys on direct reads.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl border border-amber-500/20 bg-amber-500/[0.04]">
+            <div className="text-[11px] font-bold text-amber-300 mb-1">
+              3. Runtime API (__sys__)
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Verifies confinement on import and exposes caller-scoped secrets via{" "}
+              <code>get()</code>, <code>getStrict()</code>, and{" "}
+              <code>withSecret()</code>.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04]">
+            <div className="text-[11px] font-bold text-emerald-300 mb-1">
+              4. App Factory (createServer)
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Resolves <code>&amp;(env).KEY</code>, mounts routers,{" "}
+              <code>XyGuard</code>, <code>XStatic</code>, and isolated plugins.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl border border-purple-500/20 bg-purple-500/[0.04]">
+            <div className="text-[11px] font-bold text-purple-300 mb-1">
+              5. Boot Dispatch (app.start)
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Boots Single/XMS or Cluster workers, runs{" "}
+              <code>onServerReady</code> hooks, and opens listeners.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl border border-cyan-500/20 bg-cyan-500/[0.04]">
+            <div className="text-[11px] font-bold text-cyan-300 mb-1">
+              6. Native Control (libSynapx)
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Persistent multiplexed binary IPC between JS workers and the Go
+              XHSC engine.
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
         <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-primary/20 transition-all group">

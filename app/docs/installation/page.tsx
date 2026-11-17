@@ -112,6 +112,14 @@ export default function InstallationPage() {
         </div>
       </div>
 
+      <Callout type="info" title="Windows Users & Antivirus Exclusions">
+        Windows Defender or heuristic scanners may occasionally flag native engine binaries as false positives. Check our{" "}
+        <Link href="/docs/installation/windows" className="text-primary underline font-medium">
+          Important Notes for Windows Users
+        </Link>{" "}
+        to configure folder exclusions and ensure smooth execution.
+      </Callout>
+
       <Callout type="warning" title="Runtime Restrictions">
         Starting a XyPriss server with <code>npm run</code>, <code>node</code>,
         or other unsupported runtimes may produce undefined behavior. Always use{" "}

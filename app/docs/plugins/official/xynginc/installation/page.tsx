@@ -4,90 +4,89 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { DocsFooter } from "@/components/ui/DocsFooter";
 import { Callout } from "@/components/ui/Callout";
 import { Steps, Step } from "@/components/ui/Steps";
-import { Download, Server, ShieldCheck, Terminal, AlertTriangle } from "lucide-react";
+import { Download, Server, ShieldCheck, Terminal, AlertTriangle, Cpu, Box } from "lucide-react";
 
 export default function XyngincInstallationPage() {
   return (
-    <div className="prose prose-invert max-w-none">
-      <SectionHeading level={1}>XyNginC Installation</SectionHeading>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex items-center gap-2 text-primary font-semibold tracking-wider uppercase text-xs">
+          <Download size={14} />
+          Official Plugin
+        </div>
+        <SectionHeading level={1}>XyNginC Installation &amp; Requirements</SectionHeading>
+        <p className="text-xl text-muted-foreground leading-relaxed">
+          System requirements, package installation, and CLI setup for XyNginC on production Linux servers.
+        </p>
+      </div>
 
-      <p>
-        XyNginC is designed <strong>exclusively for XyPriss projects running in production on Linux</strong>. 
-        It relies on system-level components like Nginx and Certbot that are native to Linux environments.
-      </p>
+      <Callout type="warning" title="Linux Production Only">
+        XyNginC is designed <strong>exclusively for Linux production servers</strong> (Ubuntu 22.04+, Debian 11+ recommended). Windows and macOS are not supported for production deployments.
+      </Callout>
 
-      <SectionHeading level={2}>System Requirements</SectionHeading>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+      <SectionHeading level={2} id="system-requirements">
+        System Requirements
+      </SectionHeading>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-4">
         {[
-          { icon: <Server className="text-blue-400" />, title: "OS", value: "Ubuntu 20.04+, Debian 11+" },
-          { icon: <Cpu className="text-yellow-400" />, title: "Arch", value: "x64, arm64, ia32" },
-          { icon: <ShieldCheck className="text-green-400" />, title: "Access", value: "Root or sudo privileges" },
-          { icon: <Terminal className="text-purple-400" />, title: "Manager", value: "XFPM installed" },
+          { icon: <Server className="text-blue-400" />, title: "Operating System", value: "Ubuntu 22.04+, Debian 11+" },
+          { icon: <Cpu className="text-yellow-400" />, title: "Architectures", value: "x86_64 (amd64), ARM64, x86" },
+          { icon: <Box className="text-green-400" />, title: "Runtimes", value: "Bun v1.2+ or Node.js v18.0+" },
+          { icon: <Terminal className="text-purple-400" />, title: "Package Manager", value: "XFPM (XyPriss Manager)" },
         ].map((item, i) => (
           <div key={i} className="p-4 bg-white/[0.02] border border-white/5 rounded-xl flex items-center gap-4">
-            <div className="p-2 bg-white/[0.05] rounded-lg">{item.icon}</div>
+            <div className="p-2 bg-white/[0.05] rounded-lg shrink-0">{item.icon}</div>
             <div>
               <div className="text-[10px] text-slate-500 uppercase font-mono">{item.title}</div>
-              <div className="text-white font-bold text-sm">{item.value}</div>
+              <div className="text-white font-bold text-xs">{item.value}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <SectionHeading level={2}>Step 0: Install XFPM</SectionHeading>
-      <p>Ensure XFPM is installed, as it is required for the recommended installation method:</p>
-      <CodeBlock language="bash" code="curl -sL https://xypriss.nehonix.com/install.js | node" />
-
-      <SectionHeading level={2}>Installation Methods</SectionHeading>
-      
-      <div className="space-y-8 my-10">
-        <div>
-          <h3 className="text-white font-bold mb-3 flex items-center gap-2 italic">
-            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-            Option 1: XFPM (Recommended)
-          </h3>
-          <p className="text-sm text-slate-400">
-            Most streamlined approach for XyPriss projects. The post-install script automatically handles binary acquisition.
-          </p>
-          <CodeBlock language="bash" code="xfpm install xynginc" />
-        </div>
-
-        <div>
-          <h3 className="text-white font-bold mb-3 flex items-center gap-2 italic">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-            Option 2: Manual Binary
-          </h3>
-          <p className="text-sm text-slate-400">
-            For standalone usage or environments without XFPM.
-          </p>
-          <CodeBlock 
-            language="bash" 
-            code={`curl -L -o xynginc https://github.com/Nehonix-Team/xynginc/releases/latest/download/xynginc
-chmod +x xynginc
-sudo mv xynginc /usr/local/bin/`} 
-          />
-        </div>
-      </div>
-
-      <SectionHeading level={2}>System Dependencies (Optional)</SectionHeading>
-      <p>
-        XyNginC is designed to <strong>automatically detect and install</strong> missing requirements 
-        (Nginx, Certbot) during its first execution. Manual installation is usually not required, 
-        but you can verify them on your Ubuntu/Debian server if needed:
+      <SectionHeading level={2} id="workspace-install">
+        Workspace Installation (XFPM)
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+        XyNginC is distributed through the official XyPriss registry using XFPM:
       </p>
-      <CodeBlock 
-        language="bash" 
-        code={`# Manual installation (Optional)
-sudo apt update
-sudo apt install nginx certbot python3-certbot-nginx`} 
+      <CodeBlock language="bash" code="xfpm install xynginc" />
+      <p className="text-xs text-muted-foreground my-2">
+        The installation registers two CLI aliases in your workspace environment: <code className="text-primary font-mono">xynginc</code> and <code className="text-primary font-mono">xncp</code>.
+      </p>
+
+      <SectionHeading level={2} id="standalone-install">
+        Standalone CLI Installation
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+        For standalone system-wide usage or environments without XFPM:
+      </p>
+      <CodeBlock
+        language="bash"
+        code={`curl -L -o xynginc https://github.com/Nehonix-Team/xynginc/releases/latest/download/xynginc
+chmod +x xynginc
+sudo mv xynginc /usr/local/bin/`}
       />
 
-      <Callout type="tip">
-        Run <code>sudo xynginc check</code> after installation to verify that all 
-        system dependencies and permissions are correctly configured.
+      <SectionHeading level={2} id="system-dependencies">
+        System Dependencies (Nginx &amp; Certbot)
+      </SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        XyNginC is designed to <strong>automatically detect and provision</strong> missing system dependencies (Nginx, Certbot) during execution when <code className="text-primary font-mono">installRequirements: true</code> is passed or via the CLI:
+      </p>
+
+      <CodeBlock
+        language="bash"
+        code={`# Infrastructure Diagnostics & Setup
+sudo xynginc check                     # Verify system dependencies
+sudo xynginc install                   # Install missing system requirements`}
+      />
+
+      <Callout type="tip" title="Verification Command">
+        Run <code className="text-primary font-mono font-bold">sudo xynginc check</code> after installation to verify that all system dependencies and Nginx permissions are correctly configured.
       </Callout>
 
-      <DocsFooter 
+      <DocsFooter
         title="Build from Source"
         description="Need to run XyNginC on a custom architecture? Learn how to build it from source."
         buttonText="Next: Build from Source"
@@ -97,5 +96,3 @@ sudo apt install nginx certbot python3-certbot-nginx`}
     </div>
   );
 }
-
-import { Cpu } from "lucide-react";

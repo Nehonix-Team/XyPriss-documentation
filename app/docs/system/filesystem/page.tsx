@@ -10,6 +10,7 @@ import {
   Archive, 
   Eye, 
   Lock,
+  Trash2,
   ArrowRight
 } from "lucide-react";
 import Link from "next/link";
@@ -107,6 +108,13 @@ export default function FilesystemOverviewPage() {
           href="/docs/system/filesystem/watch"
           icon={Eye}
           badge="watch"
+        />
+        <ModuleCard 
+          title="Disposable Temp Files"
+          description="Auto-cleaning temporary scratch files with TTL management."
+          href="/docs/system/filesystem/temp-files"
+          icon={Trash2}
+          badge="disposable"
         />
         <ModuleCard 
           title="Security & Advanced"

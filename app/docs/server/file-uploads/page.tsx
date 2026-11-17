@@ -21,16 +21,19 @@ export default function FileUploadsPage() {
 
       <SectionHeading level={2} id="configuration">Strategic Configuration</SectionHeading>
       <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-        For robustness, avoid relative paths in production. Define absolute storage outside the application source.
+        For robustness, avoid relative paths in production. Define absolute storage outside the application source. You can use the built-in <code className="text-primary font-mono">getMimes</code> helper to automatically translate extension lists into verified MIME types for the XHSC engine.
       </p>
       <CodeBlock 
         language="typescript"
-        code={`const server = createServer({
+        code={`import { createServer, getMimes } from "xypriss";
+
+const server = createServer({
     fileUpload: {
         enabled: true,
         maxFileSize: 1024 * 1024 * 500, // 500MB
         destination: "/var/lib/xypriss/uploads",
-        allowedExtensions: [".pdf", ".docx", ".zip", ".jpg", ".png"],
+        // Map file extensions automatically to MIME types
+        allowedMimeTypes: getMimes([".pdf", ".docx", ".zip", ".jpg", ".png"]),
         useSubDir: true, // Prevents directory clutter
     },
 });`}
@@ -71,6 +74,26 @@ export default function FileUploadsPage() {
         </div>
       </div>
 
+      <SectionHeading level={2} id="mime-helpers">MIME Type Helpers (getMimes)</SectionHeading>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+        XyPriss provides built-in utilities <code className="text-primary font-mono">getMimes</code> and <code className="text-primary font-mono">getMime</code> to generate deduplicated MIME arrays without third-party dependencies.
+      </p>
+      <CodeBlock
+        language="typescript"
+        code={`import { getMimes, getMime } from "xypriss";
+
+// Array resolution & deduplication
+const allowedMimes = getMimes([".jpg", ".png", ".pdf"]);
+// Output: ["image/jpeg", "image/png", "application/pdf"]
+
+// Single extension resolution
+const mime = getMime(".webp"); // Output: "image/webp"`}
+      />
+
+      <Callout type="info" title="Dedicated MIME Utilities Documentation">
+        For complete details on MIME resolution, extension mapping, controller validation, and global fallbacks, see the dedicated <a href="/docs/features/get-mime" className="text-primary font-bold underline underline-offset-4">MIME Utilities (getMimes) Documentation</a>.
+      </Callout>
+
       <SectionHeading level={2} id="usage">Multi-Field Management</SectionHeading>
       <p className="text-sm text-muted-foreground mb-4">
         Use <code className="text-primary font-bold">.fields()</code> for transactional requests containing different types of assets.
@@ -93,11 +116,11 @@ app.post("/apply", jobApplicationUpload, (req, res) => {
       </Callout>
 
       <DocsFooter 
-        title="Response Control"
-        description="Learn how to hijack and customize default 404 behaviors."
-        buttonText="View Specs"
-        href="/docs/server/response-control"
-        iconName="Target"
+        title="MIME Utilities (getMimes)"
+        description="Learn how to resolve and validate MIME types natively with getMimes."
+        buttonText="View MIME Utilities"
+        href="/docs/features/get-mime"
+        iconName="FileCheck"
       />
     </div>
   );

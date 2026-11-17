@@ -6,6 +6,7 @@ export const docsConfig: DocT[] = [
     items: [
       { title: "Introduction", href: "/docs" },
       { title: "Installation", href: "/docs/installation" },
+      { title: "Windows Notes", href: "/docs/installation/windows" },
       { title: "Quick Start", href: "/docs/quick-start" },
     ],
   },
@@ -26,6 +27,7 @@ export const docsConfig: DocT[] = [
             title: "Server Architecture",
             href: "/docs/xhsc-core/architecture",
           },
+          { title: "libSynapx (IPC & Dispatcher)", href: "/docs/xhsc-core/libsynapx" },
           { title: "XInS (Intelligent Scaling)", href: "/docs/xhsc-core/XInS" },
         ],
       },
@@ -38,11 +40,13 @@ export const docsConfig: DocT[] = [
     items: [
       { title: "Request & Response", href: "/docs/server/request-response" },
       { title: "XJSON API", href: "/docs/features/xjson" },
+      { title: "XML ↔ JSON Conversion", href: "/docs/features/conversion" },
       { title: "Client IP Detection", href: "/docs/server/get-ip" },
       { title: "File Streaming", href: "/docs/server/send-file" },
       { title: "Structured Responses (Send)", href: "/docs/server/send" },
       { title: "Static Files (XStatic)", href: "/docs/server/static-files" },
       { title: "File Uploads", href: "/docs/server/file-uploads" },
+      { title: "MIME Utilities (getMimes)", href: "/docs/features/get-mime" },
       { title: "Response Control", href: "/docs/server/response-control" },
       {
         title: "NotFound vs Response Control",
@@ -92,6 +96,7 @@ export const docsConfig: DocT[] = [
             href: "/docs/system/filesystem/archive",
           },
           { title: "File Watching", href: "/docs/system/filesystem/watch" },
+          { title: "Disposable Temp Files", href: "/docs/system/filesystem/temp-files" },
           { title: "Security & Advanced", href: "/docs/system/filesystem/security" },
         ]
       },
@@ -136,6 +141,7 @@ export const docsConfig: DocT[] = [
       { title: "CSRF Protection", href: "/docs/security/csrf" },
       { title: "Malicious URL Scanner", href: "/docs/security/malicious-url-scanner" },
       { title: "Rate Limiting", href: "/docs/security/rate-limiting" },
+      { title: "XTRS Rate Shield", href: "/docs/security/xtrs-rate-limiting" },
       { title: "Request Signatures", href: "/docs/security/signatures" },
       { title: "Route Security", href: "/docs/security/route-security" },
       { title: "Trust Proxy", href: "/docs/security/trust-proxy" },
@@ -251,6 +257,18 @@ export const docsConfig: DocT[] = [
   },
   {
     title: "Community",
-    items: [{ title: "Contributing", href: "/docs/contributing" }],
+    items: [
+      { title: "Contributing", href: "/docs/contributing" },
+      {
+        title: "Troubleshooting",
+        href: "/docs/troubleshooting",
+        items: [
+          {
+            title: "libXESS Security Violation",
+            href: "/docs/troubleshooting/libxess-security-violation",
+          },
+        ],
+      },
+    ],
   },
 ];

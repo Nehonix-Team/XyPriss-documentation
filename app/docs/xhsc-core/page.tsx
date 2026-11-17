@@ -78,24 +78,28 @@ export default function XHSCPage() {
       </div>
 
       <SectionHeading level={2} id="conversion">
-        Native Data Conversion
+        Native Data Conversion (XML ↔ JSON)
       </SectionHeading>
       <p>
         XHSC includes a high-performance streaming transcoder built directly
-        into the networking stack:
+        into the networking stack (see the{" "}
+        <a href="/docs/features/conversion" className="text-primary underline">
+          XML ↔ JSON Conversion Guide
+        </a>
+        ):
       </p>
       <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
         <li>
-          <strong>XML to JSON</strong>: Automatically transcodes incoming
-          payloads.
+          <strong>XML to JSON (<code>xmlToJson</code>)</strong>: Automatically
+          transcodes incoming XML payloads into <code>req.body</code>.
         </li>
         <li>
-          <strong>Bi-Directional</strong>: Mirrors outgoing responses based on
-          origin format.
+          <strong>Bi-Directional (<code>autoReply</code>)</strong>: Mirrors
+          outgoing JSON responses back to XML based on origin format.
         </li>
         <li>
-          <strong>Content Sniffing</strong>: Identifies formats for
-          non-compliant requests.
+          <strong>Content Sniffing</strong>: Identifies XML formats for
+          non-compliant requests lacking proper <code>Content-Type</code> headers.
         </li>
       </ul>
 
@@ -143,7 +147,7 @@ export default function XHSCPage() {
               <td className="px-4 py-3 font-mono text-primary">GX</td>
               <td className="px-4 py-3 text-muted-foreground">2</td>
               <td className="px-4 py-3 font-semibold text-white">
-                Architectural Generation (e.g., G4)
+                Architectural Generation (e.g., G5)
               </td>
             </tr>
           </tbody>
@@ -230,16 +234,63 @@ export default function XHSCPage() {
             Full native core delegation. The "Age of Rationality".
           </p>
         </div>
-        <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+        <div className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
           <div className="flex items-center justify-between mb-2">
-            <span className="font-bold text-primary">G4: IPC-Hybrid</span>
-            <span className="text-[10px] bg-primary/20 px-2 py-0.5 rounded text-primary">
+            <span className="font-bold text-white">G4: IPC-Hybrid</span>
+            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-muted-foreground">
               Go (XHSC)
             </span>
           </div>
-          <p className="text-xs text-white/80 font-medium">
+          <p className="text-xs text-muted-foreground">
             Deep symbiosis between native streams and JS hooks.
           </p>
+        </div>
+        <div className="p-4 rounded-xl border border-primary/30 bg-primary/10 md:col-span-2">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-bold text-primary">
+              G5: Zero-Trust Synapx (Current)
+            </span>
+            <span className="text-[10px] bg-primary/20 px-2 py-0.5 rounded text-primary font-semibold">
+              Go (XHSC-Synapx)
+            </span>
+          </div>
+          <p className="text-xs text-white/90 font-medium mb-2">
+            &quot;Age of Sovereignty&quot; — Zero-flag encrypted envelope,
+            persistent{" "}
+            <a href="/docs/xhsc-core/libsynapx" className="text-primary underline">
+              libSynapx
+            </a>{" "}
+            duplex IPC, and hardware-bound{" "}
+            <a
+              href="/docs/security/environment-shield"
+              className="text-primary underline"
+            >
+              libXESS
+            </a>{" "}
+            confinement.
+          </p>
+          <ul className="text-[11px] text-muted-foreground list-disc pl-4 space-y-1">
+            <li>
+              <strong>Ground-Zero</strong>: Total eradication of command-line
+              arguments and <code>argv</code> inspection vectors.
+            </li>
+            <li>
+              <strong>Galois-Bound</strong>: Hardware-bound{" "}
+              <code>HKDF-SHA256</code> + <code>AES-256-GCM</code> envelope
+              encryption (<code>.synapx</code>).
+            </li>
+            <li>
+              <strong>Grid-Persistence</strong>: Persistent framed duplex neural
+              bridge with sub-50µs execution latency.
+            </li>
+            <li>
+              <strong>Ephemeral Secret Zeroization (<code>env.bytes</code>)</strong>
+              : Native <code>EnvHandler.Bytes</code> IPC action backing{" "}
+              <code>__sys__.__env__.withSecret()</code> for zeroizable{" "}
+              <code>Uint8Array</code> buffers without materializing immutable JS
+              strings.
+            </li>
+          </ul>
         </div>
       </div>
 
